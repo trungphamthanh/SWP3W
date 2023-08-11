@@ -12,3 +12,17 @@ C:\Users\Admin\source\repos\SWP391_3W\BusinessObj\obj\Debug\net6.0\refint\Busine
 C:\Users\Admin\source\repos\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.pdb
 C:\Users\Admin\source\repos\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.genruntimeconfig.cache
 C:\Users\Admin\source\repos\SWP391_3W\BusinessObj\obj\Debug\net6.0\ref\BusinessObj.dll
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\bin\Debug\net6.0\BusinessObj.deps.json
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\bin\Debug\net6.0\BusinessObj.runtimeconfig.json
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\bin\Debug\net6.0\BusinessObj.dll
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\bin\Debug\net6.0\BusinessObj.pdb
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.csproj.AssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.AssemblyInfo.cs
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.dll
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\refint\BusinessObj.dll
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.pdb
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\BusinessObj.genruntimeconfig.cache
+C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BusinessObj\obj\Debug\net6.0\ref\BusinessObj.dll

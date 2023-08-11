@@ -1,0 +1,26 @@
+﻿@page
+@model BookingWebs.Pages.LoginModel
+@{
+    var info = ViewData["Title"];
+    ViewBag.tie = "Đăng nhập";
+}
+<h1>@ViewBag.tie</h1>
+<div class="row">
+    <div class="m-2 p-3">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
