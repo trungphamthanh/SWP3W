@@ -6,7 +6,13 @@
 }
 
 <h1>Index</h1>
-
+<form method="get">
+    <div class="form-group">
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" placeholder="Nhap ten khach hang" />
+        <button type="submit">Search</button>
+    </div>
+</form>
 <p>
     <a asp-page="Create">Create New</a>
 </p>

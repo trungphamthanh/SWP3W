@@ -6,28 +6,34 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObj.Models;
+using Repository;
 
 namespace BookingWebs.Pages.BookingInfor
 {
     public class IndexModel : PageModel
     {
         private readonly BusinessObj.Models.DASContext _context;
-
-        public IndexModel(BusinessObj.Models.DASContext context)
+        public readonly IBookingRepository _repository;
+        public IndexModel(BusinessObj.Models.DASContext context, IBookingRepository bookingRepository)
         {
             _context = context;
+            _repository = bookingRepository;
         }
 
-        public IList<Booking> Booking { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public IList<Booking> Booking { get; set; } = default!;
+        public string CustomerName { get; set; } = "";
+        public IActionResult OnGetAsync(string customerName)
         {
-            if (_context.Bookings != null)
+            if (string.IsNullOrEmpty(customerName))
             {
-                Booking = await _context.Bookings
-                .Include(b => b.Account)
-                .Include(b => b.Slot).ToListAsync();
+                Booking = _context.Bookings
+                .ToList();
             }
+            else
+            {
+                Booking = _repository.GetBookingsByCustomerName(customerName).ToList();
+            }
+            return Page();
         }
     }
 }
