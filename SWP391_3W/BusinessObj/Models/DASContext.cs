@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace BusinessObj.Models
 {
@@ -25,12 +26,14 @@ namespace BusinessObj.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;uid=Trung;database=DAS;pwd=145236;TrustServerCertificate=true");
-            }
+            optionsBuilder.UseSqlServer(GetConnectionString());
         }
-
+        public string GetConnectionString()
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", true, true);
+            IConfiguration configuration = builder.Build();
+            return configuration.GetConnectionString("DefaultConnection");
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
