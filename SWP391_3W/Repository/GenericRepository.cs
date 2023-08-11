@@ -16,7 +16,16 @@ namespace Repository
         {
             _db.Add(entity);
         }
-
+        public GenericRepository(DASContext context)
+        {
+            _context = context;
+            _db = _context.Set<T>();
+        }
+        public GenericRepository()
+        {
+            _context = new DASContext();
+            _db = _context.Set<T>();
+        }
         public void Delete(object id)
         {
             T exist = _db.Find(id);
