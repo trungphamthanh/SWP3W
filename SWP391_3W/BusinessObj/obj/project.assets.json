@@ -2381,11 +2381,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\SWP391_3W\\BusinessObj\\BusinessObj.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj",
       "projectName": "BusinessObj",
-      "projectPath": "C:\\Users\\Admin\\source\\repos\\SWP391_3W\\BusinessObj\\BusinessObj.csproj",
+      "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\source\\repos\\SWP391_3W\\BusinessObj\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

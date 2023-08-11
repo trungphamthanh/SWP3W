@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj": {}
+    "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj": {
+    "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj",
-        "projectName": "BusinessObj",
-        "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj",
+        "projectName": "Repository",
+        "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,28 +39,6 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.0, )"
-            },
-            "Microsoft.Extensions.Configuration.Json": {
-              "target": "Package",
-              "version": "[6.0.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
