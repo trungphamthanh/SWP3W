@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObj.Models;
 using Repository;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingWebs.Pages.BookingInfor
 {
@@ -21,6 +22,7 @@ namespace BookingWebs.Pages.BookingInfor
         }
 
         public IList<Booking> Booking { get; set; } = default!;
+        [Display(Name = "Customer name")]
         public string CustomerName { get; set; } = "";
         public IActionResult OnGetAsync(string customerName)
         {

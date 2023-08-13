@@ -12,7 +12,6 @@ namespace BookingWebs.Pages.BookingInfor
     public class CreateModel : PageModel
     {
         private readonly BusinessObj.Models.DASContext _context;
-
         public CreateModel(BusinessObj.Models.DASContext context)
         {
             _context = context;
@@ -20,19 +19,19 @@ namespace BookingWebs.Pages.BookingInfor
 
         public IActionResult OnGet()
         {
-        ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
-        ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
             return Page();
         }
 
         [BindProperty]
         public Booking Booking { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Bookings == null || Booking == null)
+            if (!ModelState.IsValid || _context.Bookings == null || Booking == null)
             {
                 return Page();
             }
