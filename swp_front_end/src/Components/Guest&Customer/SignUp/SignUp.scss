@@ -1,0 +1,74 @@
+.signup-container{
+    .signup-background{
+        display: flex;
+        justify-content: center; /* Horizontally center the content */
+        align-items: center; /* Vertically center the content */
+        height: 100vh; /* Set the body height to 100% of the viewport height */
+        margin: 0; /* Remove default body margin */
+        background-color: #0C3F7E;
+        margin-top: -5rem;
+    .signup-form{
+        width: 80%; /* Set the width of the form container */
+        max-width: 400px; /* Set a maximum width to avoid excessive stretching on large screens */
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .signup-title{
+        text-align: center;
+        color: #0C3F7E;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+    }    
+    .signup-main{
+        display: flex;
+        font-weight: bold;
+        .signup-left{
+            display: grid;
+            padding: 4rem 1rem 4rem 1rem;
+            text-align: center;
+            border-right: 3px solid #0C3F7E;
+            .link{
+                text-decoration: none;
+                background-color: #0C3F7E;
+                color: white;
+                padding: 1rem;
+                border-radius: 2rem;
+                margin-top: 1rem;
+            }
+            .link:hover{
+                background-color: #1257ab;
+                transition: all 0.3s ease;
+            }
+        }
+        .signup-right{
+            display: grid;
+            padding-left: 2rem;
+            label{
+                height: 1rem;
+            } 
+            input{
+                background-color: #dedede;
+                height: 1.4rem;
+                border: 0;
+                border-radius: 2rem;
+                margin-top: -1rem;
+            }
+            .button{
+                background-color: #0C3F7E;
+                border-radius: 2rem;
+                color:#ffffff;
+                border: 0;
+                cursor: pointer;
+            }
+            .button:hover{
+                background-color: #1257ab;
+                transition: all 0.3s ease;
+            }
+        }
+    }
+    }
+}
+}

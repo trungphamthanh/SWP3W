@@ -1,0 +1,5 @@
+export const FAQsMap=[
+    {id:"1", header:"What dental services do you offer?", answer:"Patients often want to know about the range of services a dental clinic provides. This FAQ can cover general dentistry services like cleanings, fillings, and extractions, as well as specialized treatments like orthodontics, cosmetic dentistry, dental implants, and oral surgery."},
+    {id:"2", header:"How often should I schedule dental check-ups?", answer:"Many people are unsure about how frequently they should visit the dentist. This question allows you to explain the importance of regular dental check-ups for maintaining oral health, preventing issues, and catching problems early. You can also mention any age-specific recommendations."},
+    {id:"3", header:"Do you accept dental insurance, and what payment options are available?", answer:"Patients often want to know about the clinic's payment policies and options. Provide information about the types of dental insurance you accept, any out-of-pocket expenses patients might have, and whether you offer payment plans or accept major credit cards. This can help alleviate financial concerns for potential patients."}
+]

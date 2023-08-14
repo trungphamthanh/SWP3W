@@ -1,0 +1,40 @@
+.header-container{
+    height: 3rem;
+    padding-top: 2rem;
+    display: flex;
+    .header-list{
+        display: flex;
+        width: 30rem;
+        margin: 0 4rem 0 8rem;
+        .header-link{
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .header-link:hover{
+            border-radius: 1.5rem;
+            transition: all 0.3s ease;
+            color: #0C3F7E;
+        }
+    }
+    .header-login{
+        box-shadow: rgb(255, 255, 255) 0px 0px 0px 3px inset;
+        color: white;
+        text-decoration: none;
+        padding: 1rem 3rem 1rem 3rem;
+        border-radius: 1.5rem;
+        border-radius: 2rem;
+        margin-left: 38rem;
+        font-weight: bold;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .header-login:hover{
+        color: #6caffc;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+}
