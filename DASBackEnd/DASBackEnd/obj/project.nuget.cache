@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YPq43xC/ZV0IGd9Jy68SYxYbngEuC4VeCicw11HgS3xo7tgSVYIETUpvaHONCeLtJgv9wjhmd720ZMHrQcdumA==",
+  "dgSpecHash": "F24OFvkuUJyCuAqTy0VpCR6aOzynUxyLKaVBE2ztRZrwSfnYo9lZm4+Ugg4rv159ORMAJZHcTYYjgtHqFPxxdg==",
   "success": true,
-  "projectFilePath": "E:\\Study Time\\fullstack\\Net\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj",
+  "projectFilePath": "D:\\Source 2\\Lịch nha khoa\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSI\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\MSI\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
