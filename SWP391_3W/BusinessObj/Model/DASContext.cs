@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
-namespace BusinessObj.Models
+namespace BusinessObj.Model
 {
     public partial class DASContext : DbContext
     {
@@ -18,22 +17,21 @@ namespace BusinessObj.Models
         }
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
-        public virtual DbSet<BookDetail> BookDetails { get; set; } = null!;
         public virtual DbSet<Booking> Bookings { get; set; } = null!;
         public virtual DbSet<Daservice> Daservices { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Slot> Slots { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(GetConnectionString());
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB;uid=Trung;pwd=145236;database=DAS;TrustServerCertificate=true");
+            }
         }
-        public string GetConnectionString()
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", true, true);
-            IConfiguration configuration = builder.Build();
-            return configuration.GetConnectionString("DefaultConnection");
-        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
@@ -46,41 +44,21 @@ namespace BusinessObj.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Role)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.RoleId).HasColumnName("roleId");
 
-                entity.Property(e => e.RoleId).HasColumnName("RoleID");
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
-                entity.Property(e => e.Username)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Username).HasMaxLength(100);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.RoleId)
+                    .HasConstraintName("FK__Account__roleId__45F365D3");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Account__UserId__44FF419A");
-            });
-
-            modelBuilder.Entity<BookDetail>(entity =>
-            {
-                entity.ToTable("BookDetail");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.AmountServices).HasColumnType("decimal(18, 2)");
-
-                entity.HasOne(d => d.Booking)
-                    .WithMany(p => p.BookDetails)
-                    .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK__BookDetai__Booki__440B1D61");
-
-                entity.HasOne(d => d.Service)
-                    .WithMany(p => p.BookDetails)
-                    .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK__BookDetai__Servi__4316F928");
+                    .HasConstraintName("FK__Account__userId__44FF419A");
             });
 
             modelBuilder.Entity<Booking>(entity =>
@@ -93,13 +71,11 @@ namespace BusinessObj.Models
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
 
-                entity.Property(e => e.CustomerName)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.CustomerName).HasMaxLength(100);
 
-                entity.Property(e => e.ServicesName)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.ServiceId).HasColumnName("serviceId");
+
+                entity.Property(e => e.ServicesName).HasMaxLength(100);
 
                 entity.Property(e => e.SlotId).HasColumnName("slotId");
 
@@ -107,15 +83,24 @@ namespace BusinessObj.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
+                entity.Property(e => e.TotalPrice)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("totalPrice");
+
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__Booking__account__412EB0B6");
+                    .HasConstraintName("FK__Booking__account__4222D4EF");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.Bookings)
+                    .HasForeignKey(d => d.ServiceId)
+                    .HasConstraintName("FK__Booking__service__440B1D61");
 
                 entity.HasOne(d => d.Slot)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.SlotId)
-                    .HasConstraintName("FK__Booking__slotId__4222D4EF");
+                    .HasConstraintName("FK__Booking__slotId__4316F928");
             });
 
             modelBuilder.Entity<Daservice>(entity =>
@@ -124,15 +109,35 @@ namespace BusinessObj.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description)
+                entity.Property(e => e.AccountId).HasColumnName("accountId");
+
+                entity.Property(e => e.Descriptions).HasMaxLength(1000);
+
+                entity.Property(e => e.ImgUrl)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("imgUrl");
 
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.ServiceName)
+                entity.Property(e => e.ServiceName).HasMaxLength(100);
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.Daservices)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK__DAService__accou__412EB0B6");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.RoleName)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("roleName");
             });
 
             modelBuilder.Entity<Slot>(entity =>
@@ -171,17 +176,11 @@ namespace BusinessObj.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Gender)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Gender).HasMaxLength(100);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.PhoneNum).HasMaxLength(100);
 
-                entity.Property(e => e.PhoneNum)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.UserName).HasMaxLength(100);
             });
 
             OnModelCreatingPartial(modelBuilder);

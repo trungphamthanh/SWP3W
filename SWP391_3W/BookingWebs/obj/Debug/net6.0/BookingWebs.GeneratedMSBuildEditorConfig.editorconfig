@@ -16,36 +16,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Admin\Documents\GitHub\SWP3W\SWP391_3W\BookingWebs
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/BookingInfor/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ0luZm9yXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/BookingInfor/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ0luZm9yXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/BookingInfor/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ0luZm9yXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/BookingInfor/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ0luZm9yXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/BookingInfor/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ0luZm9yXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Admin/Documents/GitHub/SWP3W/SWP391_3W/BookingWebs/Pages/Privacy.cshtml]
