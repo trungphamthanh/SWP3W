@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository
+namespace Repositories
 {
     public interface IGenericRepository<T> where T : class
     {
-        T GetByID(Object id);
+        T GetByID(object id);
         void Save();
-        void Delete(object id);
-        void Add(T entity);
+        void Delete(Object id);
         void Update(T entity);
+        void Add(T entity);
         IEnumerable<T> GetAll();
     }
 }
