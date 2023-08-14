@@ -1,0 +1,178 @@
+.home-container{
+    font-family: Arial, Helvetica, sans-serif;
+    .home-location{
+        background-color: #d4e7fd;
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        color: #0C3F7E;
+        .location{
+            width: 75%;
+            display: flex;
+            justify-content: space-between;
+        .location-content{
+            width: 50%;
+        }
+        
+        img{
+            width: 35%;
+            border-radius: 2rem;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+        }
+        }
+    }
+
+    .home-feature{
+        margin-bottom: 2rem;
+        .feature-header{
+            font-size: 2rem;
+            text-align: center;
+            font-weight: bolder;
+            color: #0C3F7E;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-card-list{
+            display: flex;
+            justify-content: space-evenly;
+        .feature-card{
+            border-top: 5px solid #2D8EFF; 
+            width: 15%;
+            text-align: center;
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+            padding: 2rem 2rem 4rem 2rem;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+            .card-icon{
+                font-size: 3rem;
+                color: #2D8EFF;
+            }
+            .card-header{
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-bottom: 1rem;
+            }
+            .card-content{
+
+            }
+        }
+        .feature-card:hover{
+            transform: translateY(-10%);
+            transition: all 0.3s ease;
+        }
+        }
+    }
+    .home-reason{
+        display: flex;
+        align-items: center;
+        background-color: #d4e7fd;
+        padding: 2rem;
+        justify-content: space-evenly;
+        color: #0C3F7E;
+        margin-bottom: 5rem;
+        img{
+            border-radius: 2rem;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+            width: 30%;
+        }
+        .reason-content{
+            width: 65%;
+            p{
+             span{
+                font-size: 1.5rem;
+                font-weight: bold;
+             }   
+            }
+        }
+    }
+    .home-feedback {
+        padding: 2rem;
+        margin-bottom: 4rem;
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+        .book-box{
+            padding: 2rem;
+            border-radius: 2rem;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+            display: block; /* Add this line to ensure it takes full width */
+            margin: 1rem auto; /* Center the link horizontally */
+            text-align: center; /* Center the link's text */
+            .link {
+                text-decoration: none;
+                background-color: #0C3F7E;
+                color: white;
+                padding: 1rem;
+                border-radius: 2rem;
+                margin-top: 1rem;
+                width: 8rem; /* Increase the width for better visibility */
+                display: block; /* Add this line to ensure it takes full width */
+                margin: 1rem auto; /* Center the link horizontally */
+                text-align: center; /* Center the link's text */
+            }
+            
+            .link:hover {
+                background-color: #1257ab;
+                transition: all 0.3s ease;
+            }
+        h2{
+            text-align: center;
+            color: #0C3F7E;
+            font-size: 3rem;
+        }
+        }
+        
+        .link {
+            text-decoration: none;
+            background-color: #0C3F7E;
+            color: white;
+            padding: 1rem;
+            border-radius: 2rem;
+            margin: 1rem;
+            width: 8rem; /* Increase the width for better visibility */
+            display: block; /* Add this line to ensure it takes full width */
+            margin: 1rem auto; /* Center the link horizontally */
+            text-align: center; /* Center the link's text */
+        }
+        
+        .link:hover {
+            background-color: #1257ab;
+            transition: all 0.3s ease;
+        }
+        
+        .feedback-card-list {
+            display: flex;
+            justify-content: space-evenly;
+            
+            .feedback-card {
+                border-top: 5px solid #2D8EFF; 
+                width: 15%;
+                text-align: center;
+                border-radius: 2rem;
+                margin-bottom: 2rem;
+                padding: 2rem;
+                background-color: white;
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+                
+                .card-icon {
+                    font-size: 3rem;
+                    color: #2D8EFF;
+                }
+                
+                .card-header {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    margin-bottom: 1rem;
+                }
+            }
+
+            .feedback-card:hover{
+                transform: translateY(-10%);
+                transition: all 0.3s ease;
+            }
+        }
+    }
+
+}

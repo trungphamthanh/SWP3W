@@ -1,0 +1,30 @@
+.ourteam-container{
+    font-family: Arial, Helvetica, sans-serif;
+    .ourteam-main{
+        .ourteam-header{
+            text-align: center;
+            color: #0C3F7E;
+            font-size: 2.5rem;
+        }
+        .ourteam-member{
+            display: flex;
+            justify-content: space-evenly;
+            padding: 2rem;
+            background-color: #d4e7fd;
+            border-radius: 2rem;
+            margin: 2rem;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+            .ourteam-image{
+                width: 30%;
+                border-radius: 2rem;
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+            }
+            .ourteam-content{
+                width: 60%;
+                .ourteam-description{
+
+                }
+            }
+        }
+    }
+}

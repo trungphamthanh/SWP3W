@@ -1,0 +1,108 @@
+.booking-container{
+    font-family: Arial, Helvetica, sans-serif;
+    .booking-header{
+        text-align: center;
+        color: #0C3F7E;
+        font-size: 2.5rem;
+        margin-top: 2rem;
+    }
+    .booking-main{
+        display: flex;
+        justify-content: center; /* Horizontally center the content */
+        align-items: center; /* Vertically center the content */
+        margin: 5rem 0; /* Remove default body margin */
+
+        .booking-form{
+                width: 80%;
+                display: flex;
+                flex-direction: column;
+            .form-button{
+                background-color: #0C3F7E;
+                border-radius: 2rem;
+                color:#ffffff;
+                border: 0;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 1.8rem;
+                padding: .5rem 1.5rem;
+                width: 20%;
+                margin: 2rem auto;
+            }
+
+            .form-button:hover{
+                background-color: #1257ab;
+                transition: all 0.3s ease;
+            }
+
+            .form-content{
+                background-color: #5088C9;
+                padding: 2rem 0;
+                border-radius: 2rem;
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+
+            .form-personal{
+                margin: 4rem;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: white;
+                input{
+                    height: 2rem; 
+                    width: 15rem;
+                    border-radius: 0.3rem; 
+                    border: 0;
+                }
+            }
+
+            .personal-lower{
+                margin-top: .8rem;
+            }
+
+            .form-time{
+                padding: 2rem 0;
+                .slot-available{
+                    text-align: center;
+                    
+                    .available-header{
+                        border-bottom: #5088C9 solid 5px;
+                        margin: 0;
+                    }
+                    .available-time{
+                        margin: 2rem;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                    }
+                    .available-status{
+                        background-color: rgb(54, 184, 54);
+                        padding: 0.5rem 1rem;
+                        color: white;
+                    }
+                }
+
+                .slot-taken{
+                    text-align: center;
+                    .available-header{
+                        border-bottom: #5088C9 solid 5px;
+                        margin: 0;
+                    }
+                    .available-time{
+                        margin: 2rem;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                    }
+                    .available-status{
+                        background-color: rgb(184, 54, 54);
+                        padding: 0.5rem 1rem;
+                        color: white;
+                    }
+                }
+            }
+
+            .form-service{
+                padding: 4rem;
+                border-top: 5px solid white;
+                border-bottom: 5px solid white;
+            }
+        }
+        }
+    }
+}
