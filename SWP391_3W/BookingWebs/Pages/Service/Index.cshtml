@@ -6,7 +6,13 @@
 }
 
 <h1>Index</h1>
-
+<form method="get">
+    <div class="form-group">
+        <label asp-for="ServiceName"></label>
+        <input asp-for="ServiceName" placeholder="Tim ten dich vu" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
 <p>
     <a asp-page="Create">Create New</a>
 </p>

@@ -6,27 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObj.Model;
+using Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingWebs.Pages.Service
 {
     public class IndexModel : PageModel
     {
         private readonly BusinessObj.Model.DASContext _context;
-
-        public IndexModel(BusinessObj.Model.DASContext context)
+        public readonly IServiceRepository _repository;
+        public IndexModel(BusinessObj.Model.DASContext context, IServiceRepository serviceRepository)
         {
             _context = context;
+            _repository = serviceRepository;
         }
 
-        public IList<Daservice> Daservice { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public IList<Daservice> Daservice { get; set; } = default!;
+        [Display(Name = "Service name")]
+        public string ServiceName { get; set; } = "";
+        public IActionResult OnGetAsync(string serviceName)
         {
-            if (_context.Daservices != null)
+            if (string.IsNullOrEmpty(serviceName))
             {
-                Daservice = await _context.Daservices
-                .Include(d => d.Account).ToListAsync();
+                Daservice = _context.Daservices
+                .ToList();
             }
+            else
+            {
+                Daservice = _repository.FindServiceByName(serviceName).ToList();
+            }
+            return Page();
         }
     }
 }
