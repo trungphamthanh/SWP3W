@@ -21,12 +21,32 @@ namespace DASBackEnd.Controllers
 
         [HttpGet]
         [Route("GetAllServices")]
-        public async Task<IEnumerable<DAServices>> GetAllServices()
+        public async Task<ActionResult<IEnumerable<DAServices>>> GetAllServices()
         {
+            if (_DASDbContext == null)
+            {
+                return BadRequest(new { Message = "Can not get all services information " });
+            }
             return await _DASDbContext.DAServices.ToListAsync();
         }
 
-
+        [HttpGet]
+        [Route("GetServiceDetail/{id}")]
+        public async Task<ActionResult<IEnumerable<DAServices>>> GetServiceDetail(int id)
+        {
+            if (_DASDbContext.DAServices == null)
+            {
+                return BadRequest(new { Message = "Can not get service information " });
+            }
+            var service = await _DASDbContext.DAServices.FindAsync(id);
+            if (service == null)
+            {
+                return BadRequest(new { Message = "Can not get service information " });
+            }
+            return Ok(service);
+            
+        }
+        
         [HttpPost]
         [Route("AddServices")]
         public async Task<DAServices> AddStudent(DAServices objServices)

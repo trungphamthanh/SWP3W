@@ -4,7 +4,6 @@ namespace DASBackEnd.Models
 {
     public class DAServices
     {
-        [Key]
         public int ID { get; set; }
         public string ServiceName { get; set; }
         public string Descriptions { get; set; }
