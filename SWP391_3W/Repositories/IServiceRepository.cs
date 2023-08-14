@@ -9,6 +9,6 @@ namespace Repositories
 {
     public interface IServiceRepository
     {
-        public Daservice FindServiceByName(string name);
+        public IEnumerable<Daservice> FindServiceByName(string name);
     }
 }
