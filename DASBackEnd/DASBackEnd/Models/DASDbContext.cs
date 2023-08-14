@@ -8,7 +8,7 @@ namespace DASBackEnd.Models
         {
         }
 
-        public DbSet<DAServices> Services { get; set; }
+        public DbSet<DAServices> DAServices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

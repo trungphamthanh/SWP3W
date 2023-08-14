@@ -20,10 +20,10 @@ namespace DASBackEnd.Controllers
 
 
         [HttpGet]
-        [Route("GetServices")]
-        public async Task<IEnumerable<DAServices>> GetStudents()
+        [Route("GetAllServices")]
+        public async Task<IEnumerable<DAServices>> GetAllServices()
         {
-            return await _DASDbContext.Services.ToListAsync();
+            return await _DASDbContext.DAServices.ToListAsync();
         }
 
 
@@ -31,7 +31,7 @@ namespace DASBackEnd.Controllers
         [Route("AddServices")]
         public async Task<DAServices> AddStudent(DAServices objServices)
         {
-            _DASDbContext.Services.Add(objServices);
+            _DASDbContext.DAServices.Add(objServices);
             await _DASDbContext.SaveChangesAsync();
             return objServices;
         }
@@ -51,7 +51,7 @@ namespace DASBackEnd.Controllers
         public bool DeleteStudent(int id)
         {
             bool a = false;
-            var service = _DASDbContext.Services.Find(id);
+            var service = _DASDbContext.DAServices.Find(id);
             if (service != null)
             {
                 a = true;
