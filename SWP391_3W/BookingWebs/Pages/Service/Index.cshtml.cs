@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using BusinessObj.Model;
+using BusinessObj.Models;
 using Repositories;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,9 +13,9 @@ namespace BookingWebs.Pages.Service
 {
     public class IndexModel : PageModel
     {
-        private readonly BusinessObj.Model.DASContext _context;
+        private readonly BusinessObj.Models.DASContext _context;
         public readonly IServiceRepository _repository;
-        public IndexModel(BusinessObj.Model.DASContext context, IServiceRepository serviceRepository)
+        public IndexModel(BusinessObj.Models.DASContext context, IServiceRepository serviceRepository)
         {
             _context = context;
             _repository = serviceRepository;
