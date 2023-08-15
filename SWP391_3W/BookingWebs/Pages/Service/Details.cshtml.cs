@@ -5,20 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using BusinessObj.Model;
+
+using BusinessObj.Models;
 
 namespace BookingWebs.Pages.Service
 {
     public class DetailsModel : PageModel
     {
-        private readonly BusinessObj.Model.DASContext _context;
+        private readonly BusinessObj.Models.DASContext _context;
 
-        public DetailsModel(BusinessObj.Model.DASContext context)
+        public DetailsModel(BusinessObj.Models.DASContext context)
         {
             _context = context;
         }
 
-      public Daservice Daservice { get; set; } = default!; 
+        public Daservice Daservice { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,7 +33,7 @@ namespace BookingWebs.Pages.Service
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Daservice = daservice;
             }
