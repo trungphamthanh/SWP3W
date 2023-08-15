@@ -1,4 +1,4 @@
-﻿using BusinessObj.Model;
+﻿using BusinessObj.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
