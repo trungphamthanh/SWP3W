@@ -1,24 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Repository;
+using Repositories;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookingWebs.Pages
 {
     public class LoginModel : PageModel
     {
-        protected readonly IAccountRepository _accountRepository;
+        public readonly IAccountRepository _accountRepository;
         public LoginModel(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
         }
         [Required]
-        [DataType(DataType.Text)]
         [Display(Name = "Username")]
         public string Username { get; set; }
         [Required]
-        [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public void OnGet()
         {
@@ -32,10 +31,25 @@ namespace BookingWebs.Pages
             var account = _accountRepository.GetAccount(username, password);
             if (account == null)
             {
-                ViewData["Title"] = "You do not have permission to do this function";
+                ViewData["Title"] = "Incorrect username or password";
                 return Page();
             }
-            return RedirectToPage("/BookingInfor/Index");
+            else
+            {
+                if (account.RoleId == 1)
+                {
+                    return RedirectToPage("/Service/Index");
+                }
+                if (account.RoleId == 2)
+                {
+                    return Page();
+                }
+                if (account.RoleId == 3)
+                {
+                    return Page();
+                }
+            }
+            return Page();
         }
     }
 }

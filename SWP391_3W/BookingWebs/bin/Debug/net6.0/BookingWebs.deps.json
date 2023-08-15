@@ -12,7 +12,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.21",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.21",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16",
-          "Repository": "1.0.0"
+          "Repositories": "1.0.0"
         },
         "runtime": {
           "BookingWebs.dll": {}
@@ -2518,12 +2518,12 @@
           "BusinessObj.dll": {}
         }
       },
-      "Repository/1.0.0": {
+      "Repositories/1.0.0": {
         "dependencies": {
           "BusinessObj": "1.0.0"
         },
         "runtime": {
-          "Repository.dll": {}
+          "Repositories.dll": {}
         }
       }
     }
@@ -4086,7 +4086,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Repository/1.0.0": {
+    "Repositories/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

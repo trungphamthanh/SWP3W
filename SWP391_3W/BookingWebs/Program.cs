@@ -1,14 +1,15 @@
-using BusinessObj.Models;
+using BusinessObj.Model;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Repository;
+using Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<DASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DASContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConn")));
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

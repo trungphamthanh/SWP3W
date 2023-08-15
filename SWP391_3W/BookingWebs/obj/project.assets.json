@@ -3856,17 +3856,17 @@
           "bin/placeholder/BusinessObj.dll": {}
         }
       },
-      "Repository/1.0.0": {
+      "Repositories/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "BusinessObj": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/Repository.dll": {}
+          "bin/placeholder/Repositories.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Repository.dll": {}
+          "bin/placeholder/Repositories.dll": {}
         }
       }
     }
@@ -10950,10 +10950,10 @@
       "path": "../BusinessObj/BusinessObj.csproj",
       "msbuildProject": "../BusinessObj/BusinessObj.csproj"
     },
-    "Repository/1.0.0": {
+    "Repositories/1.0.0": {
       "type": "project",
-      "path": "../Repository/Repository.csproj",
-      "msbuildProject": "../Repository/Repository.csproj"
+      "path": "../Repositories/Repositories.csproj",
+      "msbuildProject": "../Repositories/Repositories.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -10962,7 +10962,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.21",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.21",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.16",
-      "Repository >= 1.0.0"
+      "Repositories >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -10996,8 +10996,8 @@
             "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj": {
               "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj"
             },
-            "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj"
+            "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj"
             }
           }
         }

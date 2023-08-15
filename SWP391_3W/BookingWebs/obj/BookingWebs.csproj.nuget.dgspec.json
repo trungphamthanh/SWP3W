@@ -32,8 +32,8 @@
               "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj": {
                 "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj"
               },
-              "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj": {
-                "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj"
+              "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj": {
+                "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj"
               }
             }
           }
@@ -163,14 +163,14 @@
         }
       }
     },
-    "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj": {
+    "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj",
-        "projectName": "Repository",
-        "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\Repository.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj",
+        "projectName": "Repositories",
+        "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\Repositories.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repository\\obj\\",
+        "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
