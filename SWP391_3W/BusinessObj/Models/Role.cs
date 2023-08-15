@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessObj.Model
+namespace BusinessObj.Models
 {
     public partial class Role
     {

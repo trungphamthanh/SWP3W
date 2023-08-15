@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessObj.Model
+namespace BusinessObj.Models
 {
     public partial class Daservice
     {
         public Daservice()
         {
-            Bookings = new HashSet<Booking>();
+            BookingDetails = new HashSet<BookingDetail>();
         }
 
         public int Id { get; set; }
@@ -18,6 +18,6 @@ namespace BusinessObj.Model
         public int? AccountId { get; set; }
 
         public virtual Account? Account { get; set; }
-        public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<BookingDetail> BookingDetails { get; set; }
     }
 }
