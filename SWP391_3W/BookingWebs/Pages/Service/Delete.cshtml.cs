@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using BusinessObj.Model;
+using BusinessObj.Models;
 
 namespace BookingWebs.Pages.Service
 {
     public class DeleteModel : PageModel
     {
-        private readonly BusinessObj.Model.DASContext _context;
+        private readonly BusinessObj.Models.DASContext _context;
 
-        public DeleteModel(BusinessObj.Model.DASContext context)
+        public DeleteModel(BusinessObj.Models.DASContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-      public Daservice Daservice { get; set; } = default!;
+        public Daservice Daservice { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,7 +34,7 @@ namespace BookingWebs.Pages.Service
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Daservice = daservice;
             }
