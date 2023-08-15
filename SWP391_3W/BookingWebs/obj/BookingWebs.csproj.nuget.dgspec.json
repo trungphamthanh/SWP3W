@@ -186,7 +186,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj": {
+                "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\SWP3W\\SWP391_3W\\BusinessObj\\BusinessObj.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
