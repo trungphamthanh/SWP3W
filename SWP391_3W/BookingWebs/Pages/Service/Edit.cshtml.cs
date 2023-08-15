@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BusinessObj.Model;
+using BusinessObj.Models;
 
 namespace BookingWebs.Pages.Service
 {
     public class EditModel : PageModel
     {
-        private readonly BusinessObj.Model.DASContext _context;
+        private readonly BusinessObj.Models.DASContext _context;
 
-        public EditModel(BusinessObj.Model.DASContext context)
+        public EditModel(BusinessObj.Models.DASContext context)
         {
             _context = context;
         }
@@ -29,13 +29,13 @@ namespace BookingWebs.Pages.Service
                 return NotFound();
             }
 
-            var daservice =  await _context.Daservices.FirstOrDefaultAsync(m => m.Id == id);
+            var daservice = await _context.Daservices.FirstOrDefaultAsync(m => m.Id == id);
             if (daservice == null)
             {
                 return NotFound();
             }
             Daservice = daservice;
-           ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
             return Page();
         }
 
@@ -71,7 +71,7 @@ namespace BookingWebs.Pages.Service
 
         private bool DaserviceExists(int id)
         {
-          return (_context.Daservices?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Daservices?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
