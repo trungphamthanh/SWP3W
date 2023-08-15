@@ -5,33 +5,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using BusinessObj.Model;
+
+using BusinessObj.Models;
 
 namespace BookingWebs.Pages.Service
 {
     public class CreateModel : PageModel
     {
-        private readonly BusinessObj.Model.DASContext _context;
+        private readonly BusinessObj.Models.DASContext _context;
 
-        public CreateModel(BusinessObj.Model.DASContext context)
+        public CreateModel(BusinessObj.Models.DASContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
             return Page();
         }
 
         [BindProperty]
         public Daservice Daservice { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Daservices == null || Daservice == null)
+            if (!ModelState.IsValid || _context.Daservices == null || Daservice == null)
             {
                 return Page();
             }
