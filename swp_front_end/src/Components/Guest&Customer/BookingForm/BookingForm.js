@@ -5,7 +5,6 @@ import Banner from "../Banner/Banner";
 import Footer from "../Footer/Footer";
 import { InputLabel, MenuItem, Select, TableHead } from "@mui/material";
 import { WeekDate, DateSlot, ServiceMap, Week } from "./SlotMap";
-import _ from "lodash";
 import {
   Table,
   TableBody,
@@ -16,20 +15,12 @@ import {
   Button,
 } from "@mui/material";
 
-const initSlot = [
-  {
-    slotId: "",
-    status: "",
-  },
-];
-
 const Slot = ({ date, slot, status, description, selected, onClick }) => {
   return (
     <TableCell
       onClick={onClick}
       style={{
         cursor: "pointer",
-        border: "1px solid #ccc",
         padding: "0",
         backgroundColor: "#f0f0f0",
         transition: "all 0.3s ease-in-out", // For the shrinking effect
@@ -109,7 +100,7 @@ const ServiceInput = ({ index, onRemove }) => {
 const BookingForm = () => {
   const [selectedSlots, setSelectedSlots] = useState({});
   const [serviceSectionAdded, setServiceSectionAdded] = useState(false);
-  const [selectedWeek, setSelectedWeek] = useState(null);
+  const [selectedWeek, setSelectedWeek] = useState(Week[0]);
 
   const handleSlotClick = (day, time, status) => {
     if (status === "Open") {
@@ -179,38 +170,35 @@ const BookingForm = () => {
               </div>
             </div>
             <div className="form-service">
-        <ServiceInput index={0} />
+              <ServiceInput index={0} />
 
-        {/* Render the "Add Service" button only if section is not added */}
-        {!serviceSectionAdded && (
-          <div>
-            <Button
-              variant="outlined"
-              onClick={handleServiceButtonAdd}
-              sx={{
-                marginTop: "1rem",
-                backgroundColor: "white",
-                color: "black",
-                "&:hover": {
-                  color: "white",
-                  borderColor: "white",
-                },
-              }}
-            >
-              Add Service
-            </Button>
-          </div>
-        )}
+              {/* Render the "Add Service" button only if section is not added */}
+              {!serviceSectionAdded && (
+                <div>
+                  <Button
+                    variant="outlined"
+                    onClick={handleServiceButtonAdd}
+                    sx={{
+                      marginTop: "1rem",
+                      backgroundColor: "white",
+                      color: "black",
+                      "&:hover": {
+                        color: "white",
+                        borderColor: "white",
+                      },
+                    }}
+                  >
+                    Add Service
+                  </Button>
+                </div>
+              )}
 
-        {/* Render the second service input if section is added */}
-        {serviceSectionAdded && (
-          <ServiceInput
-            index={1}
-            onRemove={handleServiceRemove}
-          />
-        )}
-      </div>
-      <div className="form-time">
+              {/* Render the second service input if section is added */}
+              {serviceSectionAdded && (
+                <ServiceInput index={1} onRemove={handleServiceRemove} />
+              )}
+            </div>
+            <div className="form-time">
               <InputLabel
                 id="time"
                 sx={{
@@ -226,6 +214,7 @@ const BookingForm = () => {
                 labelId="time"
                 id="time"
                 label="time"
+                value={0} // Set the initial value to 0 for the first week
                 sx={{
                   height: "2rem",
                   width: "15rem",

@@ -3,10 +3,12 @@ import './SignUp.scss'
 import { Link } from 'react-router-dom'
 import Background from '../../asset/images/LoginBackground.png'
 import Footer from '../Footer/Footer'
+import Header from '../Header/Header'
 
 const SignUp = () => {
   return (
     <div className='signup-container'>
+    <Header/>
     <div className='signup-background'   
     style={{
       background: `linear-gradient(304deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 255, 0.5)) 35%, url(${Background})`,
