@@ -103,19 +103,26 @@ const BookingForm = () => {
   const [selectedWeek, setSelectedWeek] = useState(Week[0]);
 
   const handleSlotClick = (day, time, status) => {
-    if (status === "Open") {
-      setSelectedSlots((prevSelectedSlots) => {
-        const newSelectedSlots = { ...prevSelectedSlots };
-        if (newSelectedSlots[day] === time) {
-          // If the clicked slot is already selected, deselect it
-          delete newSelectedSlots[day];
-        } else {
-          // Otherwise, select the clicked slot
-          newSelectedSlots[day] = time;
-        }
-        return newSelectedSlots;
-      });
-    }
+    setSelectedSlots((prevSelectedSlots) => {
+      const newSelectedSlots = { ...prevSelectedSlots };
+  
+      // If the clicked slot is already selected, deselect it
+      if (newSelectedSlots[day] === time) {
+        newSelectedSlots[day] = null;
+      } else if (status === "Open") {
+        // Otherwise, select the clicked slot
+        newSelectedSlots[day] = time;
+  
+        // Clear all other previously selected slots
+        Object.keys(newSelectedSlots).forEach((selectedDay) => {
+          if (selectedDay !== day) {
+            newSelectedSlots[selectedDay] = null;
+          }
+        });
+      }
+  
+      return newSelectedSlots;
+    });
   };
 
   const handleSubmit = () => {
