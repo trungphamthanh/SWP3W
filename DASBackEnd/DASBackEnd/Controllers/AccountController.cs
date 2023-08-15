@@ -19,70 +19,29 @@ namespace DASBackEnd.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllCustomer")]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAllCustomer()
-        {
-            if (_DASDbContext == null)
-            {
-                return BadRequest(new { Message = "Can not get all customer information " });
-            }
-            return await _DASDbContext.Accounts.ToListAsync();
-        }
-
-        [HttpGet]
         [Route("GetCustomerDetail/{id}")]
         public async Task<ActionResult<IEnumerable<Account>>> GetCustomerDetail(int id)
         {
-            if (_DASDbContext.DAServices == null)
+            if (_DASDbContext.Account == null)
             {
                 return BadRequest(new { Message = "Can not get customer information " });
             }
-            var service = await _DASDbContext.DAServices.FindAsync(id);
-            if (service == null)
+            var account = await _DASDbContext.Account.FindAsync(id);
+            if (account == null)
             {
                 return BadRequest(new { Message = "Can not get customer information " });
             }
-            return Ok(service);
+            return Ok(account);
 
         }
-
-        [HttpPost]
-        [Route("AddServices")]
-        public async Task<Account> AddStudent(Account objServices)
-        {
-            _DASDbContext.Accounts.Add(objServices);
-            await _DASDbContext.SaveChangesAsync();
-            return objServices;
-        }
-
 
         [HttpPatch]
-        [Route("UpdateServices/{id}")]
-        public async Task<Account> UpdateServices(Account objAccount)
+        [Route("UpdateProfile/{id}")]
+        public async Task<Account> UpdateProfile(Account objAccount)
         {
             _DASDbContext.Entry(objAccount).State = EntityState.Modified;
             await _DASDbContext.SaveChangesAsync();
             return objAccount;
-        }
-
-        [HttpDelete]
-        [Route("DeleteServices/{id}")]
-        public bool DeleteStudent(int id)
-        {
-            bool a = false;
-            var service = _DASDbContext.Accounts.Find(id);
-            if (service != null)
-            {
-                a = true;
-                _DASDbContext.Entry(service).State = EntityState.Deleted;
-                _DASDbContext.SaveChanges();
-            }
-            else
-            {
-                a = false;
-            }
-
-            return a;
         }
     }
 }
