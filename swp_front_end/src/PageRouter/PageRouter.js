@@ -10,6 +10,12 @@ import SignUp from '../Components/Guest&Customer/SignUp/SignUp';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OurTeam from '../Components/Guest&Customer/OurTeam/OurTeam';
+import BookingManagement from '../Components/Manager/BookingManagement/BookingManagement';
+import ScheduleManagement from '../Components/Manager/ScheduleManagement/ScheduleManagement';
+import ServiceManagement from '../Components/Manager/ServiceManagement/ServiceManagement';
+import DoctorManagement from '../Components/Manager/DoctorManagment/DoctorManagement';
+import AccountManagement from '../Components/Admin/AccountManagement/AccountManagement';
+import BookingDetail from '../Components/Manager/BookingDetail/BookingDetail';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +60,42 @@ const router = createBrowserRouter([
       }
     ],
   },
+  {
+    path: '/manager/',
+    element: <App />,
+    children: [
+      {
+        path: 'booking',
+        element: <BookingManagement/>,
+      },
+      {
+        path: 'schedule',
+        element: <ScheduleManagement/>
+      },
+      {
+        path: 'services',
+        element: <ServiceManagement/>
+      },
+      {
+        path: 'doctor',
+        element: <DoctorManagement/>
+      },
+      {
+      path: 'booking/detail',
+      element: <BookingDetail/>
+      },
+    ]
+  },
+  {
+    path: "/admin/",
+    element: <App/>,
+    children: [
+      {
+        path: 'account',
+        element: <AccountManagement/>
+      }
+    ]
+  }
 ]);
 
 const PageRouter = () => {
