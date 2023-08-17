@@ -19,6 +19,36 @@ namespace DASBackEnd.Controllers
         }
 
         [HttpGet]
+        [Route("GetAllCustomer")]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAllCustomer()
+        {
+            if (_DASDbContext == null)
+            {
+                return BadRequest(new { Message = "Can not get all services information " });
+            }
+            else
+            {
+                return await _DASDbContext.Account.Where(x => x.roleId == 3).ToListAsync();
+            }
+
+        }
+
+        [HttpGet]
+        [Route("GetAllDoctor")]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAllDoctor()
+        {
+            if (_DASDbContext == null)
+            {
+                return BadRequest(new { Message = "Can not get all services information " });
+            }
+            else
+            {
+                return await _DASDbContext.Account.Where(x => x.roleId == 2).ToListAsync();
+            }
+
+        }
+
+        [HttpGet]
         [Route("GetCustomerDetail/{id}")]
         public async Task<ActionResult<IEnumerable<Account>>> GetCustomerDetail(int id)
         {
