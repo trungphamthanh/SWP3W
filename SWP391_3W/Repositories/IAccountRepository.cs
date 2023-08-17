@@ -9,6 +9,6 @@ namespace Repositories
 {
     public interface IAccountRepository
     {
-        public Account GetAccount(String email, String password);
+        public Account GetAccount(String username, String password);
     }
 }
