@@ -1,4 +1,5 @@
-﻿using DASBackEnd.Models;
+﻿using DASBackEnd.Data;
+using DASBackEnd.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,11 @@ namespace DASBackEnd.Controllers
     [ApiController]
     public class SlotController : ControllerBase
     {
-        private readonly DASDbContext _DASDbContext;
-        public SlotController(DASDbContext DASDbContext)
+        private readonly DasContext _DasContext;
+        public SlotController(DasContext DasContext)
         {
 
-            this._DASDbContext = DASDbContext;
+            this._DasContext = DasContext;
 
         }
 
@@ -21,11 +22,11 @@ namespace DASBackEnd.Controllers
         [Route("GetAllSlotByDoctorId/{id}")]
         public async Task<ActionResult<IEnumerable<Slot>>> GetAllSlotByDoctorId(int id)
         {
-            if (_DASDbContext.Slot == null)
+            if (_DasContext.Slots == null)
             {
                 return BadRequest(new { Message = "Can not get slots of doctor " });
             }
-            var slots = await _DASDbContext.Slot.Where(x => x.accountId == id).ToListAsync();
+            var slots = await _DasContext.Slots.Where(x => x.AccountId == id).ToListAsync();
             if (slots == null)
             {
                 return BadRequest(new { Message = "Can not get slots of doctor " });
@@ -38,13 +39,13 @@ namespace DASBackEnd.Controllers
         [Route("GetAllSlot")]
         public async Task<ActionResult<IEnumerable<Slot>>> GetAllSlot()
         {
-            if (_DASDbContext == null)
+            if (_DasContext == null)
             {
                 return BadRequest(new { Message = "Can not get all slot information " });
             }
             else
             {
-                return await _DASDbContext.Slot.ToListAsync();
+                return await _DasContext.Slots.ToListAsync();
             }
 
         }
@@ -54,8 +55,8 @@ namespace DASBackEnd.Controllers
         [Route("AddDoctorToSlot")]
         public async Task<Slot> AddDoctor(Slot objSlot)
         {
-            _DASDbContext.Slot.Add(objSlot);
-            await _DASDbContext.SaveChangesAsync();
+            _DasContext.Slots.Add(objSlot);
+            await _DasContext.SaveChangesAsync();
             return objSlot;
         }
 

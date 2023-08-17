@@ -1,4 +1,5 @@
-﻿using DASBackEnd.Models;
+﻿using DASBackEnd.Data;
+using DASBackEnd.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,11 @@ namespace DASBackEnd.Controllers
     public class AccountController : ControllerBase
     {
 
-        private readonly DASDbContext _DASDbContext;
-        public AccountController(DASDbContext DASDbContext)
+        private readonly DasContext _DasContext;
+        public AccountController(DasContext DasContext)
         {
 
-            this._DASDbContext = DASDbContext;
+            this._DasContext = DasContext;
 
         }
 
@@ -22,13 +23,13 @@ namespace DASBackEnd.Controllers
         [Route("GetAllCustomer")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllCustomer()
         {
-            if (_DASDbContext == null)
+            if (_DasContext == null)
             {
                 return BadRequest(new { Message = "Can not get all services information " });
             }
             else
             {
-                return await _DASDbContext.Account.Where(x => x.roleId == 3).ToListAsync();
+                return await _DasContext.Accounts.Where(x => x.RoleId == 3).ToListAsync();
             }
 
         }
@@ -37,13 +38,13 @@ namespace DASBackEnd.Controllers
         [Route("GetAllDoctor")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllDoctor()
         {
-            if (_DASDbContext == null)
+            if (_DasContext == null)
             {
                 return BadRequest(new { Message = "Can not get all services information " });
             }
             else
             {
-                return await _DASDbContext.Account.Where(x => x.roleId == 2).ToListAsync();
+                return await _DasContext.Accounts.Where(x => x.RoleId == 2).ToListAsync();
             }
 
         }
@@ -52,11 +53,11 @@ namespace DASBackEnd.Controllers
         [Route("GetCustomerDetail/{id}")]
         public async Task<ActionResult<IEnumerable<Account>>> GetCustomerDetail(int id)
         {
-            if (_DASDbContext.Account == null)
+            if (_DasContext.Accounts == null)
             {
                 return BadRequest(new { Message = "Can not get customer information " });
             }
-            var account = await _DASDbContext.Account.FindAsync(id);
+            var account = await _DasContext.Accounts.FindAsync(id);
             if (account == null)
             {
                 return BadRequest(new { Message = "Can not get customer information " });
@@ -69,8 +70,8 @@ namespace DASBackEnd.Controllers
         [Route("UpdateProfile/{id}")]
         public async Task<Account> UpdateProfile(Account objAccount)
         {
-            _DASDbContext.Entry(objAccount).State = EntityState.Modified;
-            await _DASDbContext.SaveChangesAsync();
+            _DasContext.Entry(objAccount).State = EntityState.Modified;
+            await _DasContext.SaveChangesAsync();
             return objAccount;
         }
     }

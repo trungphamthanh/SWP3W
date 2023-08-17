@@ -1,12 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace DASBackEnd.Models
+namespace DASBackEnd.Models;
+
+public partial class BookingDetail
 {
-    public class BookingDetail
-    {
-        [Key]
-        public int ID { get; set; }
-        public int bookingId { get; set; }
-        public int serviceId { get; set; }
-    }
+    public int Id { get; set; }
+
+    public int? BookingId { get; set; }
+
+    public int? ServiceId { get; set; }
+
+    public virtual Booking? Booking { get; set; }
+
+    public virtual Daservice? Service { get; set; }
 }

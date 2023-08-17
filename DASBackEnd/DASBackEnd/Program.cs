@@ -1,4 +1,9 @@
+using DASBackEnd.Data;
+using DASBackEnd.IRepository;
+using DASBackEnd.IServices;
 using DASBackEnd.Models;
+using DASBackEnd.Repository;
+using DASBackEnd.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +15,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DASDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DASDbContext")));
+builder.Services.AddDbContext<DasContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DAS")));
+
+builder.Services.AddScoped<IBookingServices, BookingServices>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
+builder.Services.AddScoped<IBookingDetailRepository, BookingDetailRepository>();
 
 var app = builder.Build();
 

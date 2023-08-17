@@ -5,6 +5,6 @@ namespace DASBackEnd.IServices
 {
     public interface IBookingServices
     {
-        public Task<Booking> customerCreateBooking(int id, CustomerCreateBookingDTO customerCreateBookingDTO);
+        public Task<Booking> customerCreateBooking(CustomerCreateBookingDTO customerCreateBookingDTO);
     }
 }

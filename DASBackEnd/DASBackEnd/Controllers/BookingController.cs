@@ -20,18 +20,19 @@ namespace DASBackEnd.Controllers
 
         [HttpPost]
         [Route("createBooking/customer/{id}")]
-        public async Task<IActionResult> createOrderUsingCustomerId(int id, CustomerCreateBookingDTO CustomerCreateBookingDtO)
+        public async Task<IActionResult> createOrderUsingCustomerId(CustomerCreateBookingDTO customerCreateBookingDTO)
         {
             try
             {
-                Booking book = await iBookingServices.customerCreateBooking(id, CustomerCreateBookingDtO);
-                return Ok(book);
+                await iBookingServices.customerCreateBooking(customerCreateBookingDTO);
+                return Ok();
             }
             catch (Exception)
             {
                 return BadRequest("Can not create new order please try again. ");
 
             }
+
         }
     }
 }
