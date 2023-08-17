@@ -20,7 +20,7 @@ namespace DASBackEnd.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SE130257\\SQLEXPRESS; Initial Catalog=DAS; User id=sa; password=123; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=DAS; User id=Trung; password=145236; TrustServerCertificate=True;");
         }
     }
 }
