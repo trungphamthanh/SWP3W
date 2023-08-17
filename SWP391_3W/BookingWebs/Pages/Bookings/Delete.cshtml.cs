@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObj.Models;
 
-namespace BookingWebs.Pages.Service
+namespace BookingWebs.Pages.Bookings
 {
     public class DeleteModel : PageModel
     {
@@ -19,40 +19,40 @@ namespace BookingWebs.Pages.Service
         }
 
         [BindProperty]
-        public Daservice Daservice { get; set; } = default!;
+      public Booking Booking { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Daservices == null)
+            if (id == null || _context.Bookings == null)
             {
                 return NotFound();
             }
 
-            var daservice = await _context.Daservices.FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _context.Bookings.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (daservice == null)
+            if (booking == null)
             {
                 return NotFound();
             }
-            else
+            else 
             {
-                Daservice = daservice;
+                Booking = booking;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Daservices == null)
+            if (id == null || _context.Bookings == null)
             {
                 return NotFound();
             }
-            var daservice = await _context.Daservices.FindAsync(id);
+            var booking = await _context.Bookings.FindAsync(id);
 
-            if (daservice != null)
+            if (booking != null)
             {
-                Daservice = daservice;
-                _context.Daservices.Remove(Daservice);
+                Booking = booking;
+                _context.Bookings.Remove(Booking);
                 await _context.SaveChangesAsync();
             }
 

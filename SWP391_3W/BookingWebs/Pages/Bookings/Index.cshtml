@@ -1,11 +1,12 @@
 ﻿@page
-@model BookingWebs.Pages.Service.IndexModel
+@model BookingWebs.Pages.Bookings.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -13,40 +14,40 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Daservice[0].ServiceName)
+                @Html.DisplayNameFor(model => model.Booking[0].CustomerName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Daservice[0].Descriptions)
+                @Html.DisplayNameFor(model => model.Booking[0].Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Daservice[0].Price)
+                @Html.DisplayNameFor(model => model.Booking[0].TotalPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Daservice[0].ImgUrl)
+                @Html.DisplayNameFor(model => model.Booking[0].Account)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Daservice[0].Account)
+                @Html.DisplayNameFor(model => model.Booking[0].Slot)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Daservice) {
+@foreach (var item in Model.Booking) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ServiceName)
+                @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Descriptions)
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImgUrl)
+                @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Account.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slot.Id)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObj.Models;
 
-namespace BookingWebs.Pages.Service
+namespace BookingWebs.Pages.Bookings
 {
     public class EditModel : PageModel
     {
@@ -20,22 +20,23 @@ namespace BookingWebs.Pages.Service
         }
 
         [BindProperty]
-        public Daservice Daservice { get; set; } = default!;
+        public Booking Booking { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Daservices == null)
+            if (id == null || _context.Bookings == null)
             {
                 return NotFound();
             }
 
-            var daservice = await _context.Daservices.FirstOrDefaultAsync(m => m.Id == id);
-            if (daservice == null)
+            var booking =  await _context.Bookings.FirstOrDefaultAsync(m => m.Id == id);
+            if (booking == null)
             {
                 return NotFound();
             }
-            Daservice = daservice;
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            Booking = booking;
+           ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+           ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
             return Page();
         }
 
@@ -48,7 +49,7 @@ namespace BookingWebs.Pages.Service
                 return Page();
             }
 
-            _context.Attach(Daservice).State = EntityState.Modified;
+            _context.Attach(Booking).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +57,7 @@ namespace BookingWebs.Pages.Service
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DaserviceExists(Daservice.Id))
+                if (!BookingExists(Booking.Id))
                 {
                     return NotFound();
                 }
@@ -69,9 +70,9 @@ namespace BookingWebs.Pages.Service
             return RedirectToPage("./Index");
         }
 
-        private bool DaserviceExists(int id)
+        private bool BookingExists(int id)
         {
-            return (_context.Daservices?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

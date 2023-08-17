@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 using BusinessObj.Models;
 
-namespace BookingWebs.Pages.Service
+namespace BookingWebs.Pages.Bookings
 {
     public class CreateModel : PageModel
     {
@@ -21,23 +20,24 @@ namespace BookingWebs.Pages.Service
 
         public IActionResult OnGet()
         {
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+        ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+        ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
             return Page();
         }
 
         [BindProperty]
-        public Daservice Daservice { get; set; } = default!;
-
+        public Booking Booking { get; set; } = default!;
+        
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid || _context.Daservices == null || Daservice == null)
+          if (!ModelState.IsValid || _context.Bookings == null || Booking == null)
             {
                 return Page();
             }
 
-            _context.Daservices.Add(Daservice);
+            _context.Bookings.Add(Booking);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
