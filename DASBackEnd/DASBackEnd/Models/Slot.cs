@@ -8,7 +8,7 @@ namespace DASBackEnd.Models
         public int ID { get; set; }
         public string SlotStart { get; set; }
         public string SlotEnd { get; set; }
-        public string Status { get; set; }
+        public string slotStatus { get; set; }
         public DateTime date { get; set; }
         public int accountId { get; set; }
     }

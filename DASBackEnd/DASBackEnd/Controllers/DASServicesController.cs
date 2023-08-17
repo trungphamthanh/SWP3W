@@ -49,7 +49,7 @@ namespace DASBackEnd.Controllers
         
         [HttpPost]
         [Route("AddServices")]
-        public async Task<DAServices> AddStudent(DAServices objServices)
+        public async Task<DAServices> AddService(DAServices objServices)
         {
             _DASDbContext.DAServices.Add(objServices);
             await _DASDbContext.SaveChangesAsync();
