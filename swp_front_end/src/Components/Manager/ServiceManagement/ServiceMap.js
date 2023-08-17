@@ -1,0 +1,17 @@
+export const Service =[
+    {id:"1", service:"Bonding & White Filing", available:"true"},
+    {id:"2", service:"Bridges", available:"true"},
+    {id:"3", service:"Cleaning", available:"true"},
+    {id:"4", service:"Cosmetic Dentistry", available:"true"},
+    {id:"5", service:"Crowns", available:"false"},
+    {id:"6", service:"Dentures", available:"false"},
+    {id:"7", service:"Endodontics (Route Canal)", available:"true"},
+    {id:"8", service:"Exams", available:"true"},
+    {id:"9", service:"Hygeine & Periodontal Health", available:"true"},
+    {id:"10", service:"Implants", available:"true"},
+    {id:"11", service:"Inlays & Onlays", available:"true"},
+    {id:"12", service:"Night Guards", available:"true"},
+    {id:"13", service:"Onthodontics", available:"false"},
+    {id:"14", service:"Pediatric", available:"false"},
+    {id:"15", service:"Periodontic", available:"true"},
+]

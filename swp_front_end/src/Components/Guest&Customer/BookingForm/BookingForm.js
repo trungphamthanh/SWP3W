@@ -3,17 +3,19 @@ import "./BookingForm.scss";
 import Header from "../Header/Header";
 import Banner from "../Banner/Banner";
 import Footer from "../Footer/Footer";
-import { InputLabel, MenuItem, Select, TableHead } from "@mui/material";
-import { WeekDate, DateSlot, ServiceMap, Week } from "./SlotMap";
-import {
+import { 
+  InputLabel, 
+  MenuItem, 
+  Select, 
+  TableHead,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
   Paper,
-  Button,
-} from "@mui/material";
+  Button,} from "@mui/material";
+import { WeekDate, DateSlot, ServiceMap, Week } from "./SlotMap";
 
 const Slot = ({ date, slot, status, description, selected, onClick }) => {
   return (
@@ -23,7 +25,7 @@ const Slot = ({ date, slot, status, description, selected, onClick }) => {
         cursor: "pointer",
         padding: "0",
         backgroundColor: "#f0f0f0",
-        transition: "all 0.3s ease-in-out", // For the shrinking effect
+        transition: "transform 0.3s ease-in-out",
         transform: selected ? "scale(0.9)" : "scale(1)",
         border: "#5088C9 solid 5px",
       }}
@@ -103,26 +105,21 @@ const BookingForm = () => {
   const [selectedWeek, setSelectedWeek] = useState(Week[0]);
 
   const handleSlotClick = (day, time, status) => {
-    setSelectedSlots((prevSelectedSlots) => {
-      const newSelectedSlots = { ...prevSelectedSlots };
+    if (status === "Open") {
+      setSelectedSlots((prevSelectedSlots) => {
+        const newSelectedSlots = { ...prevSelectedSlots };
   
-      // If the clicked slot is already selected, deselect it
-      if (newSelectedSlots[day] === time) {
-        newSelectedSlots[day] = null;
-      } else if (status === "Open") {
-        // Otherwise, select the clicked slot
+        // Clear all previously selected slots
+        Object.keys(newSelectedSlots).forEach((selectedDay) => {
+          newSelectedSlots[selectedDay] = null;
+        });
+  
+        // Set the clicked slot as selected
         newSelectedSlots[day] = time;
   
-        // Clear all other previously selected slots
-        Object.keys(newSelectedSlots).forEach((selectedDay) => {
-          if (selectedDay !== day) {
-            newSelectedSlots[selectedDay] = null;
-          }
-        });
-      }
-  
-      return newSelectedSlots;
-    });
+        return newSelectedSlots;
+      });
+    }
   };
 
   const handleSubmit = () => {

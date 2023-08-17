@@ -1,0 +1,29 @@
+body{
+    overflow-x: hidden;
+}
+
+.book-container{
+    &.full-height {
+        height: 100vh; /* Full screen height */
+      }
+    
+      &.auto-height {
+        height: auto; /* Auto height to fit content */
+      }
+    .booking-viewdetail-button{
+        background-color: #0C3F7E;
+        border-radius: 2rem;
+        color:#ffffff;
+        border: 0;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        padding: .9rem 1rem;
+        width: 70%;
+        margin: 2rem auto;
+    }
+    .booking-viewdetail-button:hover{
+        background-color: #1257ab;
+        transition: all 0.3s ease;
+    }
+}

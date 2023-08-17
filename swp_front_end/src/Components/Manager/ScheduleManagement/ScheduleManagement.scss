@@ -1,0 +1,92 @@
+.schedule-container{
+    overflow-x: hidden;
+    &.full-height {
+        height: 100vh; /* Full screen height */
+      }
+    
+      &.auto-height {
+        height: auto; /* Auto height to fit content */
+      }
+    .schedule-form{
+        width: 80%;
+        margin-left: 15rem;
+        padding: 2rem;
+        padding-top: 10rem;
+        .slot-available{
+            text-align: center;
+            
+            .available-header{
+                border-bottom: #5088C9 solid 5px;
+                margin: 0;
+            }
+            .available-time{
+                margin: 2rem;
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            .available-status{
+                background-color: rgb(54, 184, 54);
+                padding: 0.5rem 1rem;
+                color: white;
+            }
+        }
+
+        .slot-taken{
+            text-align: center;
+            .available-header{
+                border-bottom: #5088C9 solid 5px;
+                margin: 0;
+            }
+            .available-time{
+                margin: 2rem;
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            .available-status{
+                background-color: rgb(184, 54, 54);
+                padding: 0.5rem 1rem;
+                color: white;
+            }
+        }
+
+        .form-button{
+            background-color: #0C3F7E;
+            border-radius: 2rem;
+            color:#ffffff;
+            border: 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.8rem;
+            padding: .5rem 1.5rem;
+            width: 20%;
+            margin: 2rem auto;
+        }
+
+        .form-button:hover{
+            background-color: #1257ab;
+            transition: all 0.3s ease;
+        }
+
+        .form-button-delete{
+            background-color: #0C3F7E;
+            border-radius: 2rem;
+            color:#ffffff;
+            border: 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: .5rem 1.5rem;
+            width: 90%;
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-button-delete:hover{
+            background-color: #1257ab;
+            transition: all 0.3s ease;
+        }
+
+    }
+}
