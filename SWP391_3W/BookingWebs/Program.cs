@@ -1,4 +1,4 @@
-using BusinessObj.Model;
+using BusinessObj.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Repositories;

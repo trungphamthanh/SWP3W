@@ -38,7 +38,7 @@ namespace BookingWebs.Pages
             {
                 if (account.RoleId == 1)
                 {
-                    return RedirectToPage("/Service/Index");
+                    return Page();
                 }
                 if (account.RoleId == 2)
                 {
@@ -46,7 +46,7 @@ namespace BookingWebs.Pages
                 }
                 if (account.RoleId == 3)
                 {
-                    return Page();
+                    return RedirectToPage("/Service/Index");
                 }
             }
             return Page();
