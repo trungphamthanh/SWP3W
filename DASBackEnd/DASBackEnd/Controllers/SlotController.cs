@@ -34,6 +34,21 @@ namespace DASBackEnd.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetAllSlot")]
+        public async Task<ActionResult<IEnumerable<Slot>>> GetAllSlot()
+        {
+            if (_DASDbContext == null)
+            {
+                return BadRequest(new { Message = "Can not get all slot information " });
+            }
+            else
+            {
+                return await _DASDbContext.Slot.ToListAsync();
+            }
+
+        }
+
 
         [HttpPost]
         [Route("AddDoctorToSlot")]
