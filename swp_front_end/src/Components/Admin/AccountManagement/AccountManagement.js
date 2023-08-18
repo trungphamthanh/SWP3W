@@ -22,6 +22,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import axios from "axios";
 
 const AccountManagement = () => {
   const [headerTitle, setHeaderTitle] = useState("Account Management");
@@ -45,6 +46,39 @@ const AccountManagement = () => {
     setOpen(true);
     setIsUpdate(false);
     setSelectedAccount(null);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const accountData = {};
+
+    for (let [key, value] of formData.entries()) {
+      if (key === "available") {
+        accountData[key] = value === "on"; // Convert checkbox value to boolean
+      } else {
+        accountData[key] = value;
+      }
+    }
+
+    if (isUpdate && selectedAccount) {
+      try {
+        // Send PUT request to update existing account
+        await axios.put(`YOUR_API_URL/${selectedAccount.id}`, accountData);
+        handleClose(); // Close the dialog after successful update
+      } catch (error) {
+        console.error("Error updating account:", error);
+      }
+    } else {
+      try {
+        // Send POST request to add new account
+        await axios.post("YOUR_API_URL", accountData);
+        handleClose(); // Close the dialog after successful addition
+      } catch (error) {
+        console.error("Error adding account:", error);
+      }
+    }
   };
 
   return (

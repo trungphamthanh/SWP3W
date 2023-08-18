@@ -8,16 +8,38 @@ import { Doctor } from './Doctor';
 
 const DoctorManagement = () => {
     const [headerTitle, setHeaderTitle] = useState('Doctor Management');
-    const [doctorStatus, setDoctorStatus] = useState({});
-
-    const handleStatusToggle = (doctorId) => {
-        setDoctorStatus((prevDoctorStatus) => {
-            return {
-                ...prevDoctorStatus,
-                [doctorId]: !prevDoctorStatus[doctorId]
-            };
+    const [doctorStatus, setDoctorStatus] = useState(() => {
+        const initialStatus = {};
+        Doctor.forEach((doctor) => {
+          initialStatus[doctor.id] = doctor.status;
         });
-    };
+        return initialStatus;
+      });
+
+    const handleStatusToggle = async (doctorId) => {
+        try {
+          const response = await fetch(`API_URL/${doctorId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              status: !doctorStatus[doctorId],
+            }),
+          });
+      
+          if (response.ok) {
+            setDoctorStatus((prevDoctorStatus) => ({
+              ...prevDoctorStatus,
+              [doctorId]: !prevDoctorStatus[doctorId],
+            }));
+          } else {
+            console.error('Failed to update status.');
+          }
+        } catch (error) {
+          console.error('Error updating status:', error);
+        }
+      };
 
     return (
         <div className='doctor-container' style={{ background: `url(${Background})`, paddingBottom: "5rem" }}>

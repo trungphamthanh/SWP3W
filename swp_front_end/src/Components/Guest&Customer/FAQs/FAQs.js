@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./FAQs.scss";
 import Banner from "../Banner/Banner";
 import Header from "../Header/Header";
@@ -13,6 +13,7 @@ import { FAQsMap } from "./FAQsMap";
 
 const FAQs = () => {
   const [expanded, setExpanded] = React.useState(false);
+  const [faqData, setFaqData] = useState([]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

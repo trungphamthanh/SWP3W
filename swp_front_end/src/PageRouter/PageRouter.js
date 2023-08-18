@@ -16,6 +16,7 @@ import ServiceManagement from '../Components/Manager/ServiceManagement/ServiceMa
 import DoctorManagement from '../Components/Manager/DoctorManagment/DoctorManagement';
 import AccountManagement from '../Components/Admin/AccountManagement/AccountManagement';
 import BookingDetail from '../Components/Manager/BookingDetail/BookingDetail';
+import BookingHistory from '../Components/Guest&Customer/BookingHistory/BookingHistory';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: 'ourteam',
         element: <OurTeam/>
+      },
+      {
+        path: 'history',
+        element: <BookingHistory/>
       }
     ],
   },
