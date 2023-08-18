@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './BookingManagement.scss'
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
@@ -12,6 +12,7 @@ const drawerWidth = 240;
 const BookingManagement = () => {
   const [headerTitle, setHeaderTitle] = useState('Booking Management');
   const [open, setOpen] = React.useState(false);
+  const [bookings, setBookings] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,6 +21,14 @@ const BookingManagement = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    // Fetch booking data from the API
+    fetch("API_URL/bookings")
+      .then(response => response.json())
+      .then(data => setBookings(data))
+      .catch(error => console.error("Error fetching bookings:", error));
+  }, []);
 
   return (
     <div className='book-container' style={{background:`url(${Background})`, paddingBottom:"5rem"}}>

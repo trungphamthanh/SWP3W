@@ -16,6 +16,7 @@ const Header = () => {
         <Link to="/ourteam" className='header-link'>Team</Link>
         <Link to="/policy" className='header-link'>Policy</Link>
         <Link to="/faqs" className='header-link'>FAQs</Link>
+        <Link to="/history" className='header-link'>History</Link>
       </div>
       {shouldDisplayLogin && <Link to="/login" className='header-login'>Login</Link>}
     </div>

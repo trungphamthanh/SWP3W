@@ -31,28 +31,30 @@ const Slot = ({ date, slot, status, description, selected, onClick }) => {
         border: "#5088C9 solid 5px",
       }}
     >
-      {status === "Open" ? (
-        <div className="slot-available">
-          <h1 className="available-header">Slot {slot}</h1>
-          <div className="available-time">({description})</div>
-          <div className="available-status">{status}</div>
-        </div>
-      ) : (
-        <div className="slot-taken">
-          <h1 className="available-header">Slot {slot}</h1>
-          <div className="available-time">({description})</div>
-          <div className="available-status">{status}</div>
-        </div>
-      )}
+      {/* Display the slot information */}
+      <div className={status === "Open" ? "slot-available" : "slot-taken"}>
+        <h1 className="available-header">Slot {slot}</h1>
+        <div className="available-time">({description})</div>
+        <div className="available-status">{status}</div>
+      </div>
+      
+      {/* Hidden input field to hold selected slot */}
+      <input
+        type="hidden"
+        name={`selectedSlots[${date}]`}
+        value={selected ? slot : ""}
+      />
     </TableCell>
   );
 };
 
 
-const BookingForm = () => {
+const BookingDetail = () => {
   const [selectedSlots, setSelectedSlots] = useState({});
   const [selectedWeek, setSelectedWeek] = useState(Week[0]);
   const [headerTitle, setHeaderTitle] = useState('Booking Update Management');
+  const [selectedService1, setSelectedService1] = useState("");
+  const [selectedService2, setSelectedService2] = useState("");
 
   const handleSlotClick = (day, time, status) => {
     if (status === "Open") {
@@ -73,8 +75,32 @@ const BookingForm = () => {
   };
 
   const handleSubmit = () => {
-    // Send selectedSlots to the backend
-    console.log(selectedSlots);
+    // Prepare the data to send to the API
+    const requestData = {
+      service1: selectedService1,
+      service2: selectedService2,
+      slot: selectedSlots[selectedWeek],
+      date: selectedWeek,
+      // Add other data properties as needed
+    };
+
+    // Send the data to the API
+    fetch("API_URL/bookings", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Data saved:", data);
+        // Handle successful response
+      })
+      .catch(error => {
+        console.error("Error saving data:", error);
+        // Handle error
+      });
   };
 
   const handleWeekSelect = (event) => {
@@ -82,11 +108,13 @@ const BookingForm = () => {
     setSelectedWeek(Week[selectedWeekIndex]); // Store the selected week's information
   };
 
+  
+
   return (
     <div className="update-container" style={{background:`url(${Background})`, paddingBottom:"5rem"}}>
         <Sidebar/>
         <Header title={headerTitle} />
-        <form style={{marginLeft:"20rem", paddingTop:"15rem"}}>
+        <form style={{marginLeft:"20rem", paddingTop:"15rem"}} onSubmit={handleSubmit}>
         <InputLabel
         id={`service-1`}
         sx={{
@@ -184,25 +212,25 @@ const BookingForm = () => {
                   >
                     <Table>
                       <TableHead>
-                        <TableRow>
-                          {WeekDate.map((day) => (
-                            <TableCell
-                              key={day}
-                              sx={{
-                                textAlign: "center",
-                                backgroundColor: "#5088C9",
-                                color: "white",
-                                fontSize: "1rem",
-                              }}
-                            >
-                              <h1>{day.day}</h1>
-                              {selectedWeek && (
-                                <h2>{selectedWeek[day.day.toLowerCase()]}</h2>
-                              )}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      </TableHead>
+  <TableRow>
+    {WeekDate.map(({ day }) => (
+      <TableCell
+        key={day}
+        sx={{
+          textAlign: "center",
+          backgroundColor: "#5088C9",
+          color: "white",
+          fontSize: "1rem",
+        }}
+      >
+        <h1>{day}</h1>
+        {selectedWeek && (
+          <h2>{selectedWeek[day.toLowerCase()]}</h2>
+        )}
+      </TableCell>
+    ))}
+  </TableRow>
+</TableHead>
                       <TableBody>
                         {DateSlot.map(({ slot, description, status }) => (
                           <TableRow key={slot}>
@@ -235,4 +263,4 @@ const BookingForm = () => {
   );
 };
 
-export default BookingForm;
+export default BookingDetail;
