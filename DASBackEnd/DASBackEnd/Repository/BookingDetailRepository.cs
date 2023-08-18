@@ -1,6 +1,7 @@
 ﻿using DASBackEnd.Data;
 using DASBackEnd.IRepository;
 using DASBackEnd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DASBackEnd.Repository
 {
@@ -19,19 +20,12 @@ namespace DASBackEnd.Repository
             return bookingDetail;
         }
 
-        public BookingDetail customerGetBookingDetailInformationByOrderId(int bookingId)
+        public BookingDetail customerGetBookingDetailInformationByBookingId(int bookingId)
         {
-            throw new NotImplementedException();
-        }
+            BookingDetail bookingDetail = dasContext.BookingDetails.Find(bookingId);
 
-        public List<BookingDetail> getAllBookingDetailByManager()
-        {
-            throw new NotImplementedException();
-        }
+            return bookingDetail;
 
-        public List<BookingDetail> getAllBookingDetailByCustomer(int customerId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

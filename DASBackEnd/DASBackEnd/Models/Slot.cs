@@ -7,9 +7,11 @@ public partial class Slot
 {
     public int Id { get; set; }
 
-    public string? SlotStart { get; set; }
+    public DateTime? DateStart { get; set; }
 
-    public string? SlotEnd { get; set; }
+    public DateTime? DateEnd { get; set; }
+
+    public int? SlotNo { get; set; }
 
     public string? SlotStatus { get; set; }
 

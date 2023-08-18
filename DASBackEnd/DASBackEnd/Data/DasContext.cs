@@ -37,11 +37,11 @@ public partial class DasContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC27DCBDDBC8");
+            entity.HasKey(e => e.Id).HasName("PK__Account__3214EC2769C23141");
 
             entity.ToTable("Account");
 
-            entity.HasIndex(e => e.Username, "UQ__Account__536C85E44FA69BA5").IsUnique();
+            entity.HasIndex(e => e.Username, "UQ__Account__536C85E4A3117A27").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AccountStatus)
@@ -61,16 +61,16 @@ public partial class DasContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK__Account__roleId__6754599E");
+                .HasConstraintName("FK__Account__roleId__5CD6CB2B");
 
             entity.HasOne(d => d.User).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Account__userId__66603565");
+                .HasConstraintName("FK__Account__userId__5BE2A6F2");
         });
 
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Booking__3214EC27BC82E6AF");
+            entity.HasKey(e => e.Id).HasName("PK__Booking__3214EC27543D405C");
 
             entity.ToTable("Booking");
 
@@ -85,16 +85,16 @@ public partial class DasContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("FK__Booking__account__628FA481");
+                .HasConstraintName("FK__Booking__account__5812160E");
 
             entity.HasOne(d => d.Slot).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.SlotId)
-                .HasConstraintName("FK__Booking__slotId__6383C8BA");
+                .HasConstraintName("FK__Booking__slotId__59063A47");
         });
 
         modelBuilder.Entity<BookingDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__BookingD__3214EC27A724F8ED");
+            entity.HasKey(e => e.Id).HasName("PK__BookingD__3214EC278BB18850");
 
             entity.ToTable("BookingDetail");
 
@@ -104,16 +104,16 @@ public partial class DasContext : DbContext
 
             entity.HasOne(d => d.Booking).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.BookingId)
-                .HasConstraintName("FK__BookingDe__booki__656C112C");
+                .HasConstraintName("FK__BookingDe__booki__5AEE82B9");
 
             entity.HasOne(d => d.Service).WithMany(p => p.BookingDetails)
                 .HasForeignKey(d => d.ServiceId)
-                .HasConstraintName("FK__BookingDe__servi__6477ECF3");
+                .HasConstraintName("FK__BookingDe__servi__59FA5E80");
         });
 
         modelBuilder.Entity<Daservice>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__DAServic__3214EC270B8DBE98");
+            entity.HasKey(e => e.Id).HasName("PK__DAServic__3214EC27643DF492");
 
             entity.ToTable("DAServices");
 
@@ -139,12 +139,12 @@ public partial class DasContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.Daservices)
                 .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("FK__DAService__accou__619B8048");
+                .HasConstraintName("FK__DAService__accou__571DF1D5");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC27BF0566AC");
+            entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC2792719854");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
@@ -157,7 +157,7 @@ public partial class DasContext : DbContext
 
         modelBuilder.Entity<Slot>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Slot__3214EC273A296CAF");
+            entity.HasKey(e => e.Id).HasName("PK__Slot__3214EC277CF07140");
 
             entity.ToTable("Slot");
 
@@ -166,12 +166,12 @@ public partial class DasContext : DbContext
             entity.Property(e => e.Date)
                 .HasColumnType("datetime")
                 .HasColumnName("date");
-            entity.Property(e => e.SlotEnd)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.SlotStart)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+            entity.Property(e => e.DateEnd)
+                .HasColumnType("datetime")
+                .HasColumnName("dateEnd");
+            entity.Property(e => e.DateStart)
+                .HasColumnType("datetime")
+                .HasColumnName("dateStart");
             entity.Property(e => e.SlotStatus)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -179,12 +179,12 @@ public partial class DasContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.Slots)
                 .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("FK__Slot__accountId__60A75C0F");
+                .HasConstraintName("FK__Slot__accountId__5629CD9C");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC2720353499");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC27F70EE32E");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Descriptions).HasMaxLength(100);

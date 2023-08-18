@@ -29,7 +29,7 @@ namespace DASBackEnd.Controllers
             var slots = await _DasContext.Slots.Where(x => x.AccountId == id).ToListAsync();
             if (slots == null)
             {
-                return BadRequest(new { Message = "Can not get slots of doctor " });
+                return BadRequest(new { Message = "Doctor not exist " });
             }
             return Ok(slots);
 
@@ -53,11 +53,18 @@ namespace DASBackEnd.Controllers
 
         [HttpPost]
         [Route("AddDoctorToSlot")]
-        public async Task<Slot> AddDoctor(Slot objSlot)
+        public async Task<ActionResult<IEnumerable<Slot>>> AddDoctor(List<Slot> objSlot)
         {
-            _DasContext.Slots.Add(objSlot);
-            await _DasContext.SaveChangesAsync();
-            return objSlot;
+            if (objSlot.Count > 6)
+            {
+                return BadRequest(new { Message = "Can not add more than 6 slot" });
+            }
+            foreach (var slot in objSlot)
+            {
+                await _DasContext.Slots.AddAsync(slot);
+                await _DasContext.SaveChangesAsync();
+            }
+            return Ok();
         }
 
     }

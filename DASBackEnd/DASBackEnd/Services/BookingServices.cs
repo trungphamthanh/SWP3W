@@ -1,8 +1,8 @@
-﻿using DASBackEnd.Data;
-using DASBackEnd.DTO;
+﻿using DASBackEnd.DTO;
 using DASBackEnd.IRepository;
 using DASBackEnd.IServices;
 using DASBackEnd.Models;
+using DASBackEnd.Repository;
 
 namespace DASBackEnd.Services
 {
@@ -17,25 +17,39 @@ namespace DASBackEnd.Services
         }
         public async Task<Booking> customerCreateBooking(CustomerCreateBookingDTO customerCreateBookingDTO)
         {
-                Booking booking = new Booking()
-                {
-                    CustomerName = customerCreateBookingDTO.CustomerName,
-                    AccountId = customerCreateBookingDTO.accountId,
-                    BookingStatus = customerCreateBookingDTO.bookingStatus,
-                    SlotId = customerCreateBookingDTO.slotId
-                };
-                await _bookingRepository.CreateBookingAsync(booking);
+            Booking booking = new Booking()
+            {
+                CustomerName = customerCreateBookingDTO.CustomerName,
+                AccountId = customerCreateBookingDTO.accountId,
+                BookingStatus = customerCreateBookingDTO.bookingStatus,
+                SlotId = customerCreateBookingDTO.slotId
+            };
+            await _bookingRepository.CreateBookingAsync(booking);
 
-                foreach (var item in customerCreateBookingDTO.listservicesBookDTO)
+            foreach (var item in customerCreateBookingDTO.listservicesBookDTO)
+            {
+                BookingDetail bookingDetail = new BookingDetail()
                 {
-                    BookingDetail bookingDetail = new BookingDetail()
-                    {
-                        BookingId = booking.Id,
-                        ServiceId = item.serviceId
-                    };
-                    _bookingDetailRepository.CreateBookingDetailAsync(bookingDetail);
-                }
+                    BookingId = booking.Id,
+                    ServiceId = item.serviceId
+                };
+                _bookingDetailRepository.CreateBookingDetailAsync(bookingDetail);
+            }
             return booking;
+        }
+
+        public List<Booking> customerGetAllBooking(int customerId)
+        {
+            List<Booking> list = _bookingRepository.GetAllBookingByCustomer(customerId);
+
+            return list;
+        }
+
+        public List<Booking> managerGetAllBooking()
+        {
+            List<Booking> list = _bookingRepository.GetAllBookingByManager();
+
+            return list;
         }
     }
 }
