@@ -19,7 +19,7 @@ namespace BookingWebs.Pages.Bookings
         }
 
         [BindProperty]
-        public Booking Booking { get; set; } = default!;
+      public Booking Booking { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,7 +34,7 @@ namespace BookingWebs.Pages.Bookings
             {
                 return NotFound();
             }
-            else
+            else 
             {
                 Booking = booking;
             }

@@ -17,10 +17,7 @@
                 @Html.DisplayNameFor(model => model.Booking[0].CustomerName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking[0].TotalPrice)
+                @Html.DisplayNameFor(model => model.Booking[0].BookingStatus)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking[0].Account)
@@ -38,10 +35,7 @@
                 @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
+                @Html.DisplayFor(modelItem => item.BookingStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Account.Id)
@@ -52,6 +46,7 @@
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

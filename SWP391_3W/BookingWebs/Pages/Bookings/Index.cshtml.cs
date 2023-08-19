@@ -18,7 +18,7 @@ namespace BookingWebs.Pages.Bookings
             _context = context;
         }
 
-        public IList<Booking> Booking { get; set; } = default!;
+        public IList<Booking> Booking { get;set; } = default!;
 
         public async Task OnGetAsync()
         {

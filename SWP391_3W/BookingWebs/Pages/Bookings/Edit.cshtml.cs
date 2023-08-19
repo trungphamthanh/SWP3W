@@ -29,14 +29,14 @@ namespace BookingWebs.Pages.Bookings
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FirstOrDefaultAsync(m => m.Id == id);
+            var booking =  await _context.Bookings.FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
                 return NotFound();
             }
             Booking = booking;
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
-            ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
+           ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+           ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
             return Page();
         }
 
@@ -72,7 +72,7 @@ namespace BookingWebs.Pages.Bookings
 
         private bool BookingExists(int id)
         {
-            return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

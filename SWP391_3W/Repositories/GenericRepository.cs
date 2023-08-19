@@ -1,4 +1,4 @@
-﻿using BusinessObj.Models;
+﻿using BusinessObj.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
