@@ -5,20 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using BusinessObj.Models;
+using BusinessObj.Model;
 
 namespace BookingWebs.Pages.Bookings
 {
     public class IndexModel : PageModel
     {
-        private readonly BusinessObj.Models.DASContext _context;
+        private readonly BusinessObj.Model.DASContext _context;
 
-        public IndexModel(BusinessObj.Models.DASContext context)
+        public IndexModel(BusinessObj.Model.DASContext context)
         {
             _context = context;
         }
 
-        public IList<Booking> Booking { get;set; } = default!;
+        public IList<Booking> Booking { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
