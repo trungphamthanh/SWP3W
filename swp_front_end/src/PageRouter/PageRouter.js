@@ -74,10 +74,6 @@ const router = createBrowserRouter([
         element: <BookingManagement/>,
       },
       {
-        path: 'schedule',
-        element: <ScheduleManagement/>
-      },
-      {
         path: 'services',
         element: <ServiceManagement/>
       },
