@@ -31,7 +31,7 @@ namespace BookingWebs.Pages
             var account = _accountRepository.GetAccount(username, password);
             if (account == null)
             {
-                ViewData["Title"] = "Incorrect username or password";
+                ViewData["Title"] = "Login failed";
                 return Page();
             }
             else
