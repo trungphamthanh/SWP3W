@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Source 2\\Lịch nha khoa\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj": {}
+    "C:\\Users\\ACER\\OneDrive\\Máy tính\\SWP\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj": {}
   },
   "projects": {
-    "D:\\Source 2\\Lịch nha khoa\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj": {
+    "C:\\Users\\ACER\\OneDrive\\Máy tính\\SWP\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Source 2\\Lịch nha khoa\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj",
+        "projectUniqueName": "C:\\Users\\ACER\\OneDrive\\Máy tính\\SWP\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj",
         "projectName": "DASBackEnd",
-        "projectPath": "D:\\Source 2\\Lịch nha khoa\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj",
-        "packagesPath": "C:\\Users\\MSI\\.nuget\\packages\\",
-        "outputPath": "D:\\Source 2\\Lịch nha khoa\\SWP3W\\DASBackEnd\\DASBackEnd\\obj\\",
+        "projectPath": "C:\\Users\\ACER\\OneDrive\\Máy tính\\SWP\\SWP3W\\DASBackEnd\\DASBackEnd\\DASBackEnd.csproj",
+        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ACER\\OneDrive\\Máy tính\\SWP\\SWP3W\\DASBackEnd\\DASBackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MSI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,7 +42,7 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[7.0.1, )"
+              "version": "[7.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -89,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
