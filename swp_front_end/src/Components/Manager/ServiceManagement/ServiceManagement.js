@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
 
 const ServiceManagement = () => {
   const [headerTitle, setHeaderTitle] = useState('Service Management');
@@ -34,6 +35,40 @@ const ServiceManagement = () => {
     setOpen(true);
     setIsUpdate(false); // Set isUpdate to false for adding a service
     setSelectedService(null); // Reset selected service when opening for adding
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const serviceData = {};
+
+    for (let [key, value] of formData.entries()) {
+      if (key === 'available') {
+        serviceData[key] = value === 'on'; // Convert checkbox value to boolean
+      } else {
+        serviceData[key] = value;
+      }
+    }
+    if (isUpdate && selectedService) {
+      try {
+        // Send PUT request to update existing service
+        await axios.put(`YOUR_API_URL/${selectedService.id}`, serviceData);
+        // Close the dialog and update the service list or other relevant actions
+        handleClose();
+      } catch (error) {
+        console.error('Error updating service:', error);
+      }
+    } else {
+      try {
+        // Send POST request to add new service
+        await axios.post('YOUR_API_URL', serviceData);
+        // Close the dialog and update the service list or other relevant actions
+        handleClose();
+      } catch (error) {
+        console.error('Error adding service:', error);
+      }
+    }
   };
 
   return (
@@ -96,7 +131,7 @@ const ServiceManagement = () => {
           <DialogTitle>{isUpdate ? 'Update Service' : 'Add Service'}</DialogTitle>
           <DialogContent>
           <DialogContentText/>
-          <form style={{display:"flex", flexDirection:"column"}}>
+          <form style={{display:"flex", flexDirection:"column"}} onSubmit={handleSubmit}>
           <label htmlFor="header" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Header </label>
           <input type="text" name="header" style={{height:"3rem"}}></input>
           <label htmlFor="intro" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Intro </label>

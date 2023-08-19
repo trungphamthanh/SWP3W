@@ -14,15 +14,22 @@ import {
   TableContainer,
   TableRow,
   Paper,
-  Button,} from "@mui/material";
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,} from "@mui/material";
 import { WeekDate, DateSlot, ServiceMap, Week } from "./SlotMap";
 
 const Slot = ({ date, slot, status, description, selected, onClick }) => {
+  const isSlotSelectable = status === "Open";
+
   return (
     <TableCell
-      onClick={onClick}
+      onClick={isSlotSelectable ? onClick : null}
       style={{
-        cursor: "pointer",
+        cursor: isSlotSelectable ? "pointer" : "default",
         padding: "0",
         backgroundColor: "#f0f0f0",
         transition: "transform 0.3s ease-in-out",
@@ -30,19 +37,17 @@ const Slot = ({ date, slot, status, description, selected, onClick }) => {
         border: "#5088C9 solid 5px",
       }}
     >
-      {status === "Open" ? (
-        <div className="slot-available">
-          <h1 className="available-header">Slot {slot}</h1>
-          <div className="available-time">({description})</div>
-          <div className="available-status">{status}</div>
-        </div>
-      ) : (
-        <div className="slot-taken">
-          <h1 className="available-header">Slot {slot}</h1>
-          <div className="available-time">({description})</div>
-          <div className="available-status">{status}</div>
-        </div>
-      )}
+      {/* Display the slot information */}
+      <div className={status === "Open" ? "slot-available" : "slot-taken"}>
+        <h1 className="available-header">Slot {slot}</h1>
+        <div className="available-time">({description})</div>
+        <div className="available-status">{status}</div>
+      </div>
+      <input
+        type="hidden"
+        name={`selectedSlots[${date}]`}
+        value={selected ? slot : ""}
+      />
     </TableCell>
   );
 };
@@ -103,6 +108,7 @@ const BookingForm = () => {
   const [selectedSlots, setSelectedSlots] = useState({});
   const [serviceSectionAdded, setServiceSectionAdded] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState(Week[0]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleSlotClick = (day, time, status) => {
     if (status === "Open") {
@@ -122,10 +128,47 @@ const BookingForm = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Send selectedSlots to the backend
-    console.log(selectedSlots);
+  const handleSlotSelect = (day, slot) => {
+    setSelectedSlots((prevSelectedSlots) => {
+      const newSelectedSlots = { ...prevSelectedSlots };
+      newSelectedSlots[day] = slot;
+      return newSelectedSlots;
+    });
   };
+
+const handleCloseDialog = () => {
+  setIsDialogOpen(false); // Close the dialog
+};
+
+const handleSubmit = async () => {
+  // Prepare the data to be sent to the API
+  const formData = {
+    phone: "phone_value",
+    gender: "gender_value",
+    name: "name_value",
+    // Add other form data here
+    // For example, selected services, selected week, selected slots, etc.
+  };
+
+  try {
+    // Make a POST request to your API endpoint
+    const response = await fetch("your_api_endpoint", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      setIsDialogOpen(true); // Show success dialog
+    } else {
+      console.error("Failed to submit the form");
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+};
 
   const handleServiceButtonAdd = () => {
     if (!serviceSectionAdded) {
@@ -148,7 +191,7 @@ const BookingForm = () => {
       <Banner />
       <h1 className="booking-header">Booking Form</h1>
       <div className="booking-main">
-        <form className="booking-form">
+        <form className="booking-form" onSubmit={handleSubmit}>
           <div className="form-content">
             <div className="form-personal">
               <label htmlFor="phone">Phone: </label>
@@ -266,21 +309,22 @@ const BookingForm = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {DateSlot.map(({ slot, description, status }) => (
-                      <TableRow key={slot}>
-                        {WeekDate.map(({ day }) => (
-                          <Slot
-                            key={`${day}-${slot}`}
-                            date={day}
-                            slot={slot}
-                            status={status}
-                            description={description}
-                            selected={selectedSlots[day] === slot}
-                            onClick={() => handleSlotClick(day, slot, status)}
-                          />
-                        ))}
-                      </TableRow>
-                    ))}
+                  {DateSlot.map(({ slot, description, status }) => (
+  <TableRow key={slot}>
+    {WeekDate.map(({ day }) => (
+      <Slot
+        key={`${day}-${slot}`}
+        date={day}
+        slot={slot}
+        status={status}
+        description={description}
+        selected={selectedSlots[day] === slot}
+        onClick={() => handleSlotClick(day, slot, status)}
+        onSlotSelect={handleSlotSelect} // Pass the handler here
+      />
+    ))}
+  </TableRow>
+))}
                   </TableBody>
                 </Table>
               </TableContainer>
