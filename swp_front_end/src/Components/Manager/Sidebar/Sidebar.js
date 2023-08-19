@@ -14,7 +14,6 @@ const Sidebar = ({ onLinkClick }) => {
             <p>King's Teeth</p>
         </div>
         <Link to="/manager/booking" className='link'>Booking</Link>
-        <Link to="/manager/schedule" className='link'>Schedule</Link>
         <Link to="/manager/services" className='link'>Services</Link>
         <Link to="/manager/doctor" className='link'>Doctor</Link>
   </div>
