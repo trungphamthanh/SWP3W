@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
-namespace BusinessObj.Models
+namespace BusinessObj.Model
 {
     public partial class DASContext : DbContext
     {
@@ -40,12 +40,15 @@ namespace BusinessObj.Models
             {
                 entity.ToTable("Account");
 
+                entity.HasIndex(e => e.Username, "UQ__Account__536C85E4AB5D31F7")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.IsActive)
+                entity.Property(e => e.AccountStatus)
                     .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("isActive");
+                    .HasColumnName("accountStatus");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(100)
@@ -57,48 +60,48 @@ namespace BusinessObj.Models
 
                 entity.Property(e => e.Username).HasMaxLength(100);
 
+                entity.Property(e => e.WorkingStatus)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("workingStatus");
+
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Account__roleId__48CFD27E");
+                    .HasConstraintName("FK__Account__roleId__49C3F6B7");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Account__userId__47DBAE45");
+                    .HasConstraintName("FK__Account__userId__48CFD27E");
             });
 
             modelBuilder.Entity<Booking>(entity =>
             {
                 entity.ToTable("Booking");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
+
+                entity.Property(e => e.BookingStatus)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("bookingStatus");
 
                 entity.Property(e => e.CustomerName).HasMaxLength(100);
 
                 entity.Property(e => e.SlotId).HasColumnName("slotId");
 
-                entity.Property(e => e.Status)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TotalPrice)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("totalPrice");
-
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__Booking__account__440B1D61");
+                    .HasConstraintName("FK__Booking__account__44FF419A");
 
                 entity.HasOne(d => d.Slot)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.SlotId)
-                    .HasConstraintName("FK__Booking__slotId__44FF419A");
+                    .HasConstraintName("FK__Booking__slotId__45F365D3");
             });
 
             modelBuilder.Entity<BookingDetail>(entity =>
@@ -114,12 +117,12 @@ namespace BusinessObj.Models
                 entity.HasOne(d => d.Booking)
                     .WithMany(p => p.BookingDetails)
                     .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK__BookingDe__booki__46E78A0C");
+                    .HasConstraintName("FK__BookingDe__booki__47DBAE45");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.BookingDetails)
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK__BookingDe__servi__45F365D3");
+                    .HasConstraintName("FK__BookingDe__servi__46E78A0C");
             });
 
             modelBuilder.Entity<Daservice>(entity =>
@@ -130,21 +133,35 @@ namespace BusinessObj.Models
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
 
-                entity.Property(e => e.Descriptions).HasMaxLength(1000);
+                entity.Property(e => e.AdvancedPrice)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("advancedPrice");
+
+                entity.Property(e => e.Contents).HasMaxLength(1000);
 
                 entity.Property(e => e.ImgUrl)
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("imgUrl");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Intro).HasMaxLength(1000);
+
+                entity.Property(e => e.LowPrice)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("lowPrice");
+
+                entity.Property(e => e.Outro).HasMaxLength(1000);
 
                 entity.Property(e => e.ServiceName).HasMaxLength(100);
+
+                entity.Property(e => e.TopPrice)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("topPrice");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Daservices)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__DAService__accou__4316F928");
+                    .HasConstraintName("FK__DAService__accou__440B1D61");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -163,9 +180,7 @@ namespace BusinessObj.Models
             {
                 entity.ToTable("Slot");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AccountId).HasColumnName("accountId");
 
@@ -173,22 +188,20 @@ namespace BusinessObj.Models
                     .HasColumnType("datetime")
                     .HasColumnName("date");
 
-                entity.Property(e => e.SlotEnd)
+                entity.Property(e => e.DayInWeek)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("dayInWeek");
 
-                entity.Property(e => e.SlotStart)
+                entity.Property(e => e.SlotStatus)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Status)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("slotStatus");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Slots)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__Slot__accountId__4222D4EF");
+                    .HasConstraintName("FK__Slot__accountId__4316F928");
             });
 
             modelBuilder.Entity<User>(entity =>

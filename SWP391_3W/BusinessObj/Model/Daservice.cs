@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessObj.Models
+namespace BusinessObj.Model
 {
     public partial class Daservice
     {
@@ -12,8 +12,12 @@ namespace BusinessObj.Models
 
         public int Id { get; set; }
         public string? ServiceName { get; set; }
-        public string? Descriptions { get; set; }
-        public decimal? Price { get; set; }
+        public string? Intro { get; set; }
+        public string? Contents { get; set; }
+        public string? Outro { get; set; }
+        public decimal? LowPrice { get; set; }
+        public decimal? AdvancedPrice { get; set; }
+        public decimal? TopPrice { get; set; }
         public string? ImgUrl { get; set; }
         public int? AccountId { get; set; }
 

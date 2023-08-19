@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessObj.Models
+namespace BusinessObj.Model
 {
     public partial class Slot
     {
@@ -11,10 +11,10 @@ namespace BusinessObj.Models
         }
 
         public int Id { get; set; }
-        public string? SlotStart { get; set; }
-        public string? SlotEnd { get; set; }
-        public string? Status { get; set; }
+        public int? SlotNo { get; set; }
+        public string? SlotStatus { get; set; }
         public DateTime? Date { get; set; }
+        public string? DayInWeek { get; set; }
         public int? AccountId { get; set; }
 
         public virtual Account? Account { get; set; }

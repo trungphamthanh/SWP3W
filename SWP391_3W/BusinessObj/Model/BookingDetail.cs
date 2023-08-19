@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessObj.Models
+namespace BusinessObj.Model
 {
     public partial class BookingDetail
     {
