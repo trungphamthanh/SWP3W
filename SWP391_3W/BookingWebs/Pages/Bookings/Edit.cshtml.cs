@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BusinessObj.Models;
+using BusinessObj.Model;
 
 namespace BookingWebs.Pages.Bookings
 {
     public class EditModel : PageModel
     {
-        private readonly BusinessObj.Models.DASContext _context;
+        private readonly BusinessObj.Model.DASContext _context;
 
-        public EditModel(BusinessObj.Models.DASContext context)
+        public EditModel(BusinessObj.Model.DASContext context)
         {
             _context = context;
         }
@@ -29,14 +29,14 @@ namespace BookingWebs.Pages.Bookings
                 return NotFound();
             }
 
-            var booking =  await _context.Bookings.FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _context.Bookings.FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
                 return NotFound();
             }
             Booking = booking;
-           ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
-           ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["SlotId"] = new SelectList(_context.Slots, "Id", "Id");
             return Page();
         }
 
@@ -72,7 +72,7 @@ namespace BookingWebs.Pages.Bookings
 
         private bool BookingExists(int id)
         {
-          return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
