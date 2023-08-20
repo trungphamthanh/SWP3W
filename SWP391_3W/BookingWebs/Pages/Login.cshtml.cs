@@ -36,18 +36,7 @@ namespace BookingWebs.Pages
             }
             else
             {
-                if (account.RoleId == 1)
-                {
-                    return Page();
-                }
-                if (account.RoleId == 2)
-                {
-                    return Page();
-                }
-                if (account.RoleId == 3)
-                {
-                    return RedirectToPage("/Bookings/Index");
-                }
+                return RedirectToPage("/Bookings/Index");
             }
             return Page();
         }
