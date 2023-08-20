@@ -10,7 +10,7 @@ export const DateSlot=[
     {slot:"1", description:"7:00-9:00", status:"Open"},
     {slot:"2", description:"9:00-11:00", status:"Open"},
     {slot:"3", description:"11:15-1:15", status:"Open"},
-    {slot:"4", description:"1:15-3:15", status:"Taken"},
+    {slot:"4", description:"1:15-3:15", status:"Open"},
 ]
 
 // export const DateSlot=[

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./BookingForm.scss";
 import Header from "../Header/Header";
 import Banner from "../Banner/Banner";
 import Footer from "../Footer/Footer";
-import { 
-  InputLabel, 
-  MenuItem, 
-  Select, 
+import {
+  InputLabel,
+  MenuItem,
+  Select,
   TableHead,
   Table,
   TableBody,
@@ -19,17 +19,32 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions,} from "@mui/material";
+  DialogActions,
+} from "@mui/material";
 import { WeekDate, DateSlot, ServiceMap, Week } from "./SlotMap";
+import { WeeklyCalendar } from "react-week-picker";
+import "react-week-picker/src/lib/calendar.css";
+import moment from "moment";
+import "moment/locale/en-gb";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { logout, isLoggedIn } from "../Header/Auth";
 
-const Slot = ({ date, slot, status, description, selected, onClick }) => {
-  const isSlotSelectable = status === "Open";
+const URL = "https://localhost:7028/api/Booking/createBooking/customer";
+const DateURL = "https://localhost:7028/api/Slot/GetAllSlot";
+const ServiceURL = "https://localhost:7028/api/DASServices/GetAllServices";
+
+const Slot = ({ date, slot, status, description, selected, onClick, setSelectedSlotId, slotData }) => {
+  const handleChangeMultiple = (event) => {
+    console.log(event.value)
+    setSelectedSlotId(event.value);
+  };
 
   return (
     <TableCell
-      onClick={isSlotSelectable ? onClick : null}
+      onClick={onClick}
       style={{
-        cursor: isSlotSelectable ? "pointer" : "default",
+        cursor: "pointer",
         padding: "0",
         backgroundColor: "#f0f0f0",
         transition: "transform 0.3s ease-in-out",
@@ -42,17 +57,30 @@ const Slot = ({ date, slot, status, description, selected, onClick }) => {
         <h1 className="available-header">Slot {slot}</h1>
         <div className="available-time">({description})</div>
         <div className="available-status">{status}</div>
+        {/* {slotData && <div className="slot-id">ID: {slotData.id}</div>} */}
       </div>
-      <input
-        type="hidden"
-        name={`selectedSlots[${date}]`}
-        value={selected ? slot : ""}
-      />
+
+      {/* Hidden input field to hold selected slot */}
     </TableCell>
   );
 };
 
-const ServiceInput = ({ index, onRemove }) => {
+
+const ServiceInput = ({
+  index,
+  onRemove,
+  servicesData,
+  setSelectedServiceIds,
+  selectedServiceIds,
+}) => {
+  
+  const handleChangeMultiple = (event) => {
+    const value = [];
+
+        value.push(event.target.value);
+    setSelectedServiceIds(value);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <InputLabel
@@ -63,7 +91,7 @@ const ServiceInput = ({ index, onRemove }) => {
           fontWeight: "bold",
         }}
       >
-        Service {index + 1}
+        Service {index}
       </InputLabel>
       <Select
         labelId={`service-${index}`}
@@ -75,10 +103,12 @@ const ServiceInput = ({ index, onRemove }) => {
           backgroundColor: "white",
           marginBottom: "2rem",
         }}
+        onChange={handleChangeMultiple}
+        value={selectedServiceIds}
       >
-        {ServiceMap.map((service) => (
+        {servicesData?.map((service) => (
           <MenuItem key={service.id} value={service.id}>
-            {service.service}
+            {service.serviceName}
           </MenuItem>
         ))}
       </Select>
@@ -109,22 +139,72 @@ const BookingForm = () => {
   const [serviceSectionAdded, setServiceSectionAdded] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState(Week[0]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [slotsData, setSlotsData] = useState([]);
+  const [servicesData, setServicesData] = useState([]);
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [name, setName] = useState("");
+  const [selectedServiceIds, setSelectedServiceIds] = useState([]);
+  const [selectedSlotId, setSelectedSlotId] = useState(null);
 
-  const handleSlotClick = (day, time, status) => {
+  useEffect(() => {
+    async function fetchServicesData() {
+      try {
+        const response = await fetch(ServiceURL);
+        if (response.ok) {
+          const data = await response.json();
+          setServicesData(data);
+          toast.success("Services data fetched successfully!"); // Show success toast
+        } else {
+          console.error(
+            "Failed to fetch services data:",
+            response.status,
+            response.statusText
+          );
+          toast.error("Failed to fetch services data"); // Show error toast
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        toast.error("An error occurred while fetching services data"); // Show error toast
+      }
+    }
+
+    async function fetchSlotsData() {
+      try {
+        const response = await fetch(DateURL);
+        if (response.ok) {
+          const data = await response.json();
+          setSlotsData(data);
+          // console.log(data)
+        } else {
+          console.error("Failed to fetch slot data");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    }
+
+    // Fetch both services data and slot data
+    fetchServicesData();
+    fetchSlotsData();
+  }, []);
+
+  const handleSlotClick = (day, time, status, slotData) => {
     if (status === "Open") {
       setSelectedSlots((prevSelectedSlots) => {
         const newSelectedSlots = { ...prevSelectedSlots };
-  
+
         // Clear all previously selected slots
         Object.keys(newSelectedSlots).forEach((selectedDay) => {
           newSelectedSlots[selectedDay] = null;
         });
-  
+
         // Set the clicked slot as selected
         newSelectedSlots[day] = time;
-  
+
         return newSelectedSlots;
       });
+      setSelectedSlotId(slotData.id);
     }
   };
 
@@ -136,39 +216,56 @@ const BookingForm = () => {
     });
   };
 
-const handleCloseDialog = () => {
-  setIsDialogOpen(false); // Close the dialog
-};
-
-const handleSubmit = async () => {
-  // Prepare the data to be sent to the API
-  const formData = {
-    phone: "phone_value",
-    gender: "gender_value",
-    name: "name_value",
-    // Add other form data here
-    // For example, selected services, selected week, selected slots, etc.
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false); // Close the dialog
   };
 
-  try {
-    // Make a POST request to your API endpoint
-    const response = await fetch("your_api_endpoint", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (response.ok) {
-      setIsDialogOpen(true); // Show success dialog
+    // Get the user data from localStorage
+    const userId = localStorage.getItem("userId");
+    // Check if user data exists and has the necessary information
+    if (userId) {
+      const accountId = userId;
+console.log(selectedServiceIds)
+      // Prepare the data to be sent to the API
+      const bookingData = {
+        bookingId: 0,
+        customerName: name,
+        phoneNum: phone,
+        gender: gender,
+        bookingStatus: "Ongoing",
+        accountId: accountId,
+        slotId: selectedSlotId,
+        listservicesBookDTO: selectedServiceIds.map((serviceId) => ({
+          serviceId: serviceId,
+        })),
+      };
+ console.log(bookingData)
+      try {
+        // Make a POST request to your API endpoint
+        const response = await fetch(`${URL}/${accountId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingData),
+        });
+
+        if (response.ok) {
+          setIsDialogOpen(true); // Show success dialog
+        } else {
+          toast.error("Failed to submit the form");
+        }
+      } catch (error) {
+        toast.error("An error occurred:", error);
+      }
     } else {
-      console.error("Failed to submit the form");
+      // Handle the case where user data is not available
+      toast.error("User data not available or incomplete.");
     }
-  } catch (error) {
-    console.error("An error occurred:", error);
-  }
-};
+  };
 
   const handleServiceButtonAdd = () => {
     if (!serviceSectionAdded) {
@@ -180,9 +277,29 @@ const handleSubmit = async () => {
     setServiceSectionAdded(false);
   };
 
-  const handleWeekSelect = (event) => {
-    const selectedWeekIndex = event.target.value;
-    setSelectedWeek(Week[selectedWeekIndex]); // Store the selected week's information
+  const handleJumpToCurrentWeek = (currenDate) => {
+    // console.log(`current date: ${currenDate}`);
+  };
+
+  const calculateSlotDates = () => {
+    const startDate = moment(selectedWeek.startOfWeek).startOf("isoWeek"); // Start from Monday
+    const endDate = moment(selectedWeek.startOfWeek)
+      .startOf("isoWeek")
+      .add(4, "days"); // End on Friday
+    const slotDates = [];
+    let currentDate = startDate.clone();
+
+    while (currentDate.isSameOrBefore(endDate)) {
+      slotDates.push(currentDate.format("ddd DD/MM"));
+      // console.log(slotDates)
+      currentDate.add(1, "days");
+    }
+
+    return slotDates;
+  };
+
+  const handleWeekPick = (startDate, endDate) => {
+    setSelectedWeek({ startOfWeek: startDate, endOfWeek: endDate });
   };
 
   return (
@@ -195,7 +312,11 @@ const handleSubmit = async () => {
           <div className="form-content">
             <div className="form-personal">
               <label htmlFor="phone">Phone: </label>
-              <input type="text" name="phone"></input>
+              <input
+                type="text"
+                name="phone"
+                onChange={(e) => setPhone(e.target.value)}
+              ></input>
               <div className="personal-lower">
                 <label htmlFor="gender">Gender: </label>
                 <Select
@@ -208,16 +329,26 @@ const handleSubmit = async () => {
                     backgroundColor: "white",
                     marginRight: "2rem",
                   }}
+                  onChange={(e) => setGender(e.target.value)}
                 >
                   <MenuItem value={10}>Male</MenuItem>
                   <MenuItem value={20}>Female</MenuItem>
                 </Select>
                 <label htmlFor="name">Name: </label>
-                <input type="text" name="name"></input>
+                <input
+                  type="text"
+                  name="name"
+                  onChange={(e) => setName(e.target.value)}
+                ></input>
               </div>
             </div>
             <div className="form-service">
-              <ServiceInput index={0} />
+              <ServiceInput
+                index={1}
+                servicesData={servicesData}
+                setSelectedServiceIds={setSelectedServiceIds}
+                selectedServiceIds={selectedServiceIds}
+              />
 
               {/* Render the "Add Service" button only if section is not added */}
               {!serviceSectionAdded && (
@@ -242,7 +373,11 @@ const handleSubmit = async () => {
 
               {/* Render the second service input if section is added */}
               {serviceSectionAdded && (
-                <ServiceInput index={1} onRemove={handleServiceRemove} />
+                <ServiceInput
+                  index={2}
+                  servicesData={servicesData}
+                  onRemove={handleServiceRemove}
+                />
               )}
             </div>
             <div className="form-time">
@@ -257,27 +392,11 @@ const handleSubmit = async () => {
               >
                 Week
               </InputLabel>
-              <Select
-                labelId="time"
-                id="time"
-                label="time"
-                value={0} // Set the initial value to 0 for the first week
-                sx={{
-                  height: "2rem",
-                  width: "15rem",
-                  backgroundColor: "white",
-                  marginLeft: "4rem",
-                  marginBottom: "4rem",
-                }}
-                onChange={handleWeekSelect} // Call this function when a week is selected
-              >
-                {Week.map((week, index) => (
-                  <MenuItem key={week.week} value={index}>
-                    {week.week}
-                  </MenuItem>
-                ))}
-              </Select>
-              {/* ... (rest of your form) */}
+              <WeeklyCalendar
+                onWeekPick={handleWeekPick}
+                jumpToCurrentWeekRequired={true}
+                onJumpToCurrentWeek={handleJumpToCurrentWeek}
+              />
               <TableContainer
                 component={Paper}
                 sx={{
@@ -290,9 +409,9 @@ const handleSubmit = async () => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      {WeekDate.map((day) => (
+                      {calculateSlotDates().map((date) => (
                         <TableCell
-                          key={day}
+                          key={date}
                           sx={{
                             textAlign: "center",
                             backgroundColor: "#5088C9",
@@ -300,31 +419,46 @@ const handleSubmit = async () => {
                             fontSize: "1rem",
                           }}
                         >
-                          <h1>{day.day}</h1>
-                          {selectedWeek && (
-                            <h2>{selectedWeek[day.day.toLowerCase()]}</h2>
-                          )}
+                          {date}
                         </TableCell>
                       ))}
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                  {DateSlot.map(({ slot, description, status }) => (
-  <TableRow key={slot}>
-    {WeekDate.map(({ day }) => (
-      <Slot
-        key={`${day}-${slot}`}
-        date={day}
-        slot={slot}
-        status={status}
-        description={description}
-        selected={selectedSlots[day] === slot}
-        onClick={() => handleSlotClick(day, slot, status)}
-        onSlotSelect={handleSlotSelect} // Pass the handler here
-      />
-    ))}
-  </TableRow>
-))}
+                    {Array.from({ length: 4 }).map((_, slotIndex) => (
+                      <TableRow key={slotIndex}>
+                        {calculateSlotDates().map((date) => {
+                          const isSelected =
+                            selectedSlots[date] === slotIndex + 1;
+                          const slotData = slotsData.find(
+                            (slot) =>
+                              moment(slot.date).format("ddd DD/MM") === date &&
+                              slot.slotNo === slotIndex + 1
+                          );
+                          const status = slotData
+                            ? slotData.slotStatus
+                            : "Closed"; // Default to "Closed" if no data is found
+                          const timeDescription =
+                            DateSlot[slotIndex].description; // Use time description from DateSlot
+                          return (
+<Slot
+  key={`${date}-${slotIndex}`}
+  date={date}
+  slot={slotIndex + 1}
+  description={timeDescription}
+  status={status}
+  selected={isSelected}
+  onClick={() => {
+    handleSlotClick(date, slotIndex + 1, status, slotData)
+  }}
+  onSlotSelect={handleSlotSelect}
+  setSelectedSlotId={setSelectedSlotId}
+  slotData={slotData} // Pass the slot data here
+/>
+                          );
+                        })}
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>

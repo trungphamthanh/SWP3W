@@ -7,7 +7,7 @@ import BookingForm from '../Components/Guest&Customer/BookingForm/BookingForm';
 import Policy from '../Components/Guest&Customer/Policy/Policy';
 import Login from '../Components/Guest&Customer/Login/Login';
 import SignUp from '../Components/Guest&Customer/SignUp/SignUp';
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OurTeam from '../Components/Guest&Customer/OurTeam/OurTeam';
 import BookingManagement from '../Components/Manager/BookingManagement/BookingManagement';
@@ -17,6 +17,7 @@ import DoctorManagement from '../Components/Manager/DoctorManagment/DoctorManage
 import AccountManagement from '../Components/Admin/AccountManagement/AccountManagement';
 import BookingDetail from '../Components/Manager/BookingDetail/BookingDetail';
 import BookingHistory from '../Components/Guest&Customer/BookingHistory/BookingHistory';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
         path: 'doctor',
         element: <DoctorManagement/>
       },
+      // {
+      //   path: 'schedule',
+      //   element: <ScheduleManagement/>
+      // },
       {
       path: 'booking/detail',
       element: <BookingDetail/>
@@ -101,7 +106,10 @@ const router = createBrowserRouter([
 
 const PageRouter = () => {
     return (
+      <>
         <RouterProvider router={router} />
+        <ToastContainer position="top-right" autoClose={2000} />
+      </>
     );
   };
   

@@ -20,6 +20,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const URL = 'https://localhost:7028/api/Account/GetAllDoctor';
 
@@ -40,10 +41,10 @@ const DoctorManagement = () => {
         const data = await response.json();
         setDoctors(data);
       } else {
-        console.error('Failed to fetch doctors.');
+        toast.error('Failed to fetch doctors.');
       }
     } catch (error) {
-      console.error('Error fetching doctors:', error);
+      toast.error('Error fetching doctors:', error);
     }
   };
 
@@ -98,8 +99,7 @@ const DoctorManagement = () => {
                   </TableCell>
                   <TableCell align='center'>{row.username}</TableCell>
                   <TableCell align='center'>
-                    {/* Assuming 'workingStatus' and 'accountStatus' are the appropriate properties */}
-                    {row.workingStatus === 'working' ? row.workingStatus : 'Not Working'}
+                    {row.workingStatus === 'working' ? 'Working' : 'Not Working'}
                   </TableCell>
                   <TableCell align='center'>
                     <span
@@ -123,120 +123,120 @@ const DoctorManagement = () => {
         </TableContainer>
       </div>
       <div>
-      <Dialog
-  open={open}
-  onClose={handleClose}
-  aria-labelledby='alert-dialog-title'
-  aria-describedby='alert-dialog-description'
-  fullWidth={true}
-  maxWidth='xs'
-  sx={{
-    fontFamily: 'Arial, Helvetica, sans-serif',
-    overflow: 'hidden',
-  }}
->
-  <DialogTitle>Update Service</DialogTitle>
-  <DialogContent>
-    <DialogContentText />
-    {selectedDoctor !== null && (
-      <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit}>
-        <label
-          htmlFor='name'
-          style={{
-            color: '#0C3F7E',
-            fontSize: '1.4rem',
-            fontWeight: 'bold',
-            margin: '.5rem 0',
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+          fullWidth={true}
+          maxWidth='xs'
+          sx={{
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            overflow: 'hidden',
           }}
         >
-          Name
-        </label>
-        <input
-          type='text'
-          name='name'
-          style={{ height: '3rem', width: '15rem' }}
-          value={selectedDoctor.username}
-          readOnly
-        />
+          <DialogTitle>Update Doctor</DialogTitle>
+          <DialogContent>
+            <DialogContentText />
+            {selectedDoctor !== null && (
+              <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit}>
+                <label
+                  htmlFor='name'
+                  style={{
+                    color: '#0C3F7E',
+                    fontSize: '1.4rem',
+                    fontWeight: 'bold',
+                    margin: '.5rem 0',
+                  }}
+                >
+                  Name
+                </label>
+                <input
+                  type='text'
+                  name='name'
+                  style={{ height: '3rem', width: '15rem' }}
+                  value={selectedDoctor.username}
+                  readOnly
+                />
 
-        <InputLabel
-          id='workDay'
-          sx={{
-            color: '#0C3F7E',
-            fontSize: '1.4rem',
-            fontWeight: 'bold',
-            marginTop: '2rem',
-          }}
-        >
-          Work Day
-        </InputLabel>
-        <Select
-          labelId='workDay'
-          id='workDay'
-          name='workDay'
-          label='Work Day'
-          sx={{
-            height: '2rem',
-            width: '15rem',
-            backgroundColor: 'white',
-            marginBottom: '4rem',
-          }}
-          value={selectedDoctor.workingStatus} // Set the value based on selectedDoctor's workingStatus
-        >
-          <MenuItem value='working'>Working</MenuItem>
-          <MenuItem value='notWorking'>Not Working</MenuItem>
-        </Select>
+                <InputLabel
+                  id='workDay'
+                  sx={{
+                    color: '#0C3F7E',
+                    fontSize: '1.4rem',
+                    fontWeight: 'bold',
+                    marginTop: '2rem',
+                  }}
+                >
+                  Work Day
+                </InputLabel>
+                <Select
+                  labelId='workDay'
+                  id='workDay'
+                  name='workDay'
+                  label='Work Day'
+                  sx={{
+                    height: '2rem',
+                    width: '15rem',
+                    backgroundColor: 'white',
+                    marginBottom: '4rem',
+                  }}
+                  value={selectedDoctor.workingStatus} // Set the value based on selectedDoctor's workingStatus
+                >
+                  <MenuItem value='working'>Working</MenuItem>
+                  <MenuItem value='notWorking'>Not Working</MenuItem>
+                </Select>
 
-        <InputLabel
-          id='status'
-          sx={{
-            color: '#0C3F7E',
-            fontSize: '1.4rem',
-            fontWeight: 'bold',
-            marginTop: '2rem',
-          }}
-        >
-          Status
-        </InputLabel>
-        <Select
-          labelId='status'
-          id='status'
-          name='status'
-          label='Status'
-          sx={{
-            height: '2rem',
-            width: '15rem',
-            backgroundColor: 'white',
-            marginBottom: '4rem',
-          }}
-          value={selectedDoctor.accountStatus} // Set the value based on selectedDoctor's accountStatus
-        >
-          <MenuItem value='isActive'>Active</MenuItem>
-          <MenuItem value='isInactive'>Inactive</MenuItem>
-        </Select>
-        <DialogActions>
-          <button
-            type='submit'
-            style={{
-              backgroundColor: '#0C3F7E',
-              borderRadius: '2rem',
-              color: '#ffffff',
-              border: '0',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              fontSize: '1rem',
-              padding: '.9rem 1rem',
-              width: '50%',
-              margin: '2rem auto',
-            }}
-          >
-            Update Service
-          </button>
-        </DialogActions>
-      </form>
-    )}
-  </DialogContent>
-</Dialog>
+                <InputLabel
+                  id='status'
+                  sx={{
+                    color: '#0C3F7E',
+                    fontSize: '1.4rem',
+                    fontWeight: 'bold',
+                    marginTop: '2rem',
+                  }}
+                >
+                  Status
+                </InputLabel>
+                <Select
+                  labelId='status'
+                  id='status'
+                  name='status'
+                  label='Status'
+                  sx={{
+                    height: '2rem',
+                    width: '15rem',
+                    backgroundColor: 'white',
+                    marginBottom: '4rem',
+                  }}
+                  value={selectedDoctor.accountStatus} // Set the value based on selectedDoctor's accountStatus
+                >
+                  <MenuItem value='isActive'>Active</MenuItem>
+                  <MenuItem value='isInactive'>Inactive</MenuItem>
+                </Select>
+                <DialogActions>
+                  <button
+                    type='submit'
+                    style={{
+                      backgroundColor: '#0C3F7E',
+                      borderRadius: '2rem',
+                      color: '#ffffff',
+                      border: '0',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontSize: '1rem',
+                      padding: '.9rem 1rem',
+                      width: '50%',
+                      margin: '2rem auto',
+                    }}
+                  >
+                    Update Service
+                  </button>
+                </DialogActions>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

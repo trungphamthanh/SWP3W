@@ -12,9 +12,10 @@ export const Account = [
   ];
 
 export const Role=[
-    {role:"customer"},
-    {role:"manager"},
-    {role:"admin"},
+    {id:"1", role:"admin"},
+    {id:"2", role:"manager"},
+    {id:"3", role:"customer"},
+    {id:"4", role:"doctor"},
 ]
   
   

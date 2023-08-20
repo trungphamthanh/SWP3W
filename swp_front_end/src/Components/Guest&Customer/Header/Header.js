@@ -1,12 +1,19 @@
 import React from 'react';
 import './Header.scss';
 import { Link, useLocation } from 'react-router-dom';
+import { logout, isLoggedIn } from './Auth';
+import { useNavigate } from 'react-router-dom/dist';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Determine whether to display the login button
   const shouldDisplayLogin = !['/login', '/signup'].includes(location.pathname);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <div className='header-container'>
@@ -18,7 +25,11 @@ const Header = () => {
         <Link to="/faqs" className='header-link'>FAQs</Link>
         <Link to="/history" className='header-link'>History</Link>
       </div>
-      {shouldDisplayLogin && <Link to="/login" className='header-login'>Login</Link>}
+      {isLoggedIn() ? (
+        <button onClick={handleLogout} className='header-login'>Logout</button>
+      ) : (
+        shouldDisplayLogin && <Link to="/login" className='header-login'>Login</Link>
+      )}
     </div>
   );
 }

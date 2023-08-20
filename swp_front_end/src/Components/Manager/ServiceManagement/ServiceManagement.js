@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ServiceManagement.scss';
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
@@ -13,11 +13,25 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 
+const URL="https://localhost:7028/api/DASServices/GetAllServices"
+
 const ServiceManagement = () => {
   const [headerTitle, setHeaderTitle] = useState('Service Management');
   const [open, setOpen] = React.useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    // Fetch service data from the API
+    axios.get(URL)
+      .then(response => {
+        setServices(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching services:", error);
+      });
+  }, []);
 
   const handleClickOpenForUpdate = (service) => {
     setOpen(true);
@@ -88,12 +102,11 @@ const ServiceManagement = () => {
               <TableRow>
                 <TableCell sx={{fontWeight:"bold", color:"white"}}>ID</TableCell>
                 <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Service</TableCell>
-                <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Available</TableCell>
                 <TableCell/>
               </TableRow>
             </TableHead>
             <TableBody>
-              {Service.map((row) => (
+              {services.map((row) => (
                 <TableRow
                   key={row.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -101,12 +114,7 @@ const ServiceManagement = () => {
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell align="center">{row.service}</TableCell>
-                  <TableCell align="center" sx={{fontWeight:"bolder"}}>
-                    <span style={{ color: row.available === 'true' ? 'green' : 'red' }}>
-                      {row.available}
-                    </span>
-                  </TableCell>
+                  <TableCell align="center">{row.serviceName}</TableCell>
                   <TableCell>
                   <button className="service-button-update" onClick={() => handleClickOpenForUpdate(row)}>
   Update
