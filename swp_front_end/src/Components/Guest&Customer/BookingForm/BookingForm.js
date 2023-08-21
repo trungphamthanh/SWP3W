@@ -146,6 +146,10 @@ const BookingForm = () => {
   const [name, setName] = useState("");
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
   const [selectedSlotId, setSelectedSlotId] = useState(null);
+  const [addData, setAddData] = useState([]);
+
+
+  
 
   useEffect(() => {
     async function fetchServicesData() {
@@ -228,8 +232,6 @@ const BookingForm = () => {
     // Check if user data exists and has the necessary information
     if (userId) {
       const accountId = userId;
-console.log(selectedServiceIds)
-      // Prepare the data to be sent to the API
       const bookingData = {
         bookingId: 0,
         customerName: name,
@@ -242,9 +244,24 @@ console.log(selectedServiceIds)
           serviceId: serviceId,
         })),
       };
+      
  console.log(bookingData)
+//  const uniqueSlotIds = [];
+//  const uniqueBookingData = []
+//  if (bookingData != null) {
+//   uniqueBookingData = bookingData.filter(element => {
+//     if (!uniqueSlotIds.includes(element.slotId)) {
+//       uniqueSlotIds.push(element.slotId);
+//       return true;
+//     }
+//     return false;
+//   });
+
+//   // Now you can use uniqueBookingData as needed
+// }
       try {
         // Make a POST request to your API endpoint
+
         const response = await fetch(`${URL}/${accountId}`, {
           method: "POST",
           headers: {

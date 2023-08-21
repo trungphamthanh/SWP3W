@@ -9,6 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const shouldDisplayLogin = !['/login', '/signup'].includes(location.pathname);
+  const userLoggedIn = isLoggedIn(); // Check if the user is logged in
 
   const handleLogout = () => {
     logout();
@@ -23,7 +24,7 @@ const Header = () => {
         <Link to="/ourteam" className='header-link'>Team</Link>
         <Link to="/policy" className='header-link'>Policy</Link>
         <Link to="/faqs" className='header-link'>FAQs</Link>
-        <Link to="/history" className='header-link'>History</Link>
+        {userLoggedIn && <Link to="/history" className='header-link'>History</Link>}
       </div>
       {isLoggedIn() ? (
         <button onClick={handleLogout} className='header-login'>Logout</button>
