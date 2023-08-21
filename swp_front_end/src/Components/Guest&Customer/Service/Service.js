@@ -55,7 +55,7 @@ const Service = () => {
       <Banner />
       <div className='service-main'>
         <div className='service-sidebar'>
-          <h1>Our Services</h1>
+          <h1 className='our-services-header'>Our Services</h1>
           {services.map((service) => (
             <div key={service.id}>
               <button onClick={() => setSelectedService(service)}>

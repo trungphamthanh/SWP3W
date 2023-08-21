@@ -5,19 +5,17 @@
         justify-content: space-between;
         padding: 5rem 3rem 3rem 0;
         .service-sidebar{
-            display: flex;
-            flex-direction: column;
             width: 20%;
             justify-content: center;
             background-color: #0f54a7;
             color: white;
-            h1{
+            .our-services-header{
                 text-align: center;
                 border: solid 3px white;
                 border-left: 0;
                 border-right: 0;
                 padding: 2rem;
-                margin: 0;
+                background-color: #0f54a7;
             }
             button{
                 background-color: transparent;

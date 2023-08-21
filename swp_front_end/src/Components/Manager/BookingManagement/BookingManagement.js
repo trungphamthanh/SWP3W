@@ -3,14 +3,17 @@ import './BookingManagement.scss'
 import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
 import Background from '../../asset/images/BackBackground.png'
-import { Dialog, DialogContent, DialogContentText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Dialog, DialogContent, DialogContentText, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Booking } from './Booking';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const drawerWidth = 240;
 
 const URL="https://localhost:7028/api/Booking/getListBookingBymanager"
 const DoctorURL="https://localhost:7028/api/Account/GetAllDoctor"
+const BookingURL="https://localhost:7028/api/BookingDetail/GetBookingDetail?bookingId"
+const BookingStatusURL="https://localhost:7028/api/Booking/ManagerUpdateBookStatus/bookingId"
 
 const BookingManagement = () => {
   const [headerTitle, setHeaderTitle] = useState('Booking Management');
@@ -18,26 +21,111 @@ const BookingManagement = () => {
   const [bookings, setBookings] = useState([]);
   const [doctors, setDoctors] = useState([]); // State to store the list of doctors
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [selectedBookingServices, setSelectedBookingServices] = useState([]); // State for selected booking's services
+  const [bookingStatusOptions] = useState([
+    { value: 'OnProcess', label: 'OnProcess' },
+    { value: 'Canceled', label: 'Canceled' },
+    { value: 'Complete', label: 'Complete' },
+  ]);
+  const [selectedBookingStatus, setSelectedBookingStatus] = useState("");
 
   const handleBookingClick = (booking) => {
     setSelectedBooking(booking);
-    handleClickOpen();
+    fetchBookingServices(booking.id); // Fetch services for the selected booking
+    setOpen(true);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleBookingStatusChange = (event) => {
+    setSelectedBookingStatus(event.target.value);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const handleUpdateBookingStatus = async (event) => {
+    event.preventDefault();
+    // console.log(selectedBooking)
+
+    // Update the selected booking status using the API
+    if (selectedBooking) {
+      const updatedBooking = {
+          id: selectedBooking.id,
+          customerName: selectedBooking.customerName,
+          phoneNo: selectedBooking.phoneNo,
+          gender: selectedBooking.gender,
+          bookingStatus: selectedBookingStatus,
+          accountId:selectedBooking.accountId,
+          slotId:selectedBooking.slotId,
+          account:null,
+          bookingDetails:[],
+          slot:null
+        };
+      const updatedStatusUrl = `${BookingStatusURL}/${selectedBooking.id}?bookingStatus=${selectedBookingStatus}`;
+      console.log(updatedBooking)
+      fetch(updatedStatusUrl, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedBooking),
+      })
+        .then(response => response.json())
+        .then(updatedData => {
+          // Handle success, if needed
+          console.log('Booking status updated:', updatedData);
+          // Fetch updated booking data again
+          fetchBookings();
+        })
+        .catch(error => {
+          // Handle error, if needed
+          toast.error('Error updating booking status:', error);
+          console.log(error)
+        });
+    }
+    // Close the dialog
+    handleClose();
+  };
+
+  // async function fetchServicesData() {
+  //   try {
+  //     const response = await fetch(ServiceURL);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setServicesData(data);
+  //       toast.success("Services data fetched successfully!"); // Show success toast
+  //     } else {
+  //       console.error(
+  //         "Failed to fetch services data:",
+  //         response.status,
+  //         response.statusText
+  //       );
+  //       toast.error("Failed to fetch services data"); // Show error toast
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred:", error);
+  //     toast.error("An error occurred while fetching services data"); // Show error toast
+  //   }
+  // }
+
+  async function fetchBookings() {
+    try {
+      const response = await fetch(URL);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setBookings(data);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  }
+  
+
   useEffect(() => {
     // Fetch booking data from the API
-    fetch(URL)
-      .then(response => response.json())
-      .then(data => setBookings(data))
-      .catch(error => console.error("Error fetching bookings:", error));
+
+    fetchBookings();
 
     // Fetch doctors data from the API
     fetch(DoctorURL)
@@ -45,6 +133,18 @@ const BookingManagement = () => {
       .then(data => setDoctors(data))
       .catch(error => console.error("Error fetching doctors:", error));
   }, []);
+
+  const fetchBookingServices = (bookingId) => {
+    fetch(`${BookingURL}=${bookingId}`)
+      .then(response => response.json())
+      .then(data => {
+        setSelectedBookingServices(data.listServicesBooking)
+        setSelectedBookingStatus(data.bookingStatus)
+        console.log(data.bookingStatus)
+      })
+      .catch(error => console.error("Error fetching booking services:", error));
+  };
+  
 
   // Function to get doctor's name based on accountId
   const getDoctorName = (userId) => {
@@ -66,6 +166,7 @@ const BookingManagement = () => {
                 <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Gender</TableCell>
                 <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Phone</TableCell>
                 <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Date</TableCell>
+                <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Status</TableCell>
                 <TableCell/>
               </TableRow>
             </TableHead>
@@ -77,6 +178,7 @@ const BookingManagement = () => {
                   <TableCell align="center">{booking.gender}</TableCell>
                   <TableCell align="center">{booking.phoneNo}</TableCell>
                   <TableCell align="center">{booking.slot.date}</TableCell>
+                  <TableCell align="center">{booking.bookingStatus}</TableCell>
                   <TableCell>
                     <button className="booking-viewdetail-button" onClick={() => handleBookingClick(booking)}>
                       View Detail
@@ -99,7 +201,7 @@ const BookingManagement = () => {
       >
         <DialogContent>
           <DialogContentText/>
-          <form style={{display:"flex", flexDirection:"column"}}>
+          <form style={{display:"flex", flexDirection:"column"}} onSubmit={handleUpdateBookingStatus}>
             <div style={{marginBottom:"2rem", display:"flex"}}>
               <div style={{display:"grid"}}>
                 <label htmlFor="slot" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Slot </label>
@@ -110,19 +212,39 @@ const BookingManagement = () => {
                 <input type="text" name="date" style={{height:"1.7rem"}} value={selectedBooking?.slot.date} readOnly />
               </div>
             </div>
-          {/* <div style={{marginBottom:"2rem", display:"flex"}}>
-            <div style={{display:"grid"}}>
-              <label htmlFor="service1" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Service 1 </label>
-              <input type="text" name="service1" style={{height:"1.7rem", marginRight:"3rem"}}></input>
-            </div>
-            <div style={{display:"grid"}}>
-              <label htmlFor="service2" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Service 2 </label>
-              <input type="text" name="service2" style={{height:"1.7rem"}}></input>
-            </div>
-          </div> */}
+            {selectedBookingServices.length > 0 && (
+              <div style={{ marginBottom: "2rem", display: "flex" }}>
+                {selectedBookingServices.map((service, index) => (
+                  <div key={index} style={{ display: "grid" }}>     
+                    <label htmlFor={`service${index}`} style={{ color: "#0C3F7E", fontSize: "1.4rem", fontWeight: "bold", margin: ".5rem 0" }}>
+                      Service {index+1}
+                    </label>
+                    <input type="text" name={`service${index}`} style={{ height: "1.7rem", marginRight: "3rem" }} value={service.serviceName} readOnly />
+                  </div>
+                ))}
+              </div>
+            )}
             <label htmlFor="doctor" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Doctor </label>
             <input type="text" name="doctor" style={{height:"1.7rem", width:"8rem"}} value={getDoctorName(selectedBooking?.slot.accountId)} readOnly />
-            <button onClick={handleClose} style={{
+            <label htmlFor="bookingStatus" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Booking Status</label>
+            <Select
+              labelId="bookingStatus"
+              id="bookingStatus"
+              label="Booking Status"
+              sx={{
+                height: "2rem",
+                width: "10rem",
+                backgroundColor: "white",
+                marginRight: "2rem",
+              }}
+              value={selectedBookingStatus}
+              onChange={handleBookingStatusChange}
+            >
+              {bookingStatusOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+              ))}
+            </Select>
+            <button type='submit' style={{
               backgroundColor:"#0C3F7E",
               borderRadius:"2rem",
               color:"#ffffff",
@@ -136,7 +258,7 @@ const BookingManagement = () => {
             }}>
               Confirm
             </button>
-            <Link to="/manager/booking/detail" style={{
+            <Link to={`/manager/booking/detail/${selectedBooking?.id}`} style={{
               backgroundColor:"#0C3F7E",
               borderRadius:"2rem",
               color:"#ffffff",

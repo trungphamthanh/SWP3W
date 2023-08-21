@@ -9,9 +9,12 @@ import BoxBackground from '../../asset/images/BannerImage2.avif'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import { Link } from 'react-router-dom'
+import { isLoggedIn } from '../Header/Auth';
 
 
 const Home = () => {
+  const userLoggedIn = isLoggedIn();
+
   return (
     <div className='home-container'>
       <Header/>
@@ -133,10 +136,17 @@ const Home = () => {
         </div>
       </div>
       <Link to={''} className='link'>See More</Link>
+      {userLoggedIn ? (
       <div className='book-box' style={{background:`url(${BoxBackground})`, width:"30%", padding:""}}>
-        <h2>Ready to Book?</h2>
-        <Link to='/booking' className='link'>Book Now</Link>
+      <h2>Ready to Book?</h2>
+      <Link to='/booking' className='link'>Book Now</Link>
       </div>
+        ) : (
+          <div className='book-box' style={{background:`url(${BoxBackground})`, width:"30%", padding:""}}>
+          <h2>Ready to Book?</h2>
+          <Link to='/login' className='link'>Book Now</Link>
+          </div>
+        )}
       </div>
       <Footer/>
     </div>

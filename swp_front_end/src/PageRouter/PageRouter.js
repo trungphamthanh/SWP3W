@@ -87,8 +87,8 @@ const router = createBrowserRouter([
       //   element: <ScheduleManagement/>
       // },
       {
-      path: 'booking/detail',
-      element: <BookingDetail/>
+        path: 'booking/detail/:bookingId', // Define a route parameter for booking ID
+        element: <BookingDetail />,
       },
     ]
   },

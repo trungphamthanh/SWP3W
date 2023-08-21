@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./BookingDetail.scss";
 import { 
   InputLabel, 
@@ -17,8 +17,26 @@ import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
 import Background from '../../asset/images/BackBackground.png'
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom/dist";
+import { WeeklyCalendar } from "react-week-picker";
+import moment from "moment";
+import { toast } from "react-toastify";
 
-const Slot = ({ date, slot, status, description, selected, onClick }) => {
+const Slot = ({
+  date,
+  slot,
+  status,
+  description,
+  selected,
+  onClick,
+  setSelectedSlotId,
+  slotData,
+}) => {
+  const handleChangeMultiple = (event) => {
+    console.log(event.value);
+    setSelectedSlotId(event.value);
+  };
+
   return (
     <TableCell
       onClick={onClick}
@@ -36,41 +54,66 @@ const Slot = ({ date, slot, status, description, selected, onClick }) => {
         <h1 className="available-header">Slot {slot}</h1>
         <div className="available-time">({description})</div>
         <div className="available-status">{status}</div>
+        {/* {slotData && <div className="slot-id">ID: {slotData.id}</div>} */}
       </div>
-      
+
       {/* Hidden input field to hold selected slot */}
-      <input
-        type="hidden"
-        name={`selectedSlots[${date}]`}
-        value={selected ? slot : ""}
-      />
     </TableCell>
   );
 };
 
+const DateURL = "https://localhost:7028/api/Slot/GetAllSlot";
+const SlotURL = `https://localhost:7028/api/Booking/getListBookingByCustomerId`
 
-const BookingDetail = () => {
+
+
+const BookingDetail = ({ match }) => {
+  const { bookingId } = useParams();
   const [selectedSlots, setSelectedSlots] = useState({});
   const [selectedWeek, setSelectedWeek] = useState(Week[0]);
   const [headerTitle, setHeaderTitle] = useState('Booking Update Management');
   const [selectedService1, setSelectedService1] = useState("");
   const [selectedService2, setSelectedService2] = useState("");
+  const [selectedSlotId, setSelectedSlotId] = useState(null);
+  const [slotsData, setSlotsData] = useState([]);
+  const userId = localStorage.getItem('userId');
 
-  const handleSlotClick = (day, time, status) => {
+  useEffect(() => {
+    async function fetchSlotsData() {
+      try {
+        const response = await fetch(DateURL);
+        if (response.ok) {
+          const data = await response.json();
+          setSlotsData(data);
+          // console.log(data)
+        } else {
+          toast.error("Failed to fetch slot data");
+        }
+      } catch (error) {
+        toast.error("An error occurred:", error);
+      }
+    }
+
+    fetchSlotsData();
+  }, [])
+  
+
+  const handleSlotClick = (day, time, status, slotData) => {
     if (status === "Open") {
       setSelectedSlots((prevSelectedSlots) => {
         const newSelectedSlots = { ...prevSelectedSlots };
-  
+
         // Clear all previously selected slots
         Object.keys(newSelectedSlots).forEach((selectedDay) => {
           newSelectedSlots[selectedDay] = null;
         });
-  
+
         // Set the clicked slot as selected
         newSelectedSlots[day] = time;
-  
+
         return newSelectedSlots;
       });
+      setSelectedSlotId(slotData.id);
     }
   };
 
@@ -103,9 +146,37 @@ const BookingDetail = () => {
       });
   };
 
-  const handleWeekSelect = (event) => {
-    const selectedWeekIndex = event.target.value;
-    setSelectedWeek(Week[selectedWeekIndex]); // Store the selected week's information
+  const handleJumpToCurrentWeek = (currenDate) => {
+    // console.log(`current date: ${currenDate}`);
+  };
+
+  const handleWeekPick = (startDate, endDate) => {
+    setSelectedWeek({ startOfWeek: startDate, endOfWeek: endDate });
+  };
+
+  const calculateSlotDates = () => {
+    const startDate = moment(selectedWeek.startOfWeek).startOf("isoWeek"); // Start from Monday
+    const endDate = moment(selectedWeek.startOfWeek)
+      .startOf("isoWeek")
+      .add(4, "days"); // End on Friday
+    const slotDates = [];
+    let currentDate = startDate.clone();
+
+    while (currentDate.isSameOrBefore(endDate)) {
+      slotDates.push(currentDate.format("ddd DD/MM"));
+      // console.log(slotDates)
+      currentDate.add(1, "days");
+    }
+
+    return slotDates;
+  };
+
+  const handleSlotSelect = (day, slot) => {
+    setSelectedSlots((prevSelectedSlots) => {
+      const newSelectedSlots = { ...prevSelectedSlots };
+      newSelectedSlots[day] = slot;
+      return newSelectedSlots;
+    });
   };
 
   
@@ -115,7 +186,7 @@ const BookingDetail = () => {
         <Sidebar/>
         <Header title={headerTitle} />
         <form style={{marginLeft:"20rem", paddingTop:"15rem"}} onSubmit={handleSubmit}>
-        <InputLabel
+        {/* <InputLabel
         id={`service-1`}
         sx={{
           color: "#1257ab",
@@ -168,88 +239,95 @@ const BookingDetail = () => {
             {service.service}
           </MenuItem>
         ))}
-      </Select>
-                  <InputLabel
-                    id="time"
-                    sx={{
-                      color: "white",
-                      fontSize: "2rem",
-                      fontWeight: "bold",
-                      marginLeft: "4rem",
-                    }}
-                  >
-                    Week
-                  </InputLabel>
-                  <Select
-                    labelId="time"
-                    id="time"
-                    label="time"
-                    value={0} // Set the initial value to 0 for the first week
-                    sx={{
-                      height: "2rem",
-                      width: "15rem",
-                      backgroundColor: "white",
-                      marginLeft: "4rem",
-                      marginBottom: "4rem",
-                    }}
-                    onChange={handleWeekSelect} // Call this function when a week is selected
-                  >
-                    {Week.map((week, index) => (
-                      <MenuItem key={week.week} value={index}>
-                        {week.week}
-                      </MenuItem>
+      </Select> */}
+            <div className="form-time">
+              <InputLabel
+                id="time"
+                sx={{
+                  color: "white",
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  marginLeft: "4rem",
+                }}
+              >
+                Week
+              </InputLabel>
+              <WeeklyCalendar
+                onWeekPick={handleWeekPick}
+                jumpToCurrentWeekRequired={true}
+                onJumpToCurrentWeek={handleJumpToCurrentWeek}
+              />
+              <TableContainer
+                component={Paper}
+                sx={{
+                  width: "80%",
+                  backgroundColor: "#5088C9",
+                  margin: "0 auto",
+                  height: "",
+                }}
+              >
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {calculateSlotDates().map((date) => (
+                        <TableCell
+                          key={date}
+                          sx={{
+                            textAlign: "center",
+                            backgroundColor: "#5088C9",
+                            color: "white",
+                            fontSize: "1rem",
+                          }}
+                        >
+                          {date}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Array.from({ length: 4 }).map((_, slotIndex) => (
+                      <TableRow key={slotIndex}>
+                        {calculateSlotDates().map((date) => {
+                          const isSelected =
+                            selectedSlots[date] === slotIndex + 1;
+                          const slotData = slotsData.find(
+                            (slot) =>
+                              moment(slot.date).format("ddd DD/MM") === date &&
+                              slot.slotNo === slotIndex + 1
+                          );
+                          const status = slotData
+                            ? slotData.slotStatus
+                            : "Closed"; // Default to "Closed" if no data is found
+                          const timeDescription =
+                            DateSlot[slotIndex].description; // Use time description from DateSlot
+                          return (
+                            <Slot
+                              key={`${date}-${slotIndex}`}
+                              date={date}
+                              slot={slotIndex + 1}
+                              description={timeDescription}
+                              status={status}
+                              selected={isSelected}
+                              onClick={() => {
+                                handleSlotClick(
+                                  date,
+                                  slotIndex + 1,
+                                  status,
+                                  slotData
+                                );
+                              }}
+                              onSlotSelect={handleSlotSelect}
+                              setSelectedSlotId={setSelectedSlotId}
+                              slotData={slotData} // Pass the slot data here
+                            />
+                          );
+                        })}
+                      </TableRow>
                     ))}
-                  </Select>
-                  {/* ... (rest of your form) */}
-                  <TableContainer
-                    component={Paper}
-                    sx={{
-                      width: "80%",
-                      backgroundColor: "#5088C9",
-                      margin: "0 auto",
-                      height: "",
-                    }}
-                  >
-                    <Table>
-                      <TableHead>
-  <TableRow>
-    {WeekDate.map(({ day }) => (
-      <TableCell
-        key={day}
-        sx={{
-          textAlign: "center",
-          backgroundColor: "#5088C9",
-          color: "white",
-          fontSize: "1rem",
-        }}
-      >
-        <h1>{day}</h1>
-        {selectedWeek && (
-          <h2>{selectedWeek[day.toLowerCase()]}</h2>
-        )}
-      </TableCell>
-    ))}
-  </TableRow>
-</TableHead>
-                      <TableBody>
-                        {DateSlot.map(({ slot, description, status }) => (
-                          <TableRow key={slot}>
-                            {WeekDate.map(({ day }) => (
-                              <Slot
-                                key={`${day}-${slot}`}
-                                date={day}
-                                slot={slot}
-                                status={status}
-                                description={description}
-                                selected={selectedSlots[day] === slot}
-                                onClick={() => handleSlotClick(day, slot, status)}
-                              />
-                            ))}
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
                 <div style={{display:"flex", justifyContent:"space-evenly", marginTop:"3rem",}}>
                     <button type="submit" className="form-button">
                       Save

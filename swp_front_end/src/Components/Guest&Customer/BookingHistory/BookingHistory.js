@@ -7,14 +7,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import "./BookingHistory.scss";
 
-const userId = localStorage.getItem('userId');
-const URL = `https://localhost:7028/api/Booking/getListBookingByCustomerId/${userId}`;
+
+const URL = `https://localhost:7028/api/Booking/getListBookingByCustomerId`;
 const DoctorURL = "https://localhost:7028/api/Account/GetAllDoctor";
 
 const BookingHistory = () => {
   const [bookingHistory, setBookingHistory] = useState([]);
   const [doctors, setDoctors] = useState({}); // Store doctors' names with account IDs
+  const userId = localStorage.getItem('userId');
 
+  const slotStringData =(i) =>{
+   if(i==1){
+    return "7:00-9:00"
+   } 
+   if(i==2){
+    return "9:00-11:00"
+   }
+   if(i==3){
+    return "13:00-15:00"
+   }
+   if(i==4){
+    return "15:00-17:00"
+   }
+  }
   useEffect(() => {
     // Fetch doctors' data
     fetch(DoctorURL)
@@ -32,7 +47,7 @@ const BookingHistory = () => {
       });
 
     // Fetch booking history
-    fetch(URL)
+    fetch(`${URL}/${userId}`)
       .then(response => response.json())
       .then(data => setBookingHistory(data))
       .catch(error => {
@@ -62,7 +77,7 @@ const BookingHistory = () => {
                 <TableRow key={index}>
                   <TableCell>{booking.id}</TableCell>
                   <TableCell align="center">{booking.slot.date}</TableCell>
-                  <TableCell align="center">{booking.slot.slotNo}</TableCell>
+                  <TableCell align="center">{slotStringData(booking.slot.slotNo)}</TableCell>
                   <TableCell align="center">{doctors[booking.slot.accountId]}</TableCell>
                 </TableRow>
               ))}

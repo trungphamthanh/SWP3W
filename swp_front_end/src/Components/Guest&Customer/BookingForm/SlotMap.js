@@ -7,10 +7,10 @@ export const WeekDate=[
 ]
 
 export const DateSlot=[
-    {slot:"1", description:"7:00-9:00", status:"Open"},
-    {slot:"2", description:"9:00-11:00", status:"Open"},
-    {slot:"3", description:"11:15-1:15", status:"Open"},
-    {slot:"4", description:"1:15-3:15", status:"Open"},
+    {slot:"1", description:"7:00-9:00"},
+    {slot:"2", description:"9:00-11:00"},
+    {slot:"3", description:"13:00-15:00"},
+    {slot:"4", description:"15:00-17:00"},
 ]
 
 // export const DateSlot=[

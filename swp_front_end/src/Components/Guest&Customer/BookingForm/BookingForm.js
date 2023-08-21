@@ -28,15 +28,26 @@ import moment from "moment";
 import "moment/locale/en-gb";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { logout, isLoggedIn } from "../Header/Auth";
+import { useNavigate } from "react-router-dom/dist";
+import { v4 as uuidv4 } from "uuid";
+import _ from "lodash";
 
 const URL = "https://localhost:7028/api/Booking/createBooking/customer";
 const DateURL = "https://localhost:7028/api/Slot/GetAllSlot";
 const ServiceURL = "https://localhost:7028/api/DASServices/GetAllServices";
 
-const Slot = ({ date, slot, status, description, selected, onClick, setSelectedSlotId, slotData }) => {
+const Slot = ({
+  date,
+  slot,
+  status,
+  description,
+  selected,
+  onClick,
+  setSelectedSlotId,
+  slotData,
+}) => {
   const handleChangeMultiple = (event) => {
-    console.log(event.value)
+    console.log(event.value);
     setSelectedSlotId(event.value);
   };
 
@@ -65,21 +76,26 @@ const Slot = ({ date, slot, status, description, selected, onClick, setSelectedS
   );
 };
 
-
 const ServiceInput = ({
   index,
   onRemove,
   servicesData,
   setSelectedServiceIds,
   selectedServiceIds,
+  service,
 }) => {
-  
-  const handleChangeMultiple = (event) => {
-    const value = [];
+  const handleChangeMultiple = (value, serviceId) => {
+    let serviceListCLone = _.cloneDeep(selectedServiceIds)
+    let indexArray = selectedServiceIds.findIndex((service) => service.id === serviceId) 
+    
+    if(indexArray>-1){
+      serviceListCLone[indexArray].serviceId=value
+      setSelectedServiceIds(serviceListCLone);
+    }
 
-        value.push(event.target.value);
-    setSelectedServiceIds(value);
   };
+
+  console.log(service)
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -91,7 +107,7 @@ const ServiceInput = ({
           fontWeight: "bold",
         }}
       >
-        Service {index}
+        Service {service.labelNo}
       </InputLabel>
       <Select
         labelId={`service-${index}`}
@@ -103,8 +119,8 @@ const ServiceInput = ({
           backgroundColor: "white",
           marginBottom: "2rem",
         }}
-        onChange={handleChangeMultiple}
-        value={selectedServiceIds}
+        onChange={(e) => handleChangeMultiple(e.target.value, service.id)}
+        value={service.serviceId}
       >
         {servicesData?.map((service) => (
           <MenuItem key={service.id} value={service.id}>
@@ -112,27 +128,17 @@ const ServiceInput = ({
           </MenuItem>
         ))}
       </Select>
-      {onRemove && (
-        <Button
-          variant="outlined"
-          onClick={onRemove}
-          sx={{
-            marginTop: "1rem",
-            backgroundColor: "white",
-            color: "black",
-            "&:hover": {
-              color: "white",
-              borderColor: "white",
-            },
-            width: "14rem",
-          }}
-        >
-          Remove Service
-        </Button>
-      )}
     </div>
   );
 };
+
+const initSelectedService = [
+  {
+    id: uuidv4(),
+    serviceId: null,
+    labelNo:1,
+  },
+];
 
 const BookingForm = () => {
   const [selectedSlots, setSelectedSlots] = useState({});
@@ -144,12 +150,10 @@ const BookingForm = () => {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [name, setName] = useState("");
-  const [selectedServiceIds, setSelectedServiceIds] = useState([]);
+  const [selectedServiceIds, setSelectedServiceIds] =
+    useState(initSelectedService);
   const [selectedSlotId, setSelectedSlotId] = useState(null);
-  const [addData, setAddData] = useState([]);
-
-
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchServicesData() {
@@ -240,25 +244,12 @@ const BookingForm = () => {
         bookingStatus: "Ongoing",
         accountId: accountId,
         slotId: selectedSlotId,
-        listservicesBookDTO: selectedServiceIds.map((serviceId) => ({
-          serviceId: serviceId,
+        listservicesBookDTO: selectedServiceIds.map((service) => ({
+          serviceId: service.serviceId,
         })),
       };
-      
- console.log(bookingData)
-//  const uniqueSlotIds = [];
-//  const uniqueBookingData = []
-//  if (bookingData != null) {
-//   uniqueBookingData = bookingData.filter(element => {
-//     if (!uniqueSlotIds.includes(element.slotId)) {
-//       uniqueSlotIds.push(element.slotId);
-//       return true;
-//     }
-//     return false;
-//   });
 
-//   // Now you can use uniqueBookingData as needed
-// }
+      console.log(bookingData);
       try {
         // Make a POST request to your API endpoint
 
@@ -271,7 +262,8 @@ const BookingForm = () => {
         });
 
         if (response.ok) {
-          setIsDialogOpen(true); // Show success dialog
+          toast.success("Form successfully submitted");
+          navigate("/history");
         } else {
           toast.error("Failed to submit the form");
         }
@@ -285,13 +277,28 @@ const BookingForm = () => {
   };
 
   const handleServiceButtonAdd = () => {
-    if (!serviceSectionAdded) {
-      setServiceSectionAdded(true);
+    // if (!serviceSectionAdded) {
+    //   setServiceSectionAdded(true);
+    // }
+    if(selectedServiceIds.length>1){
+      return 
     }
+
+    const labelNo = selectedServiceIds.length+1
+
+    let service = {
+      id:uuidv4(),
+      serviceId: null,
+      labelNo:labelNo
+    }
+
+    setSelectedServiceIds([...selectedServiceIds, service])
   };
 
   const handleServiceRemove = () => {
-    setServiceSectionAdded(false);
+    let serviceListCLone = _.cloneDeep(selectedServiceIds)
+      serviceListCLone.pop()
+    setSelectedServiceIds(serviceListCLone)
   };
 
   const handleJumpToCurrentWeek = (currenDate) => {
@@ -360,15 +367,21 @@ const BookingForm = () => {
               </div>
             </div>
             <div className="form-service">
-              <ServiceInput
-                index={1}
-                servicesData={servicesData}
-                setSelectedServiceIds={setSelectedServiceIds}
-                selectedServiceIds={selectedServiceIds}
-              />
+              {selectedServiceIds &&
+                selectedServiceIds.length > 0 &&
+                selectedServiceIds.map((service) => (
+                  <ServiceInput
+                    index={1}
+                    key={service.id}
+                    service={service}
+                    servicesData={servicesData}
+                    setSelectedServiceIds={setSelectedServiceIds}
+                    selectedServiceIds={selectedServiceIds}
+                  />
+                ))}
 
               {/* Render the "Add Service" button only if section is not added */}
-              {!serviceSectionAdded && (
+              {selectedServiceIds.length == 1 ? (
                 <div>
                   <Button
                     variant="outlined"
@@ -386,16 +399,26 @@ const BookingForm = () => {
                     Add Service
                   </Button>
                 </div>
+              ) : (
+                <Button
+                variant="outlined"
+                onClick={() => handleServiceRemove( )}
+                sx={{
+                  marginTop: "1rem",
+                  backgroundColor: "white",
+                  color: "black",
+                  "&:hover": {
+                    color: "white",
+                    borderColor: "white",
+                  },
+                  width: "14rem",
+                }}
+              >
+                Remove Service
+              </Button>
               )}
 
               {/* Render the second service input if section is added */}
-              {serviceSectionAdded && (
-                <ServiceInput
-                  index={2}
-                  servicesData={servicesData}
-                  onRemove={handleServiceRemove}
-                />
-              )}
             </div>
             <div className="form-time">
               <InputLabel
@@ -458,20 +481,25 @@ const BookingForm = () => {
                           const timeDescription =
                             DateSlot[slotIndex].description; // Use time description from DateSlot
                           return (
-<Slot
-  key={`${date}-${slotIndex}`}
-  date={date}
-  slot={slotIndex + 1}
-  description={timeDescription}
-  status={status}
-  selected={isSelected}
-  onClick={() => {
-    handleSlotClick(date, slotIndex + 1, status, slotData)
-  }}
-  onSlotSelect={handleSlotSelect}
-  setSelectedSlotId={setSelectedSlotId}
-  slotData={slotData} // Pass the slot data here
-/>
+                            <Slot
+                              key={`${date}-${slotIndex}`}
+                              date={date}
+                              slot={slotIndex + 1}
+                              description={timeDescription}
+                              status={status}
+                              selected={isSelected}
+                              onClick={() => {
+                                handleSlotClick(
+                                  date,
+                                  slotIndex + 1,
+                                  status,
+                                  slotData
+                                );
+                              }}
+                              onSlotSelect={handleSlotSelect}
+                              setSelectedSlotId={setSelectedSlotId}
+                              slotData={slotData} // Pass the slot data here
+                            />
                           );
                         })}
                       </TableRow>
