@@ -258,7 +258,7 @@ const BookingManagement = () => {
               textAlign:'center',
               textDecoration:"none"
             }}>
-              Update
+              To Update Page
             </Link>
           </form>
         </DialogContent>
