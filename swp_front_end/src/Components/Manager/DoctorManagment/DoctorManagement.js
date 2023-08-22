@@ -26,16 +26,20 @@ import { TextField, Button } from "@mui/material";
 const URL = "https://localhost:7028/api/Account/GetAllDoctor";
 const AddSlotURL = "https://localhost:7028/api/Slot/AddDoctorToSlot";
 const WorkdateURL = "https://localhost:7028/api/Slot/GetAllSlotByDoctorId?id";
+const StatusURL =
+  "https://localhost:7028/api/Account/UpdateDoctorWorkingStatusById/{id}";
 
 const DoctorManagement = () => {
   const [headerTitle, setHeaderTitle] = useState("Doctor Management");
   const [open, setOpen] = React.useState(false);
+  const [openStatus, setOpenStatus] = React.useState(false);
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState(
-    selectedDoctor ? selectedDoctor.accountStatus : ""
+    doctors ? doctors.workingStatus : ""
   );
+  console.log(selectedStatus);
 
   useEffect(() => {
     fetchDoctors();
@@ -74,7 +78,6 @@ const DoctorManagement = () => {
         if (matchingDoctor) {
           matchingDoctor.dayInWeek = workdayData[0].dayInWeek;
           setSelectedDoctor(matchingDoctor);
-          setSelectedStatus(matchingDoctor.accountStatus);
         } else {
           toast.error("No matching doctor found.");
         }
@@ -82,30 +85,44 @@ const DoctorManagement = () => {
         toast.error("Failed to fetch work day.");
       }
     } catch (error) {}
+    setOpen(true);
+  };
+
+  const handleStatusDialogOpen = (doctor) => {
     setSelectedDoctor(doctor);
-    setOpen(true); // Always open the dialog, regardless of fetching outcome
+    setSelectedStatus(doctor.workingStatus);
+    setOpenStatus(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSubmit = async (event) => {
+  const handleCloseStatus = () => {
+    setOpenStatus(false);
+  };
+
+  const handleSlotSubmit = async (event) => {
     event.preventDefault();
+    
+    const slotData = {
+      month: selectedMonth,
+      dayInWeek: selectedDoctor.dayInWeek,
+      accountId: selectedDoctor.id,
+      roleId: selectedDoctor.roleId,
+    };
+
     try {
       const response = await fetch(AddSlotURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          month: selectedMonth,
-          dayInWeek: selectedDoctor.dayInWeek,
-          accountId: selectedDoctor.id,
-        }),
+        body: JSON.stringify(slotData),
       });
+
       if (response.ok) {
-        // Success handling
+        fetchDoctors(); // Update the doctors list
         handleClose();
       } else {
         toast.error("Failed to add slot.");
@@ -114,6 +131,40 @@ const DoctorManagement = () => {
       toast.error("Error adding slot:", error);
     }
   };
+
+  const handleStatusSubmit = async (event) => {
+    event.preventDefault();
+    
+    const statusData = {
+      accountId: selectedDoctor.id,
+      userId: 0,
+      username: "string",
+      password: "string",
+      roleId: 0,
+      accountStatus: "string",
+      workingStatus: selectedStatus,
+      phoneNum: "string",
+      gender: "string",
+    };
+
+    try {
+      const statusResponse = await fetch(`${StatusURL}${selectedDoctor.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(statusData),
+      });
+
+      if (statusResponse.ok) {
+        handleCloseStatus()
+        fetchDoctors()
+      }
+    } catch (statusError) {
+      toast.error("Error updating working status:", statusError);
+    }
+  };
+
 
   return (
     <div
@@ -149,7 +200,8 @@ const DoctorManagement = () => {
                 >
                   Status
                 </TableCell>
-                <TableCell />
+                <TableCell/>
+                <TableCell/>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -166,11 +218,11 @@ const DoctorManagement = () => {
                     <span
                       style={{
                         color:
-                          row.accountStatus === "isActive" ? "green" : "red",
+                          row.workingStatus === "working" ? "green" : "red",
                         fontWeight: "bolder",
                       }}
                     >
-                      {row.accountStatus === "isActive" ? "Active" : "Inactive"}
+                      {row.workingStatus === "working" ? "Working" : "Absent"}
                     </span>
                   </TableCell>
                   <TableCell>
@@ -178,9 +230,17 @@ const DoctorManagement = () => {
                       className="service-button-update"
                       onClick={() => handleOpen(row)}
                     >
-                      Update
+                      Update Slot
                     </button>
                   </TableCell>
+                  <TableCell>
+              <button
+                className="service-button-update"
+                onClick={() => handleStatusDialogOpen(row)} // Use the new function for status dialog
+              >
+                Update Status
+              </button>
+            </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -200,13 +260,13 @@ const DoctorManagement = () => {
             overflow: "hidden",
           }}
         >
-          <DialogTitle>Update Doctor</DialogTitle>
+          <DialogTitle>Update Slot</DialogTitle>
           <DialogContent>
             <DialogContentText />
             {selectedDoctor !== null && (
               <form
                 style={{ display: "flex", flexDirection: "column" }}
-                onSubmit={handleSubmit}
+                onSubmit={handleSlotSubmit}
               >
                 <label
                   htmlFor="name"
@@ -299,8 +359,59 @@ const DoctorManagement = () => {
                     )
                   )}
                 </Select>
+                <DialogActions>
+                  <button
+                    type="submit"
+                    style={{
+                      backgroundColor: "#0C3F7E",
+                      borderRadius: "2rem",
+                      color: "#ffffff",
+                      border: "0",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      fontSize: "1rem",
+                      padding: ".9rem 1rem",
+                      width: "50%",
+                      margin: "2rem auto",
+                    }}
+                  >
+                    Update
+                  </button>
+                </DialogActions>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={openStatus}
+          onClose={handleCloseStatus}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          fullWidth={true}
+          maxWidth="xs"
+          sx={{
+            fontFamily: "Arial, Helvetica, sans-serif",
+            overflow: "hidden",
+          }}
+        >
+          <DialogTitle>Update Status</DialogTitle>
+          <DialogContent>
+            <DialogContentText />
+            {selectedDoctor !== null && (
+              <form
+                style={{ display: "flex", flexDirection: "column" }}
+                onSubmit={handleStatusSubmit}
+              >
+                {/* Form fields related to slot data... */}
+              </form>
+            )}
 
-                {/* <InputLabel
+            {selectedDoctor !== null && (
+              <form
+                style={{ display: "flex", flexDirection: "column" }}
+                onSubmit={handleStatusSubmit} // Use handleStatusSubmit here
+              >
+                <InputLabel
                   id="status"
                   sx={{
                     color: "#0C3F7E",
@@ -322,12 +433,12 @@ const DoctorManagement = () => {
                     backgroundColor: "white",
                     marginBottom: "4rem",
                   }}
-                  value={selectedDoctor.accountStatus} // Set the value based on selectedStatus state
-                  onChange={(event) => setSelectedStatus(event.target.value)} // Update selectedStatus when the user selects a new value
+                  value={selectedStatus} // Use selectedStatus here
+                  onChange={(event) => setSelectedStatus(event.target.value)}
                 >
-                  <MenuItem value="isActive">Active</MenuItem>
-                  <MenuItem value="isInactive">Inactive</MenuItem>
-                </Select> */}
+                  <MenuItem value="working">Working</MenuItem>
+                  <MenuItem value="absent">Absent</MenuItem>
+                </Select>
                 <DialogActions>
                   <button
                     type="submit"

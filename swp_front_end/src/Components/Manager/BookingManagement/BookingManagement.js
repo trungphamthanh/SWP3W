@@ -244,7 +244,7 @@ const BookingManagement = () => {
             }}>
               Confirm
             </button>
-            <Link to={`/manager/booking/detail/${selectedBooking?.id}`} style={{
+            {/* <Link to={`/manager/booking/detail/${selectedBooking?.id}`} style={{
               backgroundColor:"#0C3F7E",
               borderRadius:"2rem",
               color:"#ffffff",
@@ -259,7 +259,7 @@ const BookingManagement = () => {
               textDecoration:"none"
             }}>
               To Update Page
-            </Link>
+            </Link> */}
           </form>
         </DialogContent>
       </Dialog>
