@@ -1,42 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import './ServiceManagement.scss';
-import Sidebar from '../Sidebar/Sidebar';
-import Header from '../Header/Header';
-import Background from '../../asset/images/BackBackground.png';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { Service } from './ServiceMap';
-import { Add } from '@mui/icons-material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import "./ServiceManagement.scss";
+import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Header/Header";
+import Background from "../../asset/images/BackBackground.png";
+import {
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { Service } from "./ServiceMap";
+import { Add } from "@mui/icons-material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const URL="https://localhost:7028/api/DASServices/GetAllServices"
+const URL = "https://localhost:7028/api/DASServices/GetAllServices";
+const UpdateURL = "https://localhost:7028/api/DASServices/UpdateServices";
+const AddURL= "https://localhost:7028/api/DASServices/AddServices"
+const userId = localStorage.getItem("userId");
+
 
 const ServiceManagement = () => {
-  const [headerTitle, setHeaderTitle] = useState('Service Management');
+  const [headerTitle, setHeaderTitle] = useState("Service Management");
   const [open, setOpen] = React.useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [services, setServices] = useState([]);
+  console.log(selectedService)
 
   useEffect(() => {
-    // Fetch service data from the API
-    axios.get(URL)
-      .then(response => {
-        setServices(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching services:", error);
-      });
+    fetchServices();
   }, []);
+
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(URL);
+      setServices(response.data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
 
   const handleClickOpenForUpdate = (service) => {
     setOpen(true);
     setIsUpdate(true);
-    setSelectedService(service); // Set the selected service when updating
+  
+    // Convert serviceIsActive to number type
+    const serviceIsActive = service.serviceIsActive === 1 ? 1 : 0;
+  
+    setSelectedService({ ...service, serviceIsActive });
   };
 
   const handleClose = () => {
@@ -55,70 +77,113 @@ const ServiceManagement = () => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const serviceData = {};
+    const serviceData = {}
 
     for (let [key, value] of formData.entries()) {
-      if (key === 'available') {
-        serviceData[key] = value === 'on'; // Convert checkbox value to boolean
-      } else {
+
         serviceData[key] = value;
-      }
     }
+
+    console.log(serviceData);
+
+
     if (isUpdate && selectedService) {
       try {
-        // Send PUT request to update existing service
-        await axios.put(`YOUR_API_URL/${selectedService.id}`, serviceData);
+        // Send PATCH request to update existing service
+        await axios.patch(`${UpdateURL}/${selectedService.id}`, serviceData);
         // Close the dialog and update the service list or other relevant actions
         handleClose();
+        // Show a success toast message
+        toast.success("Service updated successfully!");
+        fetchServices();
       } catch (error) {
-        console.error('Error updating service:', error);
+        toast.error(`Error updating service: ${error.message}`);
+        console.log(error);
       }
     } else {
       try {
-        // Send POST request to add new service
-        await axios.post('YOUR_API_URL', serviceData);
-        // Close the dialog and update the service list or other relevant actions
-        handleClose();
-      } catch (error) {
-        console.error('Error adding service:', error);
-      }
+      // Send POST request to add new service
+      console.log(serviceData)
+      await axios.post(AddURL, serviceData); // Use the AddURL here
+      // Close the dialog and update the service list or other relevant actions
+      handleClose();
+      // Show a success toast message
+      toast.success("Service added successfully!");
+      fetchServices();
+      // Fetch updated services
+      fetchServices();
+    } catch (error) {
+      toast.error(`Error adding service: ${error.message}`);
+    }
     }
   };
 
   return (
-    <div className="service-container" style={{background:`url(${Background})`, paddingBottom:"5rem"}}>
-      <Sidebar/>
+    <div
+      className="service-container"
+      style={{ background: `url(${Background})`, paddingBottom: "5rem" }}
+    >
+      <Sidebar />
       <Header title={headerTitle} />
 
-      <div style={{paddingTop:"15rem"}}>
-      <div style={{width: "10rem", marginLeft:"80rem", marginBottom:"4rem"}}>
-      <button className="service-button-add" onClick={handleClickOpenForAdd}>
-  <Add/> Add Service
-</button>
-      </div>
-        <TableContainer component={Paper} sx={{width:"70%", marginLeft:"20rem", boxShadow:"rgba(0, 0, 0, 0.2) 0px 20px 30px"}}>
+      <div style={{ paddingTop: "15rem" }}>
+        <div
+          style={{ width: "10rem", marginLeft: "80rem", marginBottom: "4rem" }}
+        >
+          <button
+            className="service-button-add"
+            onClick={handleClickOpenForAdd}
+          >
+            <Add /> Add Service
+          </button>
+        </div>
+        <TableContainer
+          component={Paper}
+          sx={{
+            width: "70%",
+            marginLeft: "20rem",
+            boxShadow: "rgba(0, 0, 0, 0.2) 0px 20px 30px",
+          }}
+        >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead sx={{backgroundColor:"#0C3F7E"}}>
+            <TableHead sx={{ backgroundColor: "#0C3F7E" }}>
               <TableRow>
-                <TableCell sx={{fontWeight:"bold", color:"white"}}>ID</TableCell>
-                <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Service</TableCell>
-                <TableCell/>
+                <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                  ID
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "white" }}
+                >
+                  Service
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "white" }}
+                >
+                  Available
+                </TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
               {services.map((row) => (
                 <TableRow
                   key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
                   <TableCell align="center">{row.serviceName}</TableCell>
+                  <TableCell align="center">{row.serviceIsActive === 1 ? "Available" : "Not Available"}</TableCell>
                   <TableCell>
-                  <button className="service-button-update" onClick={() => handleClickOpenForUpdate(row)}>
-  Update
-</button>
+                    <button
+                      className="service-button-update"
+                      onClick={() => handleClickOpenForUpdate(row)}
+                    >
+                      Update
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -134,51 +199,138 @@ const ServiceManagement = () => {
           aria-describedby="alert-dialog-description"
           fullWidth="true"
           maxWidth="lg"
-          sx={{fontFamily:"Arial, Helvetica, sans-serif"}}
+          sx={{ fontFamily: "Arial, Helvetica, sans-serif" }}
         >
-          <DialogTitle>{isUpdate ? 'Update Service' : 'Add Service'}</DialogTitle>
+          <DialogTitle>
+            {isUpdate ? "Update Service" : "Add Service"}
+          </DialogTitle>
           <DialogContent>
-          <DialogContentText/>
-          <form style={{display:"flex", flexDirection:"column"}} onSubmit={handleSubmit}>
-          <label htmlFor="header" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Header </label>
-          <input type="text" name="header" style={{height:"3rem"}}></input>
-          <label htmlFor="intro" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Intro </label>
-          <textarea name='intro'/>
-          <label htmlFor="content" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Content </label>
-          <textarea name='content'/>
-          <label htmlFor="outro" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Outro </label>
-          <textarea name='outro'/>
-          {isUpdate && selectedService && (
-                <div>
-                  <label htmlFor="available" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Available </label>
-                  <input type="checkbox" name="available" defaultChecked={selectedService.available} style={{marginRight:" 70rem"}} />
+            <DialogContentText />
+            <form
+              style={{ display: "flex", flexDirection: "column" }}
+              onSubmit={handleSubmit}
+            >
+              <label
+                htmlFor="serviceName"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Header
+              </label>
+              <input
+                type="text"
+                name="serviceName"
+                style={{ height: "3rem", fontSize: "1.5rem" }}
+                defaultValue={selectedService?.serviceName || ""}
+              />
+              <label
+                htmlFor="intro"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Intro{" "}
+              </label>
+              <textarea
+                name="intro"
+                defaultValue={selectedService?.intro || ""}
+              />
+              <label
+                htmlFor="content"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Content{" "}
+              </label>
+              <textarea
+                name="contents"
+                defaultValue={selectedService?.contents || ""}
+              />
+              <label
+                htmlFor="outro"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Outro{" "}
+              </label>
+              <textarea
+                name="outro"
+                defaultValue={selectedService?.outro || ""}
+              />
+              <input type="hidden" name="accountId" value={userId} />
+              {isUpdate && selectedService && (
+                <div style={{marginTop:"2rem"}}>
+                  <label
+                    htmlFor="serviceIsActive"
+                    style={{
+                      color: "#0C3F7E",
+                      fontSize: "1.4rem",
+                      fontWeight: "bold",
+                      margin: ".5rem 0",
+                    }}
+                  >
+                    Available
+                  </label>
+                  <Select
+                    name="serviceIsActive"
+                    value={selectedService.serviceIsActive}
+                    onChange={(event) => {
+                      const newValue = event.target.value;
+                      setSelectedService((prevService) => ({
+                        ...prevService,
+                        serviceIsActive: newValue,
+                      }));
+                    }}
+                    sx={{ marginRight: "70rem" }}
+                  >
+                    <MenuItem value={1}>Available</MenuItem>
+                    <MenuItem value={0}>Not Available</MenuItem>
+                  </Select>
+                  <input
+                    type="hidden"
+                    name="serviceId"
+                    value={selectedService.id}
+                  />
                 </div>
               )}
+              <button
+                type="submit"
+                style={{
+                  backgroundColor: "#0C3F7E",
+                  borderRadius: "2rem",
+                  color: "#ffffff",
+                  border: "0",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  padding: ".9rem 1rem",
+                  width: "20%",
+                  margin: "2rem auto",
+                }}
+              >
+                {isUpdate ? "Update Service" : "Add Service"}
+              </button>
             </form>
-          <DialogActions>
-            <button
-              type='submit'
-              style={{
-                backgroundColor:"#0C3F7E",
-                borderRadius:"2rem",
-                color:"#ffffff",
-                border:"0",
-                cursor:"pointer",
-                fontWeight:"bold",
-                fontSize: "1rem",
-                padding:".9rem 1rem",
-                width:"20%",
-                margin:"2rem auto",
-              }}
-            >
-              {isUpdate ? 'Update Service' : 'Add Service'}
-            </button>
-            </DialogActions>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
 export default ServiceManagement;

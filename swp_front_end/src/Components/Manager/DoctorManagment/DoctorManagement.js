@@ -25,7 +25,7 @@ import { TextField, Button } from "@mui/material";
 
 const URL = "https://localhost:7028/api/Account/GetAllDoctor";
 const AddSlotURL = "https://localhost:7028/api/Slot/AddDoctorToSlot";
-const  WorkdateURL = "https://localhost:7028/api/Slot/GetAllSlotByDoctorId?id"
+const WorkdateURL = "https://localhost:7028/api/Slot/GetAllSlotByDoctorId?id";
 
 const DoctorManagement = () => {
   const [headerTitle, setHeaderTitle] = useState("Doctor Management");
@@ -33,6 +33,9 @@ const DoctorManagement = () => {
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedStatus, setSelectedStatus] = useState(
+    selectedDoctor ? selectedDoctor.accountStatus : ""
+  );
 
   useEffect(() => {
     fetchDoctors();
@@ -62,37 +65,26 @@ const DoctorManagement = () => {
 
       if (workdayResponse.ok) {
         const workdayData = await workdayResponse.json();
-        console.log(workdayData)
-        doctor.dayInWeek = workdayData.dayInWeek; // Update the dayInWeek directly
-        setSelectedDoctor(doctor); // Update the selectedDoctor state
-        setOpen(true);
+
+        // Find the doctor with the same id as the workday's accountId
+        const matchingDoctor = doctors.find(
+          (d) => d.id === workdayData[0].accountId
+        );
+
+        if (matchingDoctor) {
+          matchingDoctor.dayInWeek = workdayData[0].dayInWeek;
+          setSelectedDoctor(matchingDoctor);
+          setSelectedStatus(matchingDoctor.accountStatus);
+        } else {
+          toast.error("No matching doctor found.");
+        }
       } else {
         toast.error("Failed to fetch work day.");
       }
-    } catch (error) {
-      toast.error("Error fetching work day:", error);
-    }
-
-    //     fetch(`${WorkdateURL}=${doctor.id}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     // setSelectedDoctor(data.dayInWeek)
-    //     console.log(data)
-    //   })
-    //   .catch(error => console.error("Error fetching booking services:", error));
-    //   setOpen(true);
+    } catch (error) {}
+    setSelectedDoctor(doctor);
+    setOpen(true); // Always open the dialog, regardless of fetching outcome
   };
-
-//   const fetchBookingServices = (bookingId) => {
-//     fetch(`${BookingURL}=${bookingId}`)
-//       .then(response => response.json())
-//       .then(data => {
-//         setSelectedBookingServices(data.listServicesBooking)
-//         setSelectedBookingStatus(data.bookingStatus)
-//         console.log(data.bookingStatus)
-//       })
-//       .catch(error => console.error("Error fetching booking services:", error));
-//   };
 
   const handleClose = () => {
     setOpen(false);
@@ -122,8 +114,6 @@ const DoctorManagement = () => {
       toast.error("Error adding slot:", error);
     }
   };
-
-  
 
   return (
     <div
@@ -157,12 +147,6 @@ const DoctorManagement = () => {
                   align="center"
                   sx={{ fontWeight: "bold", color: "white" }}
                 >
-                  Work Day
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ fontWeight: "bold", color: "white" }}
-                >
                   Status
                 </TableCell>
                 <TableCell />
@@ -178,11 +162,6 @@ const DoctorManagement = () => {
                     {row.id}
                   </TableCell>
                   <TableCell align="center">{row.username}</TableCell>
-                  <TableCell align="center">
-                    {row.workingStatus === "working"
-                      ? "Working"
-                      : "Not Working"}
-                  </TableCell>
                   <TableCell align="center">
                     <span
                       style={{
@@ -248,42 +227,44 @@ const DoctorManagement = () => {
                   readOnly
                 />
 
-<InputLabel
-      id="workDay"
-      sx={{
-        color: "#0C3F7E",
-        fontSize: "1.4rem",
-        fontWeight: "bold",
-        marginTop: "2rem",
-      }}
-    >
-      Work Day
-    </InputLabel>
-    <Select
-      labelId="workDay"
-      id="workDay"
-      name="workDay"
-      label="Work Day"
-      sx={{
-        height: "2rem",
-        width: "15rem",
-        backgroundColor: "white",
-        marginBottom: "2rem", // Adjusted margin
-      }}
-      value={selectedDoctor.dayInWeek} // Display "dayInWeek" of the selected doctor's account
-      onChange={(event) =>
-        setSelectedDoctor((prevDoctor) => ({
-          ...prevDoctor,
-          dayInWeek: event.target.value,
-        }))
-      }
-    >
-      <MenuItem value="Mon">Mon</MenuItem>
-      <MenuItem value="Tue">Tue</MenuItem>
-      <MenuItem value="Wed">Wed</MenuItem>
-      <MenuItem value="Thu">Thu</MenuItem>
-      <MenuItem value="Fri">Fri</MenuItem>
-    </Select>
+                <InputLabel
+                  id="workDay"
+                  sx={{
+                    color: "#0C3F7E",
+                    fontSize: "1.4rem",
+                    fontWeight: "bold",
+                    marginTop: "2rem",
+                  }}
+                >
+                  Work Day
+                </InputLabel>
+                <Select
+                  labelId="workDay"
+                  id="workDay"
+                  name="workDay"
+                  label="Work Day"
+                  sx={{
+                    height: "2rem",
+                    width: "15rem",
+                    backgroundColor: "white",
+                    marginBottom: "2rem", // Adjusted margin
+                  }}
+                  value={selectedDoctor.dayInWeek ?? ""} // Display "dayInWeek" of the selected doctor's account or an empty string if it's null
+                  onChange={(event) =>
+                    setSelectedDoctor((prevDoctor) => ({
+                      ...prevDoctor,
+                      dayInWeek: event.target.value,
+                    }))
+                  }
+                >
+                  {/* Display "No working date" if dayInWeek is null */}
+                  <MenuItem value="">No working date</MenuItem>
+                  <MenuItem value="Mon">Mon</MenuItem>
+                  <MenuItem value="Tue">Tue</MenuItem>
+                  <MenuItem value="Wed">Wed</MenuItem>
+                  <MenuItem value="Thu">Thu</MenuItem>
+                  <MenuItem value="Fri">Fri</MenuItem>
+                </Select>
 
                 <InputLabel
                   id="workMonth"
@@ -319,7 +300,7 @@ const DoctorManagement = () => {
                   )}
                 </Select>
 
-                <InputLabel
+                {/* <InputLabel
                   id="status"
                   sx={{
                     color: "#0C3F7E",
@@ -341,11 +322,12 @@ const DoctorManagement = () => {
                     backgroundColor: "white",
                     marginBottom: "4rem",
                   }}
-                  value={selectedDoctor.accountStatus} // Set the value based on selectedDoctor's accountStatus
+                  value={selectedDoctor.accountStatus} // Set the value based on selectedStatus state
+                  onChange={(event) => setSelectedStatus(event.target.value)} // Update selectedStatus when the user selects a new value
                 >
                   <MenuItem value="isActive">Active</MenuItem>
                   <MenuItem value="isInactive">Inactive</MenuItem>
-                </Select>
+                </Select> */}
                 <DialogActions>
                   <button
                     type="submit"
@@ -362,7 +344,7 @@ const DoctorManagement = () => {
                       margin: "2rem auto",
                     }}
                   >
-                    Update 
+                    Update
                   </button>
                 </DialogActions>
               </form>

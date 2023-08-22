@@ -161,19 +161,16 @@ const BookingForm = () => {
         const response = await fetch(ServiceURL);
         if (response.ok) {
           const data = await response.json();
-          setServicesData(data);
-          toast.success("Services data fetched successfully!"); // Show success toast
+          const activeServices = data.filter((service) => service.serviceIsActive === 1);
+          setServicesData(activeServices);
+          toast.success("Services data fetched successfully!");
         } else {
-          console.error(
-            "Failed to fetch services data:",
-            response.status,
-            response.statusText
-          );
-          toast.error("Failed to fetch services data"); // Show error toast
+          console.error("Failed to fetch services data:", response.status, response.statusText);
+          toast.error("Failed to fetch services data");
         }
       } catch (error) {
         console.error("An error occurred:", error);
-        toast.error("An error occurred while fetching services data"); // Show error toast
+        toast.error("An error occurred while fetching services data");
       }
     }
 
@@ -402,59 +399,61 @@ const BookingForm = () => {
                 </div>
             </div>
             <div className="form-service">
-              {selectedServiceIds &&
-                selectedServiceIds.length > 0 &&
-                selectedServiceIds.map((service) => (
-                  <ServiceInput
-                    index={1}
-                    key={service.id}
-                    service={service}
-                    servicesData={servicesData}
-                    setSelectedServiceIds={setSelectedServiceIds}
-                    selectedServiceIds={selectedServiceIds}
-                  />
-                ))}
+  {selectedServiceIds &&
+    selectedServiceIds.length > 0 &&
+    selectedServiceIds.map((service, index) => {
+      const filteredServicesData = servicesData.filter((s) => s.id !== service.serviceId);
+      return (
+        <ServiceInput
+          index={index + 1}
+          key={service.id}
+          service={service}
+          servicesData={filteredServicesData}
+          setSelectedServiceIds={setSelectedServiceIds}
+          selectedServiceIds={selectedServiceIds}
+        />
+      );
+    })}
+    
+  {/* Render the "Add Service" button only if section is not added */}
+  {selectedServiceIds.length === 1 && (
+    <Button
+      variant="outlined"
+      onClick={handleServiceButtonAdd}
+      sx={{
+        marginTop: "1rem",
+        backgroundColor: "white",
+        color: "black",
+        "&:hover": {
+          color: "white",
+          borderColor: "white",
+        },
+      }}
+    >
+      Add Service
+    </Button>
+  )}
 
-              {/* Render the "Add Service" button only if section is not added */}
-              {selectedServiceIds.length == 1 ? (
-                <div>
-                  <Button
-                    variant="outlined"
-                    onClick={handleServiceButtonAdd}
-                    sx={{
-                      marginTop: "1rem",
-                      backgroundColor: "white",
-                      color: "black",
-                      "&:hover": {
-                        color: "white",
-                        borderColor: "white",
-                      },
-                    }}
-                  >
-                    Add Service
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                variant="outlined"
-                onClick={() => handleServiceRemove( )}
-                sx={{
-                  marginTop: "1rem",
-                  backgroundColor: "white",
-                  color: "black",
-                  "&:hover": {
-                    color: "white",
-                    borderColor: "white",
-                  },
-                  width: "14rem",
-                }}
-              >
-                Remove Service
-              </Button>
-              )}
-
-              {/* Render the second service input if section is added */}
-            </div>
+  {/* Render the "Remove Service" button if more than one service section is added */}
+  {selectedServiceIds.length > 1 && (
+    <Button
+      variant="outlined"
+      onClick={handleServiceRemove}
+      sx={{
+        marginTop: "1rem",
+        backgroundColor: "white",
+        color: "black",
+        "&:hover": {
+          color: "white",
+          borderColor: "white",
+        },
+        width: "14rem",
+      }}
+    >
+      Remove Service
+    </Button>
+  )}
+</div>
             <div className="form-time">
               <InputLabel
                 id="time"
