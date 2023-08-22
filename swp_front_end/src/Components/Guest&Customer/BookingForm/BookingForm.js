@@ -231,6 +231,37 @@ const BookingForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const errors = {};
+
+    if (!name || name.trim() === '' || name.length < 2) {
+      errors.name = true;
+      toast.error('Name must be longer than 2 words');
+    }
+
+    if (!phone || !/^[0-9]{9}$/.test(phone)) {
+      errors.phone = true;
+      toast.error('Phone must be 9 numbers');
+    }
+
+    if (!gender) {
+      errors.gender = true;
+      toast.error('Gender must be selected');
+    }
+
+    if (selectedServiceIds.some((service) => !service.serviceId)) {
+      errors.service1 = true;
+      toast.error('Service must be chosen');
+    }
+
+    if (!selectedSlotId) {
+      errors.slot = true;
+      toast.error('A slot must be chosen');
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     // Get the user data from localStorage
     const userId = localStorage.getItem("userId");
     // Check if user data exists and has the necessary information
@@ -335,36 +366,40 @@ const BookingForm = () => {
         <form className="booking-form" onSubmit={handleSubmit}>
           <div className="form-content">
             <div className="form-personal">
-              <label htmlFor="phone">Phone: </label>
-              <input
-                type="text"
-                name="phone"
-                onChange={(e) => setPhone(e.target.value)}
-              ></input>
-              <div className="personal-lower">
-                <label htmlFor="gender">Gender: </label>
-                <Select
-                  labelId="gender"
-                  id="gender"
-                  label="gender"
-                  sx={{
-                    height: "2rem",
-                    width: "6rem",
-                    backgroundColor: "white",
-                    marginRight: "2rem",
-                  }}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={20}>Female</MenuItem>
-                </Select>
-                <label htmlFor="name">Name: </label>
+              <div>
+                <label htmlFor="phone">Phone: </label>
                 <input
                   type="text"
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
+                  name="phone"
+                  onChange={(e) => setPhone(e.target.value)}
                 ></input>
               </div>
+                <div>
+                  <label htmlFor="gender">Gender: </label>
+                  <Select
+                    labelId="gender"
+                    id="gender"
+                    label="gender"
+                    sx={{
+                      height: "2rem",
+                      width: "6rem",
+                      backgroundColor: "white",
+                      marginRight: "2rem",
+                    }}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
+                    <MenuItem value={10}>Male</MenuItem>
+                    <MenuItem value={20}>Female</MenuItem>
+                  </Select>
+                </div>
+                <div>
+                  <label htmlFor="name">Name: </label>
+                  <input
+                    type="text"
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                  ></input>
+                </div>
             </div>
             <div className="form-service">
               {selectedServiceIds &&
@@ -432,11 +467,13 @@ const BookingForm = () => {
               >
                 Week
               </InputLabel>
-              <WeeklyCalendar
-                onWeekPick={handleWeekPick}
-                jumpToCurrentWeekRequired={true}
-                onJumpToCurrentWeek={handleJumpToCurrentWeek}
-              />
+              <div style={{marginLeft:"4rem"}}>
+                <WeeklyCalendar
+                  onWeekPick={handleWeekPick}
+                  jumpToCurrentWeekRequired={true}
+                  onJumpToCurrentWeek={handleJumpToCurrentWeek}
+                />
+              </div>
               <TableContainer
                 component={Paper}
                 sx={{

@@ -28,6 +28,7 @@ const BookingManagement = () => {
     { value: 'Complete', label: 'Complete' },
   ]);
   const [selectedBookingStatus, setSelectedBookingStatus] = useState("");
+  const [numBookings, setNumBookings] = useState(0);
 
   const handleBookingClick = (booking) => {
     setSelectedBooking(booking);
@@ -87,27 +88,6 @@ const BookingManagement = () => {
     handleClose();
   };
 
-  // async function fetchServicesData() {
-  //   try {
-  //     const response = await fetch(ServiceURL);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setServicesData(data);
-  //       toast.success("Services data fetched successfully!"); // Show success toast
-  //     } else {
-  //       console.error(
-  //         "Failed to fetch services data:",
-  //         response.status,
-  //         response.statusText
-  //       );
-  //       toast.error("Failed to fetch services data"); // Show error toast
-  //     }
-  //   } catch (error) {
-  //     console.error("An error occurred:", error);
-  //     toast.error("An error occurred while fetching services data"); // Show error toast
-  //   }
-  // }
-
   async function fetchBookings() {
     try {
       const response = await fetch(URL);
@@ -132,7 +112,13 @@ const BookingManagement = () => {
       .then(response => response.json())
       .then(data => setDoctors(data))
       .catch(error => console.error("Error fetching doctors:", error));
+
   }, []);
+
+  useEffect(() => {
+    setNumBookings(bookings.length);
+  }, []);
+  
 
   const fetchBookingServices = (bookingId) => {
     fetch(`${BookingURL}=${bookingId}`)
@@ -153,7 +139,7 @@ const BookingManagement = () => {
   };
 
   return (
-    <div className='book-container' style={{background:`url(${Background})`, paddingBottom:"5rem"}}>
+    <div className='book-container' style={{ background: `url(${Background})`, paddingBottom: "5rem", minHeight: numBookings < 5 ? '100vh' : 'auto' }}>
       <Sidebar/>
       <Header title={headerTitle} />
       <div style={{paddingTop:"15rem"}}>
