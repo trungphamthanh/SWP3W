@@ -86,6 +86,7 @@ const DoctorManagement = () => {
       }
     } catch (error) {}
     setOpen(true);
+    setSelectedDoctor()
   };
 
   const handleStatusDialogOpen = (doctor) => {
