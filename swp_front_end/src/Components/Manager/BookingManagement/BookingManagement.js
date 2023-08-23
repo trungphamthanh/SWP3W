@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogContentText, MenuItem, Paper, Select, Tabl
 import { Booking } from './Booking';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import * as moment from "moment"
 
 const drawerWidth = 240;
 
@@ -163,7 +164,7 @@ const BookingManagement = () => {
                   <TableCell align="center">{booking.customerName}</TableCell>
                   <TableCell align="center">{booking.gender}</TableCell>
                   <TableCell align="center">{booking.phoneNo}</TableCell>
-                  <TableCell align="center">{booking.slot.date}</TableCell>
+                  <TableCell align="center">{moment(booking.slot.date).format("MM/DD/YYYY")}</TableCell>
                   <TableCell align="center">{booking.bookingStatus}</TableCell>
                   <TableCell>
                     <button className="booking-viewdetail-button" onClick={() => handleBookingClick(booking)}>
@@ -195,7 +196,7 @@ const BookingManagement = () => {
               </div>
               <div style={{display:"grid"}}>
                 <label htmlFor="date" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Date </label>
-                <input type="text" name="date" style={{height:"1.7rem"}} value={selectedBooking?.slot.date} readOnly />
+                <input type="text" name="date" style={{height:"1.7rem"}} value={moment(selectedBooking?.slot.date).format("DD/MM/YYYY")} readOnly />
               </div>
             </div>
             {selectedBookingServices.length > 0 && (

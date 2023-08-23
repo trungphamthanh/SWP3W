@@ -394,8 +394,8 @@ const BookingForm = () => {
                     }}
                     onChange={(e) => setGender(e.target.value)}
                   >
-                    <MenuItem value={10}>Male</MenuItem>
-                    <MenuItem value={20}>Female</MenuItem>
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female</MenuItem>
                   </Select>
                 </div>
                 <div>
