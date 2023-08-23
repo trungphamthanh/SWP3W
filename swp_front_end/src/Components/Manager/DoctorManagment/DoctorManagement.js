@@ -39,7 +39,6 @@ const DoctorManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState(
     doctors ? doctors.workingStatus : ""
   );
-  console.log(selectedStatus);
 
   useEffect(() => {
     fetchDoctors();
@@ -86,7 +85,7 @@ const DoctorManagement = () => {
       }
     } catch (error) {}
     setOpen(true);
-    setSelectedDoctor()
+    setSelectedDoctor(doctor);
   };
 
   const handleStatusDialogOpen = (doctor) => {
@@ -111,8 +110,10 @@ const DoctorManagement = () => {
       dayInWeek: selectedDoctor.dayInWeek,
       accountId: selectedDoctor.id,
       roleId: selectedDoctor.roleId,
+      doctorName: selectedDoctor.user.userName
     };
 
+    console.log(slotData);
     try {
       const response = await fetch(AddSlotURL, {
         method: "POST",
@@ -122,6 +123,7 @@ const DoctorManagement = () => {
         body: JSON.stringify(slotData),
       });
 
+      // console.log("response",response.body);
       if (response.ok) {
         fetchDoctors(); // Update the doctors list
         handleClose();
@@ -130,6 +132,7 @@ const DoctorManagement = () => {
       }
     } catch (error) {
       toast.error("Error adding slot:", error);
+      console.log(error)
     }
   };
 
@@ -214,7 +217,7 @@ const DoctorManagement = () => {
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell align="center">{row.username}</TableCell>
+                  <TableCell align="center">{row.user.userName}</TableCell>
                   <TableCell align="center">
                     <span
                       style={{
@@ -284,7 +287,7 @@ const DoctorManagement = () => {
                   type="text"
                   name="name"
                   style={{ height: "3rem", width: "15rem" }}
-                  value={selectedDoctor.username}
+                  value={selectedDoctor.user.userName}
                   readOnly
                 />
 

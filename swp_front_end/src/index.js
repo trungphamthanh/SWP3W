@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import PageRouter from './PageRouter/PageRouter';
 import App from './App';
+import { ServiceContextProvider } from './Context/UseContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <PageRouter/>
+    <ServiceContextProvider>
+      <PageRouter/>
+    </ServiceContextProvider>
   </React.StrictMode>
 );
 

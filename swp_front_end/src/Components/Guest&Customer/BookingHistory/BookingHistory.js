@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import "./BookingHistory.scss";
-import * as moment from "moment"
+import * as moment from 'moment'
 
 
 const URL = `https://localhost:7028/api/Booking/getListBookingByCustomerId`;
@@ -70,8 +70,8 @@ const BookingHistory = () => {
                 <TableCell sx={{ fontWeight: "bold", color: "white" }}>ID</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Date</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Slot</TableCell>
-                <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Doctor</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Status</TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Doctor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -80,7 +80,7 @@ const BookingHistory = () => {
                   <TableCell>{booking.id}</TableCell>
                   <TableCell align="center">{moment(booking.slot.date).format("MM/DD/YYYY")}</TableCell>
                   <TableCell align="center">{slotStringData(booking.slot.slotNo)}</TableCell>
-                  <TableCell align="center">{doctors[booking.slot.accountId]}</TableCell>
+                  <TableCell align="center">{booking.slot.doctorName}</TableCell>
                   <TableCell align="center">{booking.bookingStatus}</TableCell>
                 </TableRow>
               ))}

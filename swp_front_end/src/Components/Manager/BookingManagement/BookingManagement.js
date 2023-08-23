@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogContentText, MenuItem, Paper, Select, Tabl
 import { Booking } from './Booking';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import * as moment from "moment"
+import * as moment from 'moment'
 
 const drawerWidth = 240;
 
@@ -30,6 +30,7 @@ const BookingManagement = () => {
   ]);
   const [selectedBookingStatus, setSelectedBookingStatus] = useState("");
   const [numBookings, setNumBookings] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0)
 
   const handleBookingClick = (booking) => {
     setSelectedBooking(booking);
@@ -125,9 +126,10 @@ const BookingManagement = () => {
     fetch(`${BookingURL}=${bookingId}`)
       .then(response => response.json())
       .then(data => {
-        setSelectedBookingServices(data.listServicesBooking)
-        setSelectedBookingStatus(data.bookingStatus)
-        console.log(data.bookingStatus)
+        setSelectedBookingServices(data.listServicesBooking);
+        setSelectedBookingStatus(data.bookingStatus);
+        console.log(data.bookingStatus);
+        setTotalPrice(data.totalPrice); // Set the total price from the API response
       })
       .catch(error => console.error("Error fetching booking services:", error));
   };
@@ -136,7 +138,8 @@ const BookingManagement = () => {
   // Function to get doctor's name based on accountId
   const getDoctorName = (userId) => {
     const doctor = doctors.find(doctor => doctor.userId === userId);
-    return doctor ? doctor.username : "N/A"; // Return doctor's username or "N/A" if not found
+    console.log("doctorName:",doctor);
+    return doctor ? doctor.user.userName : "N/A"; // Return doctor's username or "N/A" if not found
   };
 
   return (
@@ -183,7 +186,7 @@ const BookingManagement = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth={true}
-        maxWidth="xs"
+        maxWidth="md"
         sx={{fontFamily:"Arial, Helvetica, sans-serif"}}
       >
         <DialogContent>
@@ -196,21 +199,39 @@ const BookingManagement = () => {
               </div>
               <div style={{display:"grid"}}>
                 <label htmlFor="date" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Date </label>
-                <input type="text" name="date" style={{height:"1.7rem"}} value={moment(selectedBooking?.slot.date).format("DD/MM/YYYY")} readOnly />
+                <input type="text" name="date" style={{height:"1.7rem"}} value={moment(selectedBooking?.slot.date).format("MM/DD/YYYY")} readOnly />
               </div>
             </div>
-            {selectedBookingServices.length > 0 && (
-              <div style={{ marginBottom: "2rem", display: "flex" }}>
-                {selectedBookingServices.map((service, index) => (
-                  <div key={index} style={{ display: "grid" }}>     
-                    <label htmlFor={`service${index}`} style={{ color: "#0C3F7E", fontSize: "1.4rem", fontWeight: "bold", margin: ".5rem 0" }}>
-                      Service {index+1}
-                    </label>
-                    <input type="text" name={`service${index}`} style={{ height: "1.7rem", marginRight: "3rem" }} value={service.serviceName} readOnly />
-                  </div>
-                ))}
-              </div>
-            )}
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead sx={{backgroundColor:"#0C3F7E"}}>
+          <TableRow>
+            <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Service Name</TableCell>
+            <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Service Type</TableCell>
+            <TableCell align="center" sx={{fontWeight:"bold", color:"white"}}>Price</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+  {selectedBookingServices.length > 0 && (
+    selectedBookingServices.map((service, index) => (
+      <TableRow key={index}>
+        <TableCell align="center">{service.serviceName}</TableCell>
+        <TableCell align="center">{service.serviceType}</TableCell>
+        <TableCell align="center">
+          {/* Display the correct price based on service type */}
+          ${service.serviceType === 'Advance' ? service.advancedPrice :
+           service.serviceType === 'Top' ? service.topPrice :
+           service.serviceType === 'Low' ? service.lowPrice : 0}
+        </TableCell>
+      </TableRow>
+    ))
+  )}
+  <TableRow>
+    <TableCell/>
+    <TableCell/>
+    <TableCell align="center">${totalPrice}</TableCell>
+  </TableRow>
+</TableBody>
+          </Table>
             <label htmlFor="doctor" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Doctor </label>
             <input type="text" name="doctor" style={{height:"1.7rem", width:"8rem"}} value={getDoctorName(selectedBooking?.slot.accountId)} readOnly />
             <label htmlFor="bookingStatus" style={{color:"#0C3F7E", fontSize:"1.4rem", fontWeight:"bold", margin:".5rem 0"}}>Booking Status</label>
