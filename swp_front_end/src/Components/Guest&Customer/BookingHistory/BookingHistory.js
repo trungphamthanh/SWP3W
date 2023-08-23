@@ -70,6 +70,7 @@ const BookingHistory = () => {
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Date</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Slot</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Doctor</TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -79,6 +80,7 @@ const BookingHistory = () => {
                   <TableCell align="center">{booking.slot.date}</TableCell>
                   <TableCell align="center">{slotStringData(booking.slot.slotNo)}</TableCell>
                   <TableCell align="center">{doctors[booking.slot.accountId]}</TableCell>
+                  <TableCell align="center">{booking.bookingStatus}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
