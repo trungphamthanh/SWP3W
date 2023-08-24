@@ -9,11 +9,13 @@
         margin-top: -5rem;
     .signup-form{
         width: 80%; /* Set the width of the form container */
+        height: 70%;
         max-width: 400px; /* Set a maximum width to avoid excessive stretching on large screens */
         padding: 20px;
         background-color: #ffffff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-top: 4rem;
 
     .signup-title{
         text-align: center;
@@ -36,7 +38,8 @@
                 color: white;
                 padding: 1rem;
                 border-radius: 2rem;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
+                height: 1.7rem;
             }
             .link:hover{
                 background-color: #1257ab;
@@ -48,13 +51,13 @@
             padding-left: 2rem;
             label{
                 height: 1rem;
+                margin-bottom: .5rem;
             } 
             input{
                 background-color: #dedede;
                 height: 1.4rem;
                 border: 0;
                 border-radius: 2rem;
-                margin-top: -1rem;
             }
             .button{
                 background-color: #0C3F7E;
@@ -62,6 +65,8 @@
                 color:#ffffff;
                 border: 0;
                 cursor: pointer;
+                margin-top: 2rem;
+                height: 1.8rem;
             }
             .button:hover{
                 background-color: #1257ab;

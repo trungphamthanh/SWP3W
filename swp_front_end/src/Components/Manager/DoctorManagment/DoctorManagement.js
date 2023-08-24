@@ -202,6 +202,12 @@ const DoctorManagement = () => {
                   align="center"
                   sx={{ fontWeight: "bold", color: "white" }}
                 >
+                  PhoneNo
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "white" }}
+                >
                   Status
                 </TableCell>
                 <TableCell/>
@@ -218,6 +224,7 @@ const DoctorManagement = () => {
                     {row.id}
                   </TableCell>
                   <TableCell align="center">{row.user.userName}</TableCell>
+                  <TableCell align="center">{row.user.phoneNum}</TableCell>
                   <TableCell align="center">
                     <span
                       style={{

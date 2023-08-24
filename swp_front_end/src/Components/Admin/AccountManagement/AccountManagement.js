@@ -26,7 +26,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const URL = "https://localhost:7028/api/Account/GetAllUser";
-const UpdateURL = "https://localhost:7028/api/Account/UpdateProfile";
+const UpdateURL =
+  "https://localhost:7028/api/Account/AdminUpdateAccountByAccountId";
+const AddURL = "https://localhost:7028/api/Account/RegisterDoctorManager";
 
 const AccountManagement = () => {
   const [headerTitle, setHeaderTitle] = useState("Account Management");
@@ -34,7 +36,16 @@ const AccountManagement = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [accounts, setAccounts] = useState([]);
+  const [gender, setGender] = useState('');
   const [selectedRoleId, setSelectedRoleId] = useState(null);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    fullName: "",
+    roleId: "",
+    accountStatus: true,
+  });
+  const [status, setStatus] = useState('')
 
   useEffect(() => {
     fetchAccounts();
@@ -61,6 +72,7 @@ const AccountManagement = () => {
     setOpen(true);
     setIsUpdate(true);
     setSelectedAccount(account);
+    setStatus(account.accountStatus)
   };
 
   const handleClose = () => {
@@ -73,6 +85,14 @@ const AccountManagement = () => {
     setOpen(true);
     setIsUpdate(false);
     setSelectedAccount(null);
+    setSelectedRoleId("");
+    setFormData({
+      username: "",
+      password: "",
+      fullName: "",
+      roleId: "",
+      accountStatus: false,
+    });
   };
 
   const handleSubmit = async (event) => {
@@ -81,50 +101,62 @@ const AccountManagement = () => {
     const formData = new FormData(event.target);
     const accountData = {};
 
-    for (let [key, value] of formData.entries()) {
-      if (key === "accountStatus") {
-        accountData[key] = value === "on" ? "isActive" : "notActive"; // Convert checkbox value to "isActive" or "notActive"
-      } else {
+    for (let [key, value] of formData.entries()) {{
         accountData[key] = value;
       }
     }
 
     if (isUpdate && selectedAccount) {
       try {
-        console.log(accountData);
+        const AccountUpdate ={
+          accountId: selectedAccount.id,
+          fullName: accountData.fullName,
+          accountStatus: status,
+          workingStatus:"string",
+          phoneNum: accountData.phoneNum,
+          gender: "string",
+        }
+        console.log(AccountUpdate);
         // Send PUT request to update existing account
-        if (
-          accountData.username &&
-          accountData.roleId &&
-          accountData.accountStatus !== undefined
-        ) {
-          await axios.put(`${UpdateURL}/${selectedAccount.id}`, {
-            ...selectedAccount, // Keep existing properties
-            username: accountData.username,
-            roleId: accountData.roleId,
-            accountStatus: accountData.accountStatus,
+          const statusResponse = await fetch(`${UpdateURL}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(AccountUpdate),
           });
           handleClose(); // Close the dialog after successful update
           toast.success("Account updated successfully");
-        } else {
-          toast.error("Error updating account: Missing required fields");
-        }
+          fetchAccounts()
       } catch (error) {
         toast.error("Error updating account: " + error.message);
       }
     } else {
       try {
+
+        const AddAccount = {
+          accountId: 0,
+          userId: 0,
+          fullName: accountData.fullName,
+          username: accountData.username,
+          password: accountData.password,
+          roleId: accountData.roleId,
+          accountStatus: 'isActive',
+          workingStatus: "string",
+          phoneNum: accountData.phoneNum,
+          gender: gender
+        }
+
+        console.log(AddAccount)
         // Send POST request to add new account
-        if (
-          accountData.username &&
-          accountData.roleId &&
-          accountData.accountStatus !== undefined
-        ) {
-          await axios.post(URL, accountData);
-          handleClose(); // Close the dialog after successful addition
+        const response = await axios.post(AddURL, AddAccount);
+        if (response.status === 200) {
+          
           toast.success("Account added successfully");
+          handleClose();
+          fetchAccounts();
         } else {
-          toast.error("Error adding account: Missing required fields");
+          toast.error("Error adding account.");
         }
       } catch (error) {
         toast.error("Error adding account: " + error.message);
@@ -173,7 +205,13 @@ const AccountManagement = () => {
                   align="center"
                   sx={{ fontWeight: "bold", color: "white" }}
                 >
-                  Email
+                  Username
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "white" }}
+                >
+                  Full Name
                 </TableCell>
                 <TableCell
                   align="center"
@@ -196,15 +234,14 @@ const AccountManagement = () => {
                   key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  {console.log(row)}
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
                   <TableCell align="center">{row.username}</TableCell>
+                  <TableCell align="center">{row.user.userName}</TableCell>
                   <TableCell align="center">
                     {
                       Role.find((role) => {
-                        console.log(row.roleId, role.id);
                         return role.id == row.roleId;
                       })?.role
                     }
@@ -243,8 +280,56 @@ const AccountManagement = () => {
               style={{ display: "flex", flexDirection: "column" }}
               onSubmit={handleSubmit}
             >
+              {!isUpdate ? (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <label
+                    htmlFor="email"
+                    style={{
+                      color: "#0C3F7E",
+                      fontSize: "1.4rem",
+                      fontWeight: "bold",
+                      margin: ".5rem 0",
+                      width: "10rem",
+                    }}
+                  >
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    style={{
+                      height: "3rem",
+                      marginBottom: "2rem",
+                      width: "15rem",
+                    }}
+                  />
+                  <label
+                    htmlFor="password"
+                    style={{
+                      color: "#0C3F7E",
+                      fontSize: "1.4rem",
+                      fontWeight: "bold",
+                      margin: ".5rem 0",
+                      width: "10rem",
+                    }}
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="text"
+                    name="password"
+                    style={{
+                      height: "3rem",
+                      marginBottom: "2rem",
+                      width: "15rem",
+                    }}
+                  />
+                </div>
+              ) : (
+                <div></div>
+              )}
               <label
-                htmlFor="email"
+                htmlFor="fullName"
                 style={{
                   color: "#0C3F7E",
                   fontSize: "1.4rem",
@@ -253,19 +338,71 @@ const AccountManagement = () => {
                   width: "10rem",
                 }}
               >
-                Email
+                Full Name
               </label>
               <input
                 type="text"
-                name="username"
+                name="fullName"
                 style={{
                   height: "3rem",
                   marginBottom: "2rem",
                   width: "15rem",
                 }}
-                defaultValue={selectedAccount ? selectedAccount.username : ""}
+                defaultValue={selectedAccount?.user.userName}
               />
 
+
+                  <label
+                    htmlFor="phoneNum"
+                    style={{
+                      color: "#0C3F7E",
+                      fontSize: "1.4rem",
+                      fontWeight: "bold",
+                      margin: ".5rem 0",
+                      width: "10rem",
+                    }}
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    name="phoneNum"
+                    style={{
+                      height: "3rem",
+                      marginBottom: "2rem",
+                      width: "15rem",
+                    }}
+                    defaultValue={selectedAccount?.user.phoneNum}
+                  />
+                              <InputLabel
+                id="role-label"
+                sx={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                  width: "10rem",
+                }}
+              >
+                Gender
+              </InputLabel>
+              <Select
+                labelId="role-label"
+                id="role"
+                name="gender"
+                onChange={(event) => setGender(event.target.value)}
+                sx={{
+                  height: "2rem",
+                  width: "15rem",
+                  backgroundColor: "white",
+                  marginBottom: "2rem",
+                }}
+              >
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+              </Select>
+              {!isUpdate && (
+                <div>
               <InputLabel
                 id="role-label"
                 sx={{
@@ -297,10 +434,15 @@ const AccountManagement = () => {
                   </MenuItem>
                 ))}
               </Select>
+                </div>
+              )}
 
-              <label
-                htmlFor="available"
-                style={{
+
+              {isUpdate && (
+                <div>
+              <InputLabel
+                id="role-label"
+                sx={{
                   color: "#0C3F7E",
                   fontSize: "1.4rem",
                   fontWeight: "bold",
@@ -309,17 +451,25 @@ const AccountManagement = () => {
                 }}
               >
                 Status
-              </label>
-              <input
-                type="checkbox"
+              </InputLabel>
+              <Select
+                labelId="role-label"
+                id="role"
                 name="accountStatus"
-                defaultChecked={
-                  selectedAccount
-                    ? selectedAccount.accountStatus === "isActive"
-                    : false
-                }
-                style={{ marginRight: "10rem" }}
-              />
+                value={status}
+                onChange={(event) => setStatus(event.target.value)}
+                sx={{
+                  height: "2rem",
+                  width: "15rem",
+                  backgroundColor: "white",
+                  marginBottom: "2rem",
+                }}
+              >
+                <MenuItem value={"isActive"}>isActive</MenuItem>
+                <MenuItem value={"notActive"}>notActive</MenuItem>
+              </Select>
+                </div>
+              )}
               <DialogActions>
                 <button
                   type="submit"

@@ -28,9 +28,9 @@ const Header = () => {
         {/* <Link to="/policy" className='header-link'>Policy</Link> */}
         <Link to="/faqs" className='header-link'>FAQs</Link>
         {userLoggedIn && <Link to="/history" className='header-link'>History</Link>}
-        <Badge badgeContent={selectedBookingService.length} color="error">
+        {userLoggedIn && <Badge badgeContent={selectedBookingService.length} color="error">
         <Link to="/booking" className='header-link'>Booking Cart</Link>
-        </Badge>
+        </Badge>}
       </div>
       {isLoggedIn() ? (
         <button onClick={handleLogout} className='header-login'>Logout</button>

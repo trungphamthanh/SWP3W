@@ -7,6 +7,7 @@ import axios from 'axios'; // Make sure to install axios: npm install axios
 import Background from '../../asset/images/LoginBackground.png';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
+import { MenuItem, Select } from '@mui/material';
 
 const URL="https://localhost:7028/api/Account/RegisterCustomer"
 
@@ -14,13 +15,38 @@ const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [reenterPassword, setReenterPassword] = useState('');
+  const [gender, setGender] = useState('')
+  const [phoneNo, setPhoneNo] = useState('')
+  const [name, setName] =useState('')
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !username ||
+      !password ||
+      !reenterPassword ||
+      !name ||
+      !gender ||
+      !phoneNo
+    ) {
+      toast.error("Please fill in all the fields");
+      return;
+    }
+
     if (password !== reenterPassword) {
       toast.error("Passwords do not match");
+      return;
+    }
+  
+    if (!/^\d{9}$/.test(phoneNo)) {
+      toast.error("Phone number must be a 9-digit number");
+      return;
+    }
+
+    if (name.trim() === "" || name.length < 2) {
+      toast.error("Name must be longer than 2 words");
       return;
     }
 
@@ -32,9 +58,9 @@ const SignUp = () => {
       roleId: 3,
       accountStatus: "string",
       workingStatus: "string",
-      userNamess: "string",
-      phoneNum: "string",
-      gender: "string"
+      fullName: name,
+      phoneNum: phoneNo,
+      gender: gender
     };
 
     try {
@@ -95,6 +121,38 @@ const SignUp = () => {
               name="reenterpassword"
               value={reenterPassword}
               onChange={(e) => setReenterPassword(e.target.value)}
+             />
+              <label htmlFor='reenterpassword'>Full Name: </label>
+              <input
+              type="text"
+              name="userNamess"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+             />
+          <label htmlFor="gender">Gender:</label>
+          <Select
+            labelId="gender"
+            id="gender"
+            label="gender"
+            sx={{
+              height: "2rem",
+              width: "6rem",
+              backgroundColor: "white",
+              marginRight: "1rem",
+              marginBottom:".5rem"
+            }}
+            onChange={(e) => setGender(e.target.value)}
+            value={gender|| ""}
+          >
+            <MenuItem value={"Male"}>Male</MenuItem>
+            <MenuItem value={"Female"}>Female</MenuItem>
+          </Select>
+          <label htmlFor='reenterpassword'>Phone Number: </label>
+              <input
+              type="text"
+              name="phoneNum"
+              value={phoneNo}
+              onChange={(e) => setPhoneNo(e.target.value)}
              />
               <button type='submit' className='button'>Sign Up</button>
             </div>

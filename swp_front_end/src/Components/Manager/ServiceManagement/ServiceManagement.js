@@ -219,7 +219,7 @@ const ServiceManagement = () => {
                   margin: ".5rem 0",
                 }}
               >
-                Header
+                Service Name
               </label>
               <input
                 type="text"
@@ -271,6 +271,57 @@ const ServiceManagement = () => {
               <textarea
                 name="outro"
                 defaultValue={selectedService?.outro || ""}
+              />
+              <label
+                htmlFor="Low"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Low Price{" "}
+              </label>
+              <input
+              type="text"
+                name="lowPrice"
+                defaultValue={selectedService?.lowPrice || ""}
+                style={{fontSize:"1.2rem", width:"5rem"}}
+              />
+                            <label
+                htmlFor="Advance"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Advance Price{" "}
+              </label>
+              <input
+              type="text"
+                name="advancedPrice"
+                defaultValue={selectedService?.advancedPrice || ""}
+                style={{fontSize:"1.2rem", width:"5rem"}}
+              />
+              <label
+                htmlFor="Top Price"
+                style={{
+                  color: "#0C3F7E",
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  margin: ".5rem 0",
+                }}
+              >
+                Top Price{" "}
+              </label>
+              <input
+              type="text"
+                name="topPrice"
+                defaultValue={selectedService?.topPrice || ""}
+                style={{fontSize:"1.2rem", width:"5rem"}}
               />
               <input type="hidden" name="accountId" value={userId} />
               {isUpdate && selectedService && (
