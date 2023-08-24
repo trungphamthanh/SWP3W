@@ -96,9 +96,9 @@ const Home = () => {
         </div>
       </div>
       <div className='home-feedback' style={{backgroundImage:`url(${Feedback})`, backgroundSize: 'cover'}}>
-        <h1>Feedbacks</h1>
+        {/* <h1>Feedbacks</h1> */}
       <div className='feedback-card-list'>
-        <div className='feedback-card'>
+        {/* <div className='feedback-card'>
                 <LocalHospital className='card-icon'/>
                 <div className='card-header'>
                     Walter White
@@ -124,8 +124,8 @@ const Home = () => {
                 <div className='card-content'>
                 Say my name
                 </div>
-        </div>
-        <div className='feedback-card'>
+        </div> */}
+        {/* <div className='feedback-card'>
                 <LocalHospital className='card-icon'/>
                 <div className='card-header'>
                     Walter White
@@ -133,9 +133,9 @@ const Home = () => {
                 <div className='card-content'>
                 Say my name
                 </div>
-        </div>
+        </div> */}
       </div>
-      <Link to={''} className='link'>See More</Link>
+      {/* <Link to={''} className='link'>See More</Link> */}
       {userLoggedIn ? (
       <div className='book-box' style={{background:`url(${BoxBackground})`, width:"30%", padding:""}}>
       <h2>Ready to Book?</h2>

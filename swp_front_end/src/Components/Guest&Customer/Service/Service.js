@@ -73,9 +73,9 @@ const Service = () => {
             </TableHead>
             <TableBody>
                 <TableRow>
-                  <TableCell align="center" sx={{fontWeight:"bold", color:"black", backgroundColor:"white"}}>{selectedService.lowPrice}</TableCell>
-                  <TableCell align="center" sx={{fontWeight:"bold", color:"black", backgroundColor:"white"}}>{selectedService.advancedPrice}</TableCell>
-                  <TableCell align="center" sx={{fontWeight:"bold", color:"black", backgroundColor:"white"}}>{selectedService.topPrice}</TableCell>
+                  <TableCell align="center" sx={{fontWeight:"bold", color:"black", backgroundColor:"white"}}>${selectedService.lowPrice}</TableCell>
+                  <TableCell align="center" sx={{fontWeight:"bold", color:"black", backgroundColor:"white"}}>${selectedService.advancedPrice}</TableCell>
+                  <TableCell align="center" sx={{fontWeight:"bold", color:"black", backgroundColor:"white"}}>${selectedService.topPrice}</TableCell>
                 </TableRow>
             </TableBody>
           </Table>

@@ -221,6 +221,9 @@ const BookingForm = () => {
         if (response.ok) {
           const data = await response.json();
           setCustomerInfo(data.user);
+          setPhone(data.user.phoneNum);
+          setGender(data.user.gender);
+          setName(data.user.userName)
         } else {
           console.error("Failed to fetch customer data");
         }
@@ -395,7 +398,7 @@ const BookingForm = () => {
   
     // Only return totalPrice if it's greater than 0
     if (totalPrice > 0) {
-      return "$" + totalPrice;
+      return  totalPrice;
     } else {
       return "Please add services"; // Or any other appropriate value
     }
@@ -424,16 +427,17 @@ const BookingForm = () => {
           <div className="form-content">
           <div className="form-personal">
         <div>
-          <label htmlFor="phone">Phone: </label>
+          <label htmlFor="phone">Phone:</label>
           <input
             type="text"
             name="phone"
-            value={customerInfo?.phoneNum || ""}
+            style={{fontSize:"1rem"}}
+            value={phone|| ""}
             onChange={(e) => setPhone(e.target.value)}
           ></input>
         </div>
         <div>
-          <label htmlFor="gender">Gender: </label>
+          <label htmlFor="gender">Gender:</label>
           <Select
             labelId="gender"
             id="gender"
@@ -442,10 +446,10 @@ const BookingForm = () => {
               height: "2rem",
               width: "6rem",
               backgroundColor: "white",
-              marginRight: "2rem",
+              marginRight: "1rem",
             }}
             onChange={(e) => setGender(e.target.value)}
-            value={customerInfo?.gender || ""}
+            value={gender|| ""}
           >
             <MenuItem value={"Male"}>Male</MenuItem>
             <MenuItem value={"Female"}>Female</MenuItem>
@@ -455,8 +459,9 @@ const BookingForm = () => {
           <label htmlFor="name">Name: </label>
           <input
             type="text"
+            style={{fontSize:"1rem"}}
             name="name"
-            value={customerInfo?.userName || ""}
+            value={name || ""}
             onChange={(e) => setName(e.target.value)}
           ></input>
         </div>
@@ -594,7 +599,9 @@ const BookingForm = () => {
                       </TableRow>
                     ))}
                     <TableRow style={{ backgroundColor: "white" }}>
-                      <TableCell />
+                    <TableCell align="center">
+                          Total price($)
+                        </TableCell>
                       <TableCell align="center">{totalPrice}</TableCell>
                       <TableCell />
                       <TableCell/>

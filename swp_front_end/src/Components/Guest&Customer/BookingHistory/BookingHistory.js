@@ -57,6 +57,19 @@ const BookingHistory = () => {
       });
   }, []);
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'OnProcess':
+        return 'gray';
+      case 'Complete':
+        return 'green';
+      case 'Canceled':
+        return 'red';
+      default:
+        return 'inherit';
+    }
+  };
+
   return (
     <div className='history-container'>
       <Header />
@@ -70,21 +83,33 @@ const BookingHistory = () => {
                 <TableCell sx={{ fontWeight: "bold", color: "white" }}>ID</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Date</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Slot</TableCell>
+                <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Total Price</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Status</TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold", color: "white" }}>Doctor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {bookingHistory.map((booking, index) => (
-                <TableRow key={index}>
-                  <TableCell>{booking.id}</TableCell>
-                  <TableCell align="center">{moment(booking.slot.date).format("MM/DD/YYYY")}</TableCell>
-                  <TableCell align="center">{slotStringData(booking.slot.slotNo)}</TableCell>
-                  <TableCell align="center">{booking.slot.doctorName}</TableCell>
-                  <TableCell align="center">{booking.bookingStatus}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+  {bookingHistory.map((booking, index) => (
+    <TableRow key={index}>
+      <TableCell>{booking.id}</TableCell>
+      <TableCell align="center">
+        {moment(booking.slot.date).format('MM/DD/YYYY')}
+      </TableCell>
+      <TableCell align="center">
+        {slotStringData(booking.slot.slotNo)}
+      </TableCell>
+      <TableCell align="center">
+        ${booking.totalPrice}
+      </TableCell>
+      <TableCell align="center" style={{ color: getStatusColor(booking.bookingStatus), fontWeight:"bold"}}>
+        {booking.bookingStatus}
+      </TableCell>
+      <TableCell align="center">
+        {booking.slot.doctorName}
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
           </Table>
         </TableContainer>
       </div>
