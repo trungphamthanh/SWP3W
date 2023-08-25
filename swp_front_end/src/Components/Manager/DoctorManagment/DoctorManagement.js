@@ -125,6 +125,7 @@ const DoctorManagement = () => {
 
       // console.log("response",response.body);
       if (response.ok) {
+        toast.success("Doctor Schedule Updated")
         fetchDoctors(); // Update the doctors list
         handleClose();
       } else {

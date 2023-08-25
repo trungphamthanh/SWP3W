@@ -1,0 +1,51 @@
+.sidebar-container {
+    background-color:#0d386d;
+    width: 14rem;
+    height: 100vh;
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    z-index: 6;
+    .sidebar-logo{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        border-bottom: 5px solid white;
+        margin-bottom: 2rem;
+        img{
+            width: 35%;
+        }
+        p{
+            color: white;
+            font-weight: bold;
+        }
+    }
+      .link {
+        text-decoration: none;
+        color: white;
+        text-align: center;
+        display: block;
+        padding: 10px 0;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #1257ab;
+        }
+      }
+
+      .header-login{
+        color: white;
+        text-decoration: none;
+        padding: 1rem 3rem 1rem 3rem;
+        border-radius: 2rem;
+        margin-left: 2.5rem;
+        font-weight: bold;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: transparent;
+        border:none
+    }
+    .header-login:hover{
+        color: #6caffc;
+        transition: all 0.3s ease;
+    }
+  }

@@ -17,6 +17,8 @@ import DoctorManagement from '../Components/Manager/DoctorManagment/DoctorManage
 import AccountManagement from '../Components/Admin/AccountManagement/AccountManagement';
 import BookingDetail from '../Components/Manager/BookingDetail/BookingDetail';
 import BookingHistory from '../Components/Guest&Customer/BookingHistory/BookingHistory';
+import BookingDoctor from '../Components/Doctor/BookingManagement/BookingDoctor';
+import ScheduleDoctor from '../Components/Doctor/ScheduleDoctor/ScheduleDoctor';
 import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
@@ -101,7 +103,21 @@ const router = createBrowserRouter([
         element: <AccountManagement/>
       }
     ]
-  }
+  },
+  {
+    path: '/doctor/',
+    element: <App />,
+    children: [
+      {
+        path: 'booking',
+        element: <BookingDoctor/>,
+      },
+      {
+        path: 'schedule',
+        element: <ScheduleDoctor/>,
+      },
+    ]
+  },
 ]);
 
 const PageRouter = () => {

@@ -46,7 +46,12 @@ const Login = () => {
           if (roleId === 1) {
             navigate('/admin/account')
           }else{
-            navigate('/home'); // Redirect to default home page
+            if (roleId === 4) {
+              navigate('/doctor/booking')
+            }
+            else{
+              navigate('/home'); // Redirect to default home page
+            }
           }
         }
       } else {

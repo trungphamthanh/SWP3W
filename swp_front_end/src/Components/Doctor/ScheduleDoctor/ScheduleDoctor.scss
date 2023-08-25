@@ -1,0 +1,62 @@
+
+.work-container {
+    &.full-height {
+        height: 100vh; /* Full screen height */
+    }
+    
+    &.auto-height {
+        height: auto; /* Auto height to fit content */
+    }
+
+    .form-schedule {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100vh;
+
+        .work-form-time {
+            margin-top: 1rem;
+            margin-left: 15rem;
+            width: 80%;
+            height: 60%;
+
+              .slot-available {
+          text-align: center;
+    
+          .available-header {
+            border-bottom: #5088c9 solid 5px;
+            margin: 0;
+          }
+          .available-time {
+            margin: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+          }
+          .available-status {
+            background-color: rgb(54, 184, 54);
+            padding: 0.5rem 1rem;
+            color: white;
+          }
+        }
+    
+        .slot-taken {
+          text-align: center;
+          .available-header {
+            border-bottom: #5088c9 solid 5px;
+            margin: 0;
+          }
+          .available-time {
+            margin: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+          }
+          .available-status {
+            background-color: gray;
+            padding: 0.5rem 1rem;
+            color: white;
+          }
+        }
+        }
+    }
+}

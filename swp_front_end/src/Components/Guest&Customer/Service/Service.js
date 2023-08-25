@@ -21,7 +21,7 @@ const Service = () => {
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const { AddServices } = UseServices();
-  
+
   useEffect(() => {
     fetchServices();
   }, []);
@@ -31,7 +31,12 @@ const Service = () => {
       const response = await fetch(URL);
       if (response.ok) {
         const data = await response.json();
-        setServices(data);
+      
+      // Filter services based on the serviceIsActive property
+      const activeServices = data.filter(service => service.serviceIsActive === 1);
+      
+      // Update the state with the filtered services
+      setServices(activeServices);
       } else {
         console.error('Failed to fetch services.');
       }

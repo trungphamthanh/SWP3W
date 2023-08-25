@@ -36,7 +36,6 @@ const ServiceManagement = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [services, setServices] = useState([]);
-  console.log(selectedService)
 
   useEffect(() => {
     fetchServices();
@@ -103,7 +102,6 @@ const ServiceManagement = () => {
     } else {
       try {
       // Send POST request to add new service
-      console.log(serviceData)
       await axios.post(AddURL, serviceData); // Use the AddURL here
       // Close the dialog and update the service list or other relevant actions
       handleClose();
