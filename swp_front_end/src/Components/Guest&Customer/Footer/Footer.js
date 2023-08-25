@@ -15,10 +15,10 @@ const Footer = () => {
         </div>
         <div className='footer-row2'>
           <div>Company</div>
-          <Link to="/home" className='link'>Home</Link>
-          <Link to="/ourteam" className='link'>Our Team</Link>
-          <Link to="/policy" className='link'>Policy</Link>
-          <Link to="/faqs" className='link'>FAQs</Link>
+          <Link to="" className='link'>Home</Link>
+          <Link to="" className='link'>Our Team</Link>
+          <Link to="" className='link'>Policy</Link>
+          <Link to="" className='link'>FAQs</Link>
         </div>
         <div className='footer-row3'>
           <div>Service</div>

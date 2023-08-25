@@ -207,7 +207,6 @@ const BookingForm = () => {
         )
       );
       const combinedData = combine(fetchedData)
-      console.log(combinedData)
     };
 
     fetchDataAndSetState();
@@ -564,7 +563,6 @@ const BookingForm = () => {
                           ${ChoosePrice(service)}
                         </TableCell>
                         <TableCell align="center">
-                          {console.log(service)}
                           <Select
                             sx={{
                               height: "2rem",
@@ -573,11 +571,6 @@ const BookingForm = () => {
                               marginRight: "2rem",
                             }}
                             onChange={(e) => {
-                              // const updatedServiceTypes = {
-                              //   ...selectedServiceTypes,
-                              // };
-                              // updatedServiceTypes[index] = e.target.value;
-                              // setSelectedServiceTypes(updatedServiceTypes);
                               UpdateService(service.serviceId,e.target.value)
                             }}
                             value={service.serviceType}

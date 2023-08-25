@@ -114,7 +114,7 @@ const AccountManagement = () => {
           accountStatus: status,
           workingStatus:"string",
           phoneNum: accountData.phoneNum,
-          gender: "string",
+          gender: gender,
         }
         console.log(AccountUpdate);
         // Send PUT request to update existing account
@@ -397,6 +397,7 @@ const AccountManagement = () => {
                   backgroundColor: "white",
                   marginBottom: "2rem",
                 }}
+                defaultValue={selectedAccount?.user.gender}
               >
                 <MenuItem value={"Male"}>Male</MenuItem>
                 <MenuItem value={"Female"}>Female</MenuItem>

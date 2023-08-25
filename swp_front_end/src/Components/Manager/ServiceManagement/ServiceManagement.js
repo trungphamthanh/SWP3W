@@ -28,6 +28,7 @@ const URL = "https://localhost:7028/api/DASServices/GetAllServices";
 const UpdateURL = "https://localhost:7028/api/DASServices/UpdateServices";
 const AddURL= "https://localhost:7028/api/DASServices/AddServices"
 const userId = localStorage.getItem("userId");
+console.log(userId)
 
 
 const ServiceManagement = () => {
@@ -287,7 +288,7 @@ const ServiceManagement = () => {
                 defaultValue={selectedService?.lowPrice || ""}
                 style={{fontSize:"1.2rem", width:"5rem"}}
               />
-                            <label
+              <label
                 htmlFor="Advance"
                 style={{
                   color: "#0C3F7E",

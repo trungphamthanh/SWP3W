@@ -26,8 +26,7 @@ import { TextField, Button } from "@mui/material";
 const URL = "https://localhost:7028/api/Account/GetAllDoctor";
 const AddSlotURL = "https://localhost:7028/api/Slot/AddDoctorToSlot";
 const WorkdateURL = "https://localhost:7028/api/Slot/GetAllSlotByDoctorId?id";
-const StatusURL =
-  "https://localhost:7028/api/Account/UpdateDoctorWorkingStatusById/{id}";
+const StatusURL ="https://localhost:7028/api/Account/UpdateDoctorWorkingStatusById";
 
 const DoctorManagement = () => {
   const [headerTitle, setHeaderTitle] = useState("Doctor Management");
@@ -141,19 +140,13 @@ const DoctorManagement = () => {
     event.preventDefault();
     
     const statusData = {
-      accountId: selectedDoctor.id,
-      userId: 0,
-      username: "string",
-      password: "string",
-      roleId: 0,
+      doctorId: selectedDoctor.id,
       accountStatus: "string",
       workingStatus: selectedStatus,
-      phoneNum: "string",
-      gender: "string",
     };
 
     try {
-      const statusResponse = await fetch(`${StatusURL}${selectedDoctor.id}`, {
+      const statusResponse = await fetch(`${StatusURL}/${selectedDoctor.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
